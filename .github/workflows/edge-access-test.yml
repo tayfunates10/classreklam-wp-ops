@@ -1,0 +1,72 @@
+name: WordPress Edge Access Diagnostic
+
+on:
+  push:
+    paths:
+      - '.github/workflows/edge-access-test.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare access paths
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          base="${WP_URL%/}"
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+
+          public_code=$(curl -A "$ua" -sS --max-time 15 -o /tmp/public.out -w '%{http_code}' "$base/wp-json/" || true)
+          auth_code=$(curl -A "$ua" -e "$base/wp-admin/" -sS --max-time 15 --user "$WP_USER:$WP_APP_PASSWORD" -H 'Accept: application/json' -o /tmp/auth.out -w '%{http_code}' "$base/wp-json/wp/v2/pages/6?context=edit&_fields=id,title,status" || true)
+          login_code=$(curl -A "$ua" -sS --max-time 15 -o /tmp/login.out -w '%{http_code}' "$base/wp-login.php" || true)
+
+          cat >/tmp/xmlrpc-request.xml <<'XML'
+          <?xml version="1.0"?>
+          <methodCall><methodName>system.listMethods</methodName><params></params></methodCall>
+          XML
+          xmlrpc_code=$(curl -A "$ua" -sS --max-time 15 -H 'Content-Type: text/xml' --data-binary @/tmp/xmlrpc-request.xml -D /tmp/xmlrpc.headers -o /tmp/xmlrpc.out -w '%{http_code}' "$base/xmlrpc.php" || true)
+          xmlrpc_ct=$(grep -i '^content-type:' /tmp/xmlrpc.headers 2>/dev/null | tail -1 | tr -d '\r' | cut -d: -f2- | xargs || true)
+
+          python3 - "$public_code" "$auth_code" "$login_code" "$xmlrpc_code" "$xmlrpc_ct" <<'PY'
+          import json,pathlib,sys,re
+          def marker(path):
+              try:
+                  t=pathlib.Path(path).read_text(errors='replace')[:2500]
+              except Exception:
+                  return ''
+              if 'Imunify360' in t: return 'imunify360'
+              if 'Access denied' in t: return 'access-denied'
+              if '<methodResponse' in t: return 'xmlrpc-method-response'
+              if '<html' in t.lower(): return 'html'
+              if t.strip().startswith('{'): return 'json'
+              return re.sub(r'\s+',' ',t[:120]).strip()
+          data={
+            'public_rest':{'http':sys.argv[1],'marker':marker('/tmp/public.out')},
+            'authenticated_rest':{'http':sys.argv[2],'marker':marker('/tmp/auth.out')},
+            'wp_login':{'http':sys.argv[3],'marker':marker('/tmp/login.out')},
+            'xmlrpc':{'http':sys.argv[4],'content_type':sys.argv[5],'marker':marker('/tmp/xmlrpc.out')}
+          }
+          pathlib.Path('.ops/edge-access-diagnostic.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+          PY
+
+      - name: Save diagnostic
+        shell: bash
+        run: |
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/edge-access-diagnostic.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record WordPress edge access diagnostic'
+          git pull --rebase origin main
+          git push
