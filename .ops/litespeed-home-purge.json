@@ -2,7 +2,7 @@
   "runner_exit": 0,
   "stderr": "",
   "result": {
-    "status": "failed",
+    "status": "success",
     "steps": [
       {
         "plugin_initial": "absent",
@@ -12,7 +12,7 @@
       },
       {
         "homepage_resave_http": 200,
-        "modified": "2026-08-10T13:43:11"
+        "modified": "2026-08-10T13:47:01"
       },
       {
         "plugin_restore": "deactivated-temporary"
@@ -26,11 +26,12 @@
     "after_purge_live": {
       "marker_present": true,
       "overlay_present": true,
-      "raf_present": false,
-      "cosine_present": false,
+      "raf_present": true,
+      "cosine_present": true,
       "css_keyframe_absent": true,
-      "base_locked": false,
-      "variable_overlay": false,
+      "base_locked": true,
+      "variable_overlay": true,
+      "minimum_nonzero": true,
       "server": "LiteSpeed",
       "cache_control": "public, max-age=3600",
       "html_chars": 415950
@@ -38,11 +39,12 @@
     "final_live": {
       "marker_present": true,
       "overlay_present": true,
-      "raf_present": false,
-      "cosine_present": false,
+      "raf_present": true,
+      "cosine_present": true,
       "css_keyframe_absent": true,
-      "base_locked": false,
-      "variable_overlay": false,
+      "base_locked": true,
+      "variable_overlay": true,
+      "minimum_nonzero": true,
       "server": "LiteSpeed",
       "cache_control": "public, max-age=3600",
       "html_chars": 415881

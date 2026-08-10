@@ -1,9 +1,10 @@
 {
   "runner_exit": 0,
+  "attempts": 1,
   "stderr": "",
   "result": {
     "status": "success",
-    "modified": "2026-08-10T13:42:56",
+    "modified": "2026-08-10T13:46:45",
     "checks": {
       "marker_count": 1,
       "old_final_removed": true,
