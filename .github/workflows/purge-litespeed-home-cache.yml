@@ -82,3 +82,4 @@ jobs:
           git push
 
 # retry trigger: 2026-08-10T16:45:00+03:00
+# verification rerun: 2026-08-10T16:47:00+03:00
