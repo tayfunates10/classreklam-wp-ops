@@ -16,29 +16,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Apply phase 1 changes
+      - name: Apply phase 1 changes with diagnostics
         env:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
         shell: bash
         run: |
-          set -euo pipefail
+          set +e
           mkdir -p .ops
-          python3 scripts/apply_phase1.py | tee .ops/phase1-result.json
+          python3 scripts/apply_phase1.py > /tmp/phase1.stdout 2> /tmp/phase1.stderr
+          rc=$?
+          python3 - "$rc" <<'PY'
+          import json, pathlib, sys
+          rc=int(sys.argv[1])
+          out=pathlib.Path('/tmp/phase1.stdout').read_text(errors='replace').strip()
+          err=pathlib.Path('/tmp/phase1.stderr').read_text(errors='replace').strip()
+          data={'status':'success' if rc==0 else 'failed','exit_code':rc,'stdout':out[-12000:],'stderr':err[-12000:]}
+          pathlib.Path('.ops/phase1-result.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
 
       - name: Save execution result
-        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          if [ ! -f .ops/phase1-result.json ]; then
-            printf '{"status":"failed-before-result"}\n' > .ops/phase1-result.json
-          fi
           git add .ops/phase1-result.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record phase 1 SEO application result'
+          git commit -m 'chore: record phase 1 SEO application diagnostics'
           git pull --rebase origin main
           git push
