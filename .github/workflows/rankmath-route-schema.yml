@@ -1,0 +1,41 @@
+name: Rank Math Route Schema
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rankmath-route-schema.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Capture Rank Math route definitions
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          base="${WP_URL%/}"
+          curl --fail --silent --show-error "$base/wp-json/" > /tmp/root.json
+          jq '{
+            updateMeta:.routes["/rankmath/v1/updateMeta"],
+            updateSettings:.routes["/rankmath/v1/updateSettings"],
+            updateRedirection:.routes["/rankmath/v1/updateRedirection"],
+            updateSchemas:.routes["/rankmath/v1/updateSchemas"]
+          }' /tmp/root.json > .ops/rankmath-route-schema.json
+      - name: Commit schema
+        shell: bash
+        run: |
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/rankmath-route-schema.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record Rank Math route schemas'
+          git pull --rebase origin main
+          git push
