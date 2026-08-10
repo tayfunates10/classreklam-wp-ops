@@ -40,8 +40,6 @@ jobs:
           import json,re,pathlib,html as htmlmod,os
           meta=pathlib.Path('/tmp/curl.meta').read_text(errors='replace').splitlines()
           raw=pathlib.Path('/tmp/post.html').read_text(errors='replace')
-          text=htmlmod.unescape(re.sub(r'<[^>]+>',' ',raw))
-          text=re.sub(r'\s+',' ',text).lower()
           cookie_names=[]
           p=pathlib.Path('/tmp/wp-cookies.txt')
           if p.exists():
@@ -49,24 +47,27 @@ jobs:
                   parts=line.split('\t')
                   if len(parts)>=7 and (not line.startswith('#') or line.startswith('#HttpOnly_')):
                       cookie_names.append(parts[5])
+          err=''
+          m=re.search(r'id=["\']login_error["\'][^>]*>(.*?)</div>',raw,re.I|re.S)
+          if m:
+              err=htmlmod.unescape(re.sub(r'<[^>]+>',' ',m.group(1)))
+              err=re.sub(r'\s+',' ',err).strip()
+              user=os.environ.get('WP_LOGIN_USER','')
+              if user: err=err.replace(user,'<redacted-user>')
+              err=err[:700]
+          low=err.lower()
           category='unknown'
-          if any(x in text for x in ['bilinmeyen kullanıcı adı','unknown username','invalid username','kullanıcı adı bu sitede kayıtlı değil','bu kullanıcı adı kayıtlı değil']):
-              category='username-not-found'
-          elif any(x in text for x in ['parola yanlış','şifre yanlış','incorrect password','password you entered','girdiğiniz parola','girdiğiniz şifre']):
-              category='password-incorrect'
-          elif 'wordpress_logged_in_' in ' '.join(cookie_names):
-              category='login-success'
-          elif any(x in text for x in ['captcha','recaptcha','turnstile']):
-              category='captcha'
-          elif 'imunify360' in text:
-              category='imunify360'
+          if any(x in low for x in ['bilinmeyen kullanıcı adı','unknown username','invalid username','kayıtlı değil','not registered']): category='username-not-found'
+          elif any(x in low for x in ['parola','şifre','password','incorrect']): category='password-incorrect-or-credential-error'
+          elif 'wordpress_logged_in_' in ' '.join(cookie_names): category='login-success'
           result={
-            'status':'diagnostic-v2',
+            'status':'diagnostic-v3',
             'http_code':meta[0] if meta else '',
             'final_url':meta[1] if len(meta)>1 else '',
             'redirects':meta[2] if len(meta)>2 else '',
             'cookie_names':sorted(set(cookie_names)),
             'login_error_category':category,
+            'sanitized_login_error':err,
             'login_user_present':bool(os.environ.get('WP_LOGIN_USER')),
             'login_password_present':bool(os.environ.get('WP_LOGIN_PASSWORD')),
           }
@@ -80,6 +81,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .ops/login-diagnostic.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record WordPress login diagnostic v2'
+          git commit -m 'chore: record WordPress login diagnostic v3'
           git pull --rebase origin main
           git push
