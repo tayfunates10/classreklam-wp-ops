@@ -45,3 +45,5 @@ jobs:
           git commit -m 'chore: record Phase 2 query-rest result'
           git pull --rebase origin main
           git push
+
+# throttled rerun: 2026-08-10T15:04:00+03:00
