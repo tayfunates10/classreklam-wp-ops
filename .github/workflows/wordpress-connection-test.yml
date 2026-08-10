@@ -1,0 +1,58 @@
+name: WordPress Connection Test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/wordpress-connection-test.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test-wordpress:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test WordPress REST authentication
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          timestamp="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+          if [ -z "${WP_URL:-}" ] || [ -z "${WP_USER:-}" ] || [ -z "${WP_APP_PASSWORD:-}" ]; then
+            printf '{"status":"missing-secret","checked_at":"%s"}\n' "$timestamp" > .ops/connection-status.json
+            exit 0
+          fi
+
+          base="${WP_URL%/}"
+          http_code="$(curl --silent --show-error --output /tmp/wp-response.json --write-out '%{http_code}' \
+            --user "${WP_USER}:${WP_APP_PASSWORD}" \
+            --header 'Accept: application/json' \
+            "${base}/wp-json/wp/v2/users/me?context=edit" || true)"
+
+          if [ "$http_code" = "200" ]; then
+            printf '{"status":"connected","http_code":200,"checked_at":"%s"}\n' "$timestamp" > .ops/connection-status.json
+          else
+            printf '{"status":"failed","http_code":%s,"checked_at":"%s"}\n' "${http_code:-0}" "$timestamp" > .ops/connection-status.json
+          fi
+
+      - name: Save connection status
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/connection-status.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'chore: record WordPress connection status'
+          git push
