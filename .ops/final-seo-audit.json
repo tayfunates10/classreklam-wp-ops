@@ -1,0 +1,157 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stderr": "",
+  "audit": {
+    "home": {
+      "modified": "2026-08-10T12:05:17",
+      "h1": [
+        "Edremit Tabela ve Reklam\n        Çözümleri"
+      ],
+      "has_localbusiness_marker": true,
+      "service_links": {
+        "Tabela": true,
+        "Totem": true,
+        "Dijital Baskı": true,
+        "Araç Giydirme": true,
+        "Cam Giydirme": true,
+        "Kutu Harf": true
+      }
+    },
+    "contact": {
+      "title": "İletişim",
+      "h1": [
+        "İletişim"
+      ],
+      "h2": [],
+      "modified": "2026-08-10T12:09:14"
+    },
+    "services": [
+      {
+        "id": 1132,
+        "slug": "edremit-tabela",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/edremit-tabela/",
+        "title": "Edremit Tabela",
+        "h1": [
+          "Edremit Tabela"
+        ],
+        "h2": [
+          "Edremit’te Tabela Çözümleri",
+          "Doğru Tabela Nasıl Planlanır?",
+          "Edremit ve Balıkesir Çevresinde Uygulama",
+          "Sık Sorulan Sorular",
+          "Projeniz İçin Teklif Alın"
+        ],
+        "content_chars": 4066,
+        "modified": "2026-08-10T12:09:23"
+      },
+      {
+        "id": 1134,
+        "slug": "totem-tabela",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/totem-tabela/",
+        "title": "Totem Tabela",
+        "h1": [
+          "Edremit Totem Tabela"
+        ],
+        "h2": [
+          "Totem Tabela Nerelerde Kullanılır?",
+          "Tasarım ve Üretimde Dikkat Edilenler",
+          "Işıklı Totem Seçeneği",
+          "Sık Sorulan Sorular",
+          "Projeniz İçin Teklif Alın"
+        ],
+        "content_chars": 3573,
+        "modified": "2026-08-10T12:09:32"
+      },
+      {
+        "id": 1136,
+        "slug": "dijital-baski",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/dijital-baski/",
+        "title": "Dijital Baskı",
+        "h1": [
+          "Edremit Dijital Baskı"
+        ],
+        "h2": [
+          "Dijital Baskı Uygulama Alanları",
+          "İç Mekân ve Dış Mekân Farkı",
+          "Dosya ve Ölçü Hazırlığı",
+          "Sık Sorulan Sorular",
+          "Projeniz İçin Teklif Alın"
+        ],
+        "content_chars": 3490,
+        "modified": "2026-08-10T12:09:40"
+      },
+      {
+        "id": 1138,
+        "slug": "arac-giydirme",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/arac-giydirme/",
+        "title": "Araç Giydirme",
+        "h1": [
+          "Edremit Araç Giydirme"
+        ],
+        "h2": [
+          "Araç Giydirme Seçenekleri",
+          "Uygulama Öncesi Hazırlık",
+          "Tasarımda Okunabilirlik",
+          "Sık Sorulan Sorular",
+          "Projeniz İçin Teklif Alın"
+        ],
+        "content_chars": 3514,
+        "modified": "2026-08-10T12:09:49"
+      },
+      {
+        "id": 1140,
+        "slug": "cam-giydirme",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/cam-giydirme/",
+        "title": "Cam Giydirme",
+        "h1": [
+          "Edremit Cam Giydirme"
+        ],
+        "h2": [
+          "Cam Folyo Çeşitleri",
+          "Vitrin Tasarımında Denge",
+          "Uygulama Yüzeyi",
+          "Sık Sorulan Sorular",
+          "Projeniz İçin Teklif Alın"
+        ],
+        "content_chars": 3452,
+        "modified": "2026-08-10T12:09:58"
+      },
+      {
+        "id": 1142,
+        "slug": "kutu-harf-tabela",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
+        "title": "Kutu Harf Tabela",
+        "h1": [
+          "Edremit Kutu Harf Tabela"
+        ],
+        "h2": [
+          "Kutu Harf Seçenekleri",
+          "Işıklı Kutu Harf",
+          "Cepheye Uyum",
+          "Sık Sorulan Sorular",
+          "Projeniz İçin Teklif Alın"
+        ],
+        "content_chars": 3402,
+        "modified": "2026-08-10T12:10:07"
+      }
+    ],
+    "post801": {
+      "modified": "2026-08-10T12:04:14",
+      "links_to_edremit_tabela": true
+    },
+    "category1": {
+      "id": 1,
+      "count": 20,
+      "link": "https://classreklamtabela.com.tr/category/uncategorized/",
+      "name": "Uncategorized",
+      "slug": "uncategorized"
+    }
+  }
+}
