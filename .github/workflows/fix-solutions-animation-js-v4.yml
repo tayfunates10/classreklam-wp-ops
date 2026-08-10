@@ -1,0 +1,138 @@
+name: Fix Solutions Animation JS V4
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-solutions-animation-js-v4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply continuous JS animation
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          python3 scripts/fix_solutions_animation_js_continuous.py > /tmp/v4.out 2>/tmp/v4.err
+          rc=$?
+          python3 - "$rc" <<'PY'
+          import json,pathlib,sys
+          rc=int(sys.argv[1]); out=pathlib.Path('/tmp/v4.out').read_text(errors='replace').strip(); err=pathlib.Path('/tmp/v4.err').read_text(errors='replace').strip()
+          payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-12000:]}
+          if rc==0:
+              try: payload['result']=json.loads(out)
+              except Exception: payload['stdout']=out[-20000:]
+          else: payload['stdout']=out[-20000:]
+          pathlib.Path('.ops/solutions-animation-js-v4.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+
+      - name: Purge LiteSpeed full-page cache safely
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          python3 - <<'PY'
+          import base64,json,os,time,urllib.parse,urllib.request,urllib.error,pathlib
+          B=os.environ['WP_URL'].rstrip('/')
+          A='Basic '+base64.b64encode(f"{os.environ['WP_USER']}:{os.environ['WP_APP_PASSWORD']}".encode()).decode()
+          H={'Authorization':A,'Accept':'application/json','User-Agent':'Mozilla/5.0 Chrome/138 Safari/537.36','Referer':B+'/wp-admin/'}
+          def req(method,route,payload=None,params=None):
+              q={'rest_route':route}
+              if params:q.update(params)
+              data=None; h=dict(H)
+              if payload is not None:
+                  data=json.dumps(payload).encode(); h['Content-Type']='application/json'
+              r=urllib.request.Request(B+'/?'+urllib.parse.urlencode(q),data=data,headers=h,method=method)
+              try:
+                  with urllib.request.urlopen(r,timeout=60) as x:
+                      raw=x.read().decode(errors='replace'); return x.status,json.loads(raw) if raw else {}
+              except urllib.error.HTTPError as e:
+                  raw=e.read().decode(errors='replace')
+                  try: body=json.loads(raw)
+                  except: body={'raw':raw[:1000]}
+                  return e.code,body
+          result={'steps':[]}
+          plugin='/wp/v2/plugins/litespeed-cache/litespeed-cache'
+          c,b=req('GET',plugin)
+          initial='absent' if c==404 else b.get('status','unknown')
+          installed_now=False
+          if c==404:
+              c,b=req('POST','/wp/v2/plugins',{'slug':'litespeed-cache','status':'active'})
+              installed_now=c in (200,201)
+              result['steps'].append({'install_http':c,'installed_now':installed_now,'status':b.get('status') if isinstance(b,dict) else None})
+          elif b.get('status')!='active':
+              c,b=req('POST',plugin,{'status':'active'})
+              result['steps'].append({'activate_http':c,'initial':initial})
+          else:
+              result['steps'].append({'plugin_initial':'active'})
+          c,p=req('GET','/wp/v2/pages/6',params={'context':'edit','_fields':'id,content'})
+          if c==200:
+              c2,u=req('POST','/wp/v2/pages/6',{'content':p.get('content',{}).get('raw','')})
+              result['steps'].append({'homepage_resave_http':c2})
+          time.sleep(3)
+          if installed_now:
+              req('POST',plugin,{'status':'inactive'})
+              c,d=req('DELETE',plugin,params={'force':'true'})
+              result['steps'].append({'temporary_plugin_deleted':c==200,'delete_http':c})
+          elif initial!='active' and initial!='absent':
+              c,_=req('POST',plugin,{'status':initial})
+              result['steps'].append({'plugin_restored':initial,'http':c})
+          pathlib.Path('.ops/solutions-animation-js-v4-purge.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+
+      - name: Verify fresh live HTML
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+        shell: bash
+        run: |
+          set +e
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess,time
+          url=os.environ['WP_URL'].rstrip('/')+'/?crjsv4='+str(int(time.time()))
+          cp=subprocess.run(['curl','-sS','-L','--max-time','35','-A','Mozilla/5.0 Chrome/138.0.0.0 Safari/537.36',url],capture_output=True,text=True)
+          h=cp.stdout
+          pos=h.rfind('cr-solutions-animation-js-v4')
+          scope=h[pos:] if pos>=0 else ''
+          payload={
+            'curl_exit':cp.returncode,
+            'waf_challenge':'One moment, please' in h or 'Imunify360' in h,
+            'v4_present':pos>=0,
+            'js_raf_present':'requestAnimationFrame(frame)' in scope,
+            'cosine_present':'Math.cos(phase)' in scope,
+            'css_keyframe_absent':'@keyframes cr-solutions-white' not in scope,
+            'base_animation_locked':'animation-name: none !important' in scope and 'animation-duration: 0s !important' in scope,
+            'overlay_uses_variable':'opacity: var(--cr-solutions-opacity)' in scope,
+            'minimum_not_zero':'minOpacity=0.06' in scope,
+          }
+          pathlib.Path('.ops/solutions-animation-js-v4-live.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+
+      - name: Save verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/solutions-animation-js-v4.json .ops/solutions-animation-js-v4-purge.json .ops/solutions-animation-js-v4-live.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record continuous JS animation verification'
+          git pull --rebase origin main
+          git push
