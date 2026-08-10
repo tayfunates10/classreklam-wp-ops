@@ -2,7 +2,8 @@
   "curl_exit": 0,
   "waf_challenge": false,
   "new_override_present": true,
-  "new_keyframe_present": true,
+  "seamless_keyframe_present": true,
+  "alternate_loop_present": true,
   "new_override_after_old_rules": true,
   "old_rule_positions": [
     240818,
@@ -10,5 +11,5 @@
     244063,
     209240
   ],
-  "new_override_position": 388088
+  "new_override_position": 387924
 }

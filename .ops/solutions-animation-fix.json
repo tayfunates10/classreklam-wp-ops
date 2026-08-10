@@ -4,11 +4,12 @@
   "stderr": "",
   "result": {
     "status": "success",
-    "modified": "2026-08-10T12:54:51",
+    "modified": "2026-08-10T12:59:29",
     "checks": {
-      "v2_marker_count": 1,
-      "v2_keyframe_present": true,
-      "v2_animation_present": true,
+      "marker_count": 1,
+      "seamless_keyframe_present": true,
+      "alternate_loop_present": true,
+      "old_v2_animation_absent": true,
       "pseudo_disabled": true,
       "reduced_motion_present": true
     }
