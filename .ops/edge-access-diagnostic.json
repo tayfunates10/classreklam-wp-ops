@@ -1,0 +1,19 @@
+{
+  "public_rest": {
+    "http": "200",
+    "marker": "html"
+  },
+  "authenticated_rest": {
+    "http": "403",
+    "marker": "imunify360"
+  },
+  "wp_login": {
+    "http": "200",
+    "marker": "html"
+  },
+  "xmlrpc": {
+    "http": "200",
+    "content_type": "text/html",
+    "marker": "html"
+  }
+}
