@@ -1,12 +1,13 @@
 {
-  "status": "diagnostic-v2",
+  "status": "diagnostic-v3",
   "http_code": "200",
   "final_url": "https://classreklamtabela.com.tr/wp-login.php",
   "redirects": "0",
   "cookie_names": [
     "wordpress_test_cookie"
   ],
-  "login_error_category": "unknown",
+  "login_error_category": "password-incorrect-or-credential-error",
+  "sanitized_login_error": "Hata: <redacted-user> kullanıcısı için yazılan parola geçersiz. Parolanızı mı unuttunuz?",
   "login_user_present": true,
   "login_password_present": true
 }
