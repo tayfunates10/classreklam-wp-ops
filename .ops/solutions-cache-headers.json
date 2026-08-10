@@ -1,0 +1,20 @@
+[
+  {
+    "mode": "normal",
+    "headers": [
+      "x-powered-by: PHP/8.1.34",
+      "cache-control: public, max-age=3600",
+      "date: Mon, 10 Aug 2026 13:13:39 GMT",
+      "server: LiteSpeed"
+    ]
+  },
+  {
+    "mode": "nocache",
+    "headers": [
+      "x-powered-by: PHP/8.1.34",
+      "cache-control: public, max-age=3600",
+      "date: Mon, 10 Aug 2026 13:13:41 GMT",
+      "server: LiteSpeed"
+    ]
+  }
+]

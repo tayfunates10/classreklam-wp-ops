@@ -4,7 +4,7 @@
   "stderr": "",
   "result": {
     "status": "success",
-    "modified": "2026-08-10T13:11:42",
+    "modified": "2026-08-10T13:13:29",
     "checks": {
       "marker_count": 1,
       "overlay_text_attribute_present": true,
