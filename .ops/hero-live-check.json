@@ -1,0 +1,19 @@
+{
+  "bypass_curl_exit": 0,
+  "normal_curl_exit": 0,
+  "purge_http": "405",
+  "bypass": {
+    "old_phrase_present": true,
+    "new_heading_present": true,
+    "waf_challenge": false,
+    "h1_sample": "Edremit Tabela ve Reklam \n         Çözümleri"
+  },
+  "normal": {
+    "old_phrase_present": true,
+    "new_heading_present": true,
+    "waf_challenge": false,
+    "h1_sample": "Edremit Tabela ve Reklam \n         Çözümleri"
+  },
+  "purge_body": "<!DOCTYPE html> <html style=\"height:100%\"> <head> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" /> <title> 405 Method Not Allowed </title><style>@media (prefers-color-scheme:dark){body{background-color:#000!important}}</style></head> <body style=\"color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;\">",
+  "purge_error": ""
+}
