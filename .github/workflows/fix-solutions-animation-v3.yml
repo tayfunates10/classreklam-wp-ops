@@ -1,0 +1,80 @@
+name: Fix Solutions Animation V3
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-solutions-animation-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply no-flash animation
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          python3 scripts/fix_solutions_animation_queryrest.py > /tmp/out 2>/tmp/err
+          rc=$?
+          python3 - "$rc" <<'PY'
+          import json,pathlib,sys
+          rc=int(sys.argv[1])
+          out=pathlib.Path('/tmp/out').read_text(errors='replace').strip()
+          err=pathlib.Path('/tmp/err').read_text(errors='replace').strip()
+          payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-12000:]}
+          if rc==0:
+              try: payload['result']=json.loads(out)
+              except Exception: payload['stdout']=out[-20000:]
+          else: payload['stdout']=out[-20000:]
+          pathlib.Path('.ops/solutions-animation-v3.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+      - name: Verify live HTML
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+        shell: bash
+        run: |
+          set +e
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess,time
+          base=os.environ['WP_URL'].rstrip('/')
+          url=base+'/?cranimv3='+str(int(time.time()))
+          cp=subprocess.run(['curl','-sS','-L','--max-time','30','-A','Mozilla/5.0 Chrome/138.0.0.0 Safari/537.36',url],capture_output=True,text=True)
+          html=cp.stdout
+          pos=html.rfind('cr-solutions-animation-v2')
+          scope=html[pos:] if pos >= 0 else ''
+          payload={
+            'curl_exit':cp.returncode,
+            'waf_challenge':'One moment, please' in html or 'Imunify360' in html,
+            'override_present':pos >= 0,
+            'base_animation_name_none':'animation-name: none !important' in scope,
+            'base_animation_duration_zero':'animation-duration: 0s !important' in scope,
+            'breathe_keyframe_present':'@keyframes cr-solutions-white-breathe' in scope,
+            'alternate_loop_present':'animation-direction: alternate !important' in scope,
+            'minimum_opacity_nonzero':'opacity: 0.035 !important' in scope,
+            'overlay_text_present':'data-cr-text="Çözümleri"' in html,
+          }
+          pathlib.Path('.ops/solutions-animation-v3-live.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+      - name: Save result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/solutions-animation-v3.json .ops/solutions-animation-v3-live.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record no-flash solutions animation v3 result'
+          git pull --rebase origin main
+          git push
