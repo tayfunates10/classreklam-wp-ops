@@ -1,0 +1,6 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stdout": "{\"service_pages\": [{\"slug\": \"edremit-tabela\", \"id\": 1132, \"http\": 201, \"canonical\": \"https://classreklamtabela.com.tr/edremit-tabela/\"}, {\"slug\": \"totem-tabela\", \"id\": 1134, \"http\": 201, \"canonical\": \"https://classreklamtabela.com.tr/totem-tabela/\"}, {\"slug\": \"dijital-baski\", \"id\": 1136, \"http\": 201, \"canonical\": \"https://classreklamtabela.com.tr/dijital-baski/\"}, {\"slug\": \"arac-giydirme\", \"id\": 1138, \"http\": 201, \"canonical\": \"https://classreklamtabela.com.tr/arac-giydirme/\"}, {\"slug\": \"cam-giydirme\", \"id\": 1140, \"http\": 201, \"canonical\": \"https://classreklamtabela.com.tr/cam-giydirme/\"}, {\"slug\": \"kutu-harf-tabela\", \"id\": 1142, \"http\": 201, \"canonical\": \"https://classreklamtabela.com.tr/kutu-harf-tabela/\"}], \"homepage\": {\"http\": 200, \"h1_replacements\": [1, 1], \"service_link_replacements\": {\"Tabela\": 1, \"Totem\": 1, \"Dijital Baskı\": 1, \"Araç Giydirme\": 1, \"Cam Giydirme\": 1, \"Kutu Harf\": 1}}}",
+  "stderr": ""
+}
