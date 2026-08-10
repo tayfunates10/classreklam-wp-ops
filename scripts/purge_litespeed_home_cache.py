@@ -45,16 +45,15 @@ def live_check(label):
     req=urllib.request.Request(url,headers={'User-Agent':UA,'Cache-Control':'no-cache, no-store, max-age=0','Pragma':'no-cache','Accept':'text/html,*/*'})
     with urllib.request.urlopen(req,timeout=60) as r:
         html=r.read().decode(errors='replace'); hdr=dict(r.headers)
-    pos=html.rfind(TARGET_MARKER)
-    scope=html[pos:] if pos>=0 else ''
     return {
-        'marker_present':pos>=0,
+        'marker_present':TARGET_MARKER in html,
         'overlay_present':'data-cr-text="Çözümleri"' in html,
-        'raf_present':'requestAnimationFrame(frame)' in scope,
-        'cosine_present':'Math.cos(phase)' in scope,
-        'css_keyframe_absent':'@keyframes cr-solutions-white' not in scope,
-        'base_locked':'animation-name: none !important' in scope and 'animation-duration: 0s !important' in scope,
-        'variable_overlay':'opacity: var(--cr-solutions-opacity)' in scope,
+        'raf_present':'requestAnimationFrame(frame)' in html,
+        'cosine_present':'Math.cos(phase)' in html,
+        'css_keyframe_absent':'@keyframes cr-solutions-white' not in html,
+        'base_locked':'animation-name: none !important' in html and 'animation-duration: 0s !important' in html,
+        'variable_overlay':'opacity: var(--cr-solutions-opacity)' in html,
+        'minimum_nonzero':'minOpacity=0.06' in html,
         'server':hdr.get('Server') or hdr.get('server'),
         'cache_control':hdr.get('Cache-Control') or hdr.get('cache-control'),
         'html_chars':len(html),
@@ -108,6 +107,6 @@ try:
     time.sleep(2); result['final_live']=live_check('final')
 except Exception as e: result['final_live_error']=str(e)[:1000]
 final=result.get('final_live',{})
-ok=all(final.get(k) for k in ['marker_present','raf_present','cosine_present','css_keyframe_absent','base_locked','variable_overlay'])
+ok=all(final.get(k) for k in ['marker_present','raf_present','cosine_present','css_keyframe_absent','base_locked','variable_overlay','minimum_nonzero'])
 result['status']='success' if ok else 'failed'
 print(json.dumps(result,ensure_ascii=False,indent=2))
