@@ -1,0 +1,11 @@
+{
+  "curl_exit": 0,
+  "waf_challenge": false,
+  "v4_present": false,
+  "js_raf_present": false,
+  "cosine_present": false,
+  "css_keyframe_absent": true,
+  "base_animation_locked": false,
+  "overlay_uses_variable": false,
+  "minimum_not_zero": false
+}

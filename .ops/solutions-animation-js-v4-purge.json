@@ -1,0 +1,16 @@
+{
+  "steps": [
+    {
+      "install_http": 201,
+      "installed_now": true,
+      "status": "active"
+    },
+    {
+      "homepage_resave_http": 200
+    },
+    {
+      "temporary_plugin_deleted": true,
+      "delete_http": 200
+    }
+  ]
+}
