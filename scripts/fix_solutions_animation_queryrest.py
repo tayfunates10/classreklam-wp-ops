@@ -10,9 +10,10 @@ MARK_END='<!-- cr-solutions-animation-v2:end -->'
 CSS='''
 <!-- cr-solutions-animation-v2:start -->
 <style id="cr-solutions-animation-v2">
-/* Truly seamless hero word animation.
-   The base text stays red permanently; a white duplicate fades in/out above it.
-   Because the base never changes color, there is no iteration-boundary reset flash. */
+/* Final seamless hero word animation.
+   Base text is locked red with every animation longhand disabled.
+   A white duplicate fades from nearly transparent to white and then CSS alternate
+   reverses the SAME frames, so no new-cycle reset frame can flash red. */
 html body section#cr-hero h1.cr-heading span.cr-heading-line2 {
   display: block !important;
   position: relative !important;
@@ -32,6 +33,16 @@ html body section#cr-hero h1.cr-heading span.cr-heading-line2 {
     0 0 12px rgba(237, 28, 36, 0.14) !important;
 
   animation: none !important;
+  animation-name: none !important;
+  animation-duration: 0s !important;
+  animation-timing-function: linear !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  animation-direction: normal !important;
+  animation-fill-mode: none !important;
+  animation-play-state: running !important;
+
+  filter: none !important;
   overflow: visible !important;
   will-change: auto !important;
 }
@@ -61,28 +72,33 @@ html body section#cr-hero h1.cr-heading span.cr-heading-line2::after {
     0 0 5px rgba(255,255,255,0.18),
     0 0 10px rgba(255,255,255,0.08) !important;
 
-  opacity: 0 !important;
-  animation-name: cr-solutions-white-crossfade !important;
-  animation-duration: 6.4s !important;
-  animation-timing-function: ease-in-out !important;
+  /* Keep a tiny white contribution even at the reddest point so there is never
+     a single fully-red reset frame. */
+  opacity: 0.035 !important;
+  animation-name: cr-solutions-white-breathe !important;
+  animation-duration: 3.2s !important;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1) !important;
   animation-delay: 0s !important;
   animation-iteration-count: infinite !important;
-  animation-direction: normal !important;
+  animation-direction: alternate !important;
   animation-fill-mode: both !important;
   animation-play-state: running !important;
   will-change: opacity !important;
 }
 
-@keyframes cr-solutions-white-crossfade {
-  0%   { opacity: 0; }
-  12%  { opacity: 0.06; }
-  25%  { opacity: 0.28; }
-  40%  { opacity: 0.72; }
-  50%  { opacity: 1; }
-  60%  { opacity: 0.72; }
-  75%  { opacity: 0.28; }
-  88%  { opacity: 0.06; }
-  100% { opacity: 0; }
+@keyframes cr-solutions-white-breathe {
+  0% {
+    opacity: 0.035;
+  }
+  32% {
+    opacity: 0.24;
+  }
+  62% {
+    opacity: 0.66;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -90,10 +106,11 @@ html body section#cr-hero h1.cr-heading span.cr-heading-line2::after {
     color: #ed1c24 !important;
     -webkit-text-fill-color: #ed1c24 !important;
     text-shadow: none !important;
+    animation: none !important;
   }
   html body section#cr-hero h1.cr-heading span.cr-heading-line2::after {
     animation: none !important;
-    opacity: 0 !important;
+    opacity: 0.035 !important;
   }
 }
 </style>
@@ -143,10 +160,11 @@ vraw=verify['content']['raw']
 checks={
   'marker_count':vraw.count(MARK_START),
   'overlay_text_attribute_present':'data-cr-text="Çözümleri"' in vraw or 'data-cr-text="Çözümleri' in vraw,
-  'base_animation_disabled':'animation: none !important' in vraw,
-  'crossfade_keyframe_present':'@keyframes cr-solutions-white-crossfade' in vraw,
-  'white_overlay_present':'content: attr(data-cr-text) !important' in vraw,
-  'loop_boundary_same_state':'0%   { opacity: 0; }' in vraw and '100% { opacity: 0; }' in vraw,
+  'base_animation_name_none':'animation-name: none !important' in vraw,
+  'base_animation_duration_zero':'animation-duration: 0s !important' in vraw,
+  'breathe_keyframe_present':'@keyframes cr-solutions-white-breathe' in vraw,
+  'alternate_loop_present':'animation-direction: alternate !important' in vraw,
+  'nonzero_minimum_opacity':'opacity: 0.035 !important' in vraw and '0% {' in vraw,
   'reduced_motion_present':'prefers-reduced-motion: reduce' in vraw,
 }
 print(json.dumps({'status':'success','modified':verify.get('modified'),'checks':checks},ensure_ascii=False,indent=2))
