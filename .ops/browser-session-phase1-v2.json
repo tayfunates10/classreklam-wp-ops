@@ -1,0 +1,4 @@
+{
+  "status": "login-failed",
+  "sanitized_login_error": "Hata: <redacted-user> kullanıcısı için yazılan parola geçersiz. Parolanızı mı unuttunuz?"
+}
