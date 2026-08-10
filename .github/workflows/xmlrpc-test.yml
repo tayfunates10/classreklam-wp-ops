@@ -1,0 +1,51 @@
+name: WordPress XML-RPC Connection Test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/xmlrpc-test.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test XML-RPC read access
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          python3 - <<'PY'
+          import json, os, pathlib, xmlrpc.client
+          result={'channel':'xmlrpc','status':'failed'}
+          try:
+              proxy=xmlrpc.client.ServerProxy(os.environ['WP_URL'].rstrip('/')+'/xmlrpc.php', allow_none=True)
+              blogs=proxy.wp.getUsersBlogs(os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'])
+              if not blogs:
+                  raise RuntimeError('No accessible blog returned')
+              blog_id=blogs[0].get('blogid') or blogs[0].get('blog_id') or '1'
+              post=proxy.wp.getPost(blog_id, os.environ['WP_USER'], os.environ['WP_APP_PASSWORD'], 6, ['post_id','post_title','post_status','post_name','post_modified'])
+              result={'channel':'xmlrpc','status':'connected','blog_id':str(blog_id),'homepage':post}
+          except Exception as exc:
+              result={'channel':'xmlrpc','status':'failed','error_type':type(exc).__name__,'error':str(exc)[:1500]}
+          pathlib.Path('.ops/xmlrpc-status.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+          PY
+      - name: Save result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/xmlrpc-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record WordPress XML-RPC connection result'
+          git pull --rebase origin main
+          git push
