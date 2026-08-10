@@ -1,5 +1,9 @@
 {
   "id": 6,
+  "slug": "ana-sayfa",
+  "status": "publish",
+  "link": "https://classreklamtabela.com.tr/",
+  "modified": "2026-06-22T14:59:42",
   "title": {
     "raw": "Anasayfa",
     "rendered": "Anasayfa"
@@ -28,6 +32,5 @@
     "_kad_post_footer": false,
     "_kad_post_classname": "",
     "footnotes": ""
-  },
-  "modified": "2026-06-22T14:59:42"
+  }
 }

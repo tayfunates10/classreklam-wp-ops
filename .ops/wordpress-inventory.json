@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-10T10:42:43Z",
+  "checked_at": "2026-08-10T10:49:38Z",
   "site_url": "https://classreklamtabela.com.tr",
   "settings": {
     "title": "Class Reklam | Edremit Tabela ve Reklam",
@@ -439,5 +439,28 @@
       "name": "WPCode Lite",
       "version": "2.3.6"
     }
-  ]
+  ],
+  "homepage": {
+    "id": 6,
+    "slug": "ana-sayfa",
+    "modified": "2026-06-22T14:59:42",
+    "title": "Anasayfa",
+    "content_length": 120491,
+    "meta": {
+      "_kad_post_transparent": "default",
+      "_kad_post_title": "default",
+      "_kad_post_layout": "normal",
+      "_kad_post_sidebar_id": "",
+      "_kad_post_content_style": "unboxed",
+      "_kad_post_vertical_padding": "hide",
+      "_kad_post_feature": "hide",
+      "_kad_post_feature_position": "",
+      "_kad_post_header": false,
+      "_kad_post_footer": false,
+      "_kad_post_classname": "",
+      "footnotes": ""
+    }
+  },
+  "rankmath_head_http": "404",
+  "rankmath_head": {}
 }
