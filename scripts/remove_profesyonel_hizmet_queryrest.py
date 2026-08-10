@@ -6,7 +6,11 @@ AUTH='Basic '+base64.b64encode(f"{os.environ['WP_USER']}:{os.environ['WP_APP_PAS
 UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
 
 def req(method, route, payload=None, retries=4):
-    q={'rest_route':route}
+    parsed=urllib.parse.urlsplit(route)
+    q={'rest_route':parsed.path}
+    if parsed.query:
+        for k,v in urllib.parse.parse_qsl(parsed.query,keep_blank_values=True):
+            q[k]=v
     url=BASE+'/?'+urllib.parse.urlencode(q)
     data=None
     headers={'Authorization':AUTH,'Accept':'application/json','User-Agent':UA,'Referer':BASE+'/wp-admin/'}
@@ -32,17 +36,10 @@ def req(method, route, payload=None, retries=4):
 code,page=req('GET','/wp/v2/pages/6?context=edit')
 raw=page.get('content',{}).get('raw','')
 before=raw
-# Remove only the visible hero-heading wording requested by the owner.
-variants=[
-    'Profesyonel Hizmet',
-    'profesyonel hizmet',
-]
-for v in variants:
+for v in ('Profesyonel Hizmet','profesyonel hizmet'):
     raw=raw.replace(v,'')
-# Clean common double spaces/empty heading spans created by the removal without touching body copy.
 raw=raw.replace('<span class="cr-heading-line2"></span>','')
 raw=raw.replace('<span class="cr-heading-line2"> </span>','')
-# Always re-save the page to fire WordPress cache-purge hooks, even if the REST raw content was already clean.
 code,body=req('POST','/wp/v2/pages/6',{'content':raw})
 if code not in (200,201):
     raise RuntimeError(f'homepage update failed: {code}')
