@@ -1,0 +1,123 @@
+name: WordPress SEO Audit v2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/wp-audit-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run read-only audit
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          base="${WP_URL%/}"
+          auth="${WP_USER}:${WP_APP_PASSWORD}"
+
+          get_json() {
+            local url="$1" out="$2"
+            local code
+            code=$(curl -sS --user "$auth" -H 'Accept: application/json' -o "$out.tmp" -w '%{http_code}' "$url" || true)
+            if [ "$code" = "200" ]; then
+              mv "$out.tmp" "$out"
+            else
+              printf '{"http_code":%s}\n' "${code:-0}" > "$out"
+              rm -f "$out.tmp"
+            fi
+          }
+
+          get_json "$base/wp-json/wp/v2/pages/6?context=edit" /tmp/page.json
+          get_json "$base/wp-json/wp/v2/settings?context=edit" /tmp/settings.json
+          get_json "$base/wp-json/wp/v2/plugins?context=edit&per_page=100" /tmp/plugins.json
+          get_json "$base/wp-json/wp/v2/types?context=edit" /tmp/types.json
+
+          head_code=$(curl -sS -G -o /tmp/head.tmp -w '%{http_code}' \
+            --data-urlencode "url=$base/" \
+            "$base/wp-json/rankmath/v1/getHead" || true)
+          if [ "$head_code" = "200" ]; then mv /tmp/head.tmp /tmp/head.json; else printf '{}\n' > /tmp/head.json; fi
+
+          python3 - <<'PY'
+          import json, re, pathlib, datetime
+          def load(p, default):
+              try:
+                  return json.loads(pathlib.Path(p).read_text())
+              except Exception:
+                  return default
+          page=load('/tmp/page.json',{})
+          settings=load('/tmp/settings.json',{})
+          plugins=load('/tmp/plugins.json',[])
+          types=load('/tmp/types.json',{})
+          head=load('/tmp/head.json',{})
+          content=(page.get('content') or {}).get('raw','') if isinstance(page,dict) else ''
+          title=(page.get('title') or {}).get('raw','') if isinstance(page,dict) else ''
+          meta=page.get('meta',{}) if isinstance(page,dict) else {}
+          active=[]
+          if isinstance(plugins,list):
+              for p in plugins:
+                  if p.get('status')=='active':
+                      active.append({'plugin':p.get('plugin'),'name':p.get('name'),'version':p.get('version')})
+          # keep only safe/public-ish settings
+          safe_settings={k:settings.get(k) for k in ['title','description','url','home','show_on_front','page_on_front','page_for_posts','timezone','date_format','time_format','start_of_week','default_category','default_post_format'] if k in settings}
+          # generated Rank Math head is returned as HTML in head field
+          head_html = head.get('head','') if isinstance(head,dict) else ''
+          def m(pattern):
+              x=re.search(pattern,head_html,re.I|re.S)
+              return re.sub(r'\s+',' ',x.group(1)).strip() if x else ''
+          generated={
+              'title':m(r'<title[^>]*>(.*?)</title>'),
+              'description':m(r'<meta[^>]+name=[\"\']description[\"\'][^>]+content=[\"\'](.*?)[\"\']'),
+              'canonical':m(r'<link[^>]+rel=[\"\']canonical[\"\'][^>]+href=[\"\'](.*?)[\"\']'),
+              'robots':m(r'<meta[^>]+name=[\"\']robots[\"\'][^>]+content=[\"\'](.*?)[\"\']')
+          }
+          summary={
+              'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'homepage':{
+                  'id':page.get('id') if isinstance(page,dict) else None,
+                  'status':page.get('status') if isinstance(page,dict) else None,
+                  'modified':page.get('modified') if isinstance(page,dict) else None,
+                  'title_raw':title,
+                  'content_length':len(content),
+                  'h1_matches':re.findall(r'<h1[^>]*>(.*?)</h1>',content,re.I|re.S),
+                  'rank_math_meta':{k:v for k,v in meta.items() if str(k).startswith('rank_math')},
+                  'meta_keys':sorted(meta.keys()) if isinstance(meta,dict) else [],
+                  'generated_head':generated
+              },
+              'settings':safe_settings,
+              'active_plugins':active,
+              'post_types':sorted(types.keys()) if isinstance(types,dict) else []
+          }
+          pathlib.Path('.ops/audit-v2.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+          backup={
+              'id':page.get('id') if isinstance(page,dict) else None,
+              'title':page.get('title') if isinstance(page,dict) else None,
+              'content':page.get('content') if isinstance(page,dict) else None,
+              'excerpt':page.get('excerpt') if isinstance(page,dict) else None,
+              'meta':meta,
+              'modified':page.get('modified') if isinstance(page,dict) else None
+          }
+          pathlib.Path('.ops/homepage-6-before-seo.json').write_text(json.dumps(backup,ensure_ascii=False,indent=2)+'\n')
+          PY
+
+      - name: Commit audit output
+        shell: bash
+        run: |
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/audit-v2.json .ops/homepage-6-before-seo.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: save WordPress SEO audit and homepage backup'
+          git pull --rebase origin main
+          git push
