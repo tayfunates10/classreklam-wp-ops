@@ -1,4 +1,4 @@
-name: Blog Taxonomy Inventory via Query REST
+name: Fix Blog Taxonomy via Query REST
 
 on:
   push:
@@ -10,12 +10,12 @@ permissions:
   contents: write
 
 jobs:
-  audit:
+  fix:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - name: Collect blog taxonomy inventory
+      - name: Replace Uncategorized with meaningful categories
         env:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
@@ -24,17 +24,17 @@ jobs:
         run: |
           set +e
           mkdir -p .ops
-          python3 scripts/blog_inventory_queryrest.py > /tmp/out 2>/tmp/err
+          python3 scripts/fix_blog_taxonomy_queryrest.py > /tmp/out 2>/tmp/err
           rc=$?
           python3 - "$rc" <<'PY'
           import json,pathlib,sys
           rc=int(sys.argv[1]); out=pathlib.Path('/tmp/out').read_text(errors='replace').strip(); err=pathlib.Path('/tmp/err').read_text(errors='replace').strip()
-          payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-12000:]}
+          payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-16000:]}
           if rc==0:
-              try: payload['inventory']=json.loads(out)
-              except Exception: payload['stdout']=out[-25000:]
-          else: payload['stdout']=out[-25000:]
-          pathlib.Path('.ops/blog-taxonomy-inventory.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+              try: payload['result']=json.loads(out)
+              except Exception: payload['stdout']=out[-30000:]
+          else: payload['stdout']=out[-30000:]
+          pathlib.Path('.ops/blog-taxonomy-fix.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
           PY
           exit 0
       - name: Save result
@@ -43,10 +43,8 @@ jobs:
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/blog-taxonomy-inventory.json
+          git add .ops/blog-taxonomy-fix.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record blog taxonomy inventory'
+          git commit -m 'chore: record blog taxonomy cleanup result'
           git pull --rebase origin main
           git push
-
-# WAF-safe rerun 2026-08-10T15:16:00+03:00
