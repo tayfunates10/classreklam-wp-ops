@@ -1,0 +1,5 @@
+{
+  "status": "failed",
+  "exit_code": 1,
+  "stderr": "Traceback (most recent call last):\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/move_service_links_header_to_footer.py\", line 150, in <module>\n    if set(auth_paths)!=TARGET_PATHS: raise RuntimeError(f'footer authoritative verification failed: {auth_paths}')\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: footer authoritative verification failed: []"
+}
