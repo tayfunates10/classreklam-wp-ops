@@ -1,0 +1,27 @@
+{
+  "bypass_curl_exit": 0,
+  "normal_curl_exit": 0,
+  "purge_meta": "200|text/html",
+  "bypass": {
+    "old_phrase_present": false,
+    "new_heading_present": false,
+    "waf_challenge": true,
+    "title_sample": "One moment, please..."
+  },
+  "normal": {
+    "old_phrase_present": false,
+    "new_heading_present": false,
+    "waf_challenge": true,
+    "title_sample": "One moment, please..."
+  },
+  "bypass_cache_headers": [
+    "server: openresty/1.31.1.1",
+    "cache-control: private, no-cache, no-store, must-revalidate, max-age=0"
+  ],
+  "normal_cache_headers": [
+    "server: openresty/1.31.1.1",
+    "cache-control: private, no-cache, no-store, must-revalidate, max-age=0"
+  ],
+  "purge_body_sample": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"> <script> (function(){ setTimeout(function(){ window.location.reload(); }, 5000); }()) </script> <link rel=\"icon\" href=\"data:,\"> <title>One moment, please...</title> <style> .spinner { -webkit-animation: spin 1s ease-out; animation: spin 1s ease-out; } @keyframes spin { 0% { -webkit-transform: rotate(0deg); -moz-transform: rotate(0deg); -ms-transform: rotate(0deg); -",
+  "purge_error": ""
+}

@@ -1,28 +1,6 @@
 {
-  "status": "success",
-  "exit_code": 0,
-  "stderr": "",
-  "result": {
-    "status": "success",
-    "plugins": [
-      {
-        "plugin": "kadence-blocks/kadence-blocks",
-        "status": "active",
-        "name": "Kadence Blocks — Page Builder Toolkit for Gutenberg Editor",
-        "version": "3.7.6"
-      },
-      {
-        "plugin": "seo-by-rank-math/rank-math",
-        "status": "active",
-        "name": "Rank Math SEO",
-        "version": "1.0.272"
-      },
-      {
-        "plugin": "insert-headers-and-footers/ihaf",
-        "status": "active",
-        "name": "WPCode Lite",
-        "version": "2.3.6"
-      }
-    ]
-  }
+  "status": "failed",
+  "exit_code": 1,
+  "stderr": "Traceback (most recent call last):\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/inspect_active_plugins_queryrest.py\", line 15, in get\n    with urllib.request.urlopen(req,timeout=45) as r:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 403: Forbidden\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/inspect_active_plugins_queryrest.py\", line 22, in <module>\n    code,plugins=get('/wp/v2/plugins',{'status':'active','per_page':100,'_fields':'plugin,status,name,version'})\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/inspect_active_plugins_queryrest.py\", line 21, in get\n    raise RuntimeError(f'HTTP {e.code}: {raw[:1000]}')\nRuntimeError: HTTP 403: {\n\t\"message\": \"Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted\"\n}",
+  "stdout": ""
 }
