@@ -1,0 +1,443 @@
+{
+  "checked_at": "2026-08-10T10:42:43Z",
+  "site_url": "https://classreklamtabela.com.tr",
+  "settings": {
+    "title": "Class Reklam | Edremit Tabela ve Reklam",
+    "description": "Edremit tabela, reklam, folyo, baskı ve araç giydirme çözümleri",
+    "url": "https://classreklamtabela.com.tr",
+    "home": "",
+    "timezone": "",
+    "show_on_front": "page",
+    "page_on_front": 6,
+    "page_for_posts": 14
+  },
+  "pages": [
+    {
+      "id": 690,
+      "modified": "2026-06-14T12:21:23",
+      "slug": "yasal-bilgiler",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/yasal-bilgiler/",
+      "title": {
+        "raw": "Yasal Bilgiler",
+        "rendered": "Yasal Bilgiler"
+      },
+      "parent": 0,
+      "template": ""
+    },
+    {
+      "id": 683,
+      "modified": "2026-06-14T11:41:22",
+      "slug": "referans-isler",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/referans-isler/",
+      "title": {
+        "raw": "Referans İşler",
+        "rendered": "Referans İşler"
+      },
+      "parent": 0,
+      "template": ""
+    },
+    {
+      "id": 18,
+      "modified": "2026-06-15T06:13:07",
+      "slug": "iletisim",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/iletisim/",
+      "title": {
+        "raw": "İletişim",
+        "rendered": "İletişim"
+      },
+      "parent": 0,
+      "template": ""
+    },
+    {
+      "id": 14,
+      "modified": "2026-05-13T23:40:55",
+      "slug": "blog",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/blog/",
+      "title": {
+        "raw": "Blog",
+        "rendered": "Blog"
+      },
+      "parent": 0,
+      "template": ""
+    },
+    {
+      "id": 12,
+      "modified": "2026-06-12T10:13:11",
+      "slug": "galeri",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/galeri/",
+      "title": {
+        "raw": "Galeri",
+        "rendered": "Galeri"
+      },
+      "parent": 0,
+      "template": ""
+    },
+    {
+      "id": 10,
+      "modified": "2026-06-12T09:33:12",
+      "slug": "hizmetlerimiz",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+      "title": {
+        "raw": "Hizmetlerimiz",
+        "rendered": "Hizmetlerimiz"
+      },
+      "parent": 0,
+      "template": ""
+    },
+    {
+      "id": 8,
+      "modified": "2026-06-12T09:58:28",
+      "slug": "hakkimizda",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/hakkimizda/",
+      "title": {
+        "raw": "Hakkımızda",
+        "rendered": "Hakkımızda"
+      },
+      "parent": 0,
+      "template": ""
+    },
+    {
+      "id": 6,
+      "modified": "2026-06-22T14:59:42",
+      "slug": "ana-sayfa",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/",
+      "title": {
+        "raw": "Anasayfa",
+        "rendered": "Anasayfa"
+      },
+      "parent": 0,
+      "template": ""
+    }
+  ],
+  "posts": [
+    {
+      "id": 813,
+      "modified": "2026-06-15T17:04:40",
+      "slug": "reklam-uygulamalarinda-dogru-malzeme-secimi",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/reklam-uygulamalarinda-dogru-malzeme-secimi/",
+      "title": {
+        "raw": "Reklam Uygulamalarında Doğru Malzeme Seçimi",
+        "rendered": "Reklam Uygulamalarında Doğru Malzeme Seçimi"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 810,
+      "modified": "2026-06-15T16:59:57",
+      "slug": "tabela-montajinda-profesyonel-uygulamanin-onemi",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/tabela-montajinda-profesyonel-uygulamanin-onemi/",
+      "title": {
+        "raw": "Tabela Montajında Profesyonel Uygulamanın Önemi",
+        "rendered": "Tabela Montajında Profesyonel Uygulamanın Önemi"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 807,
+      "modified": "2026-06-15T16:58:35",
+      "slug": "dis-mekan-reklam-baskilarinda-kalite-neden-onemli",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/dis-mekan-reklam-baskilarinda-kalite-neden-onemli/",
+      "title": {
+        "raw": "Dış Mekân Reklam Baskılarında Kalite Neden Önemli?",
+        "rendered": "Dış Mekân Reklam Baskılarında Kalite Neden Önemli?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 805,
+      "modified": "2026-06-15T16:57:46",
+      "slug": "arac-giydirme-ile-firma-bilinirligi-nasil-artar",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/arac-giydirme-ile-firma-bilinirligi-nasil-artar/",
+      "title": {
+        "raw": "Araç Giydirme ile Firma Bilinirliği Nasıl Artar?",
+        "rendered": "Araç Giydirme ile Firma Bilinirliği Nasıl Artar?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 801,
+      "modified": "2026-06-15T17:10:17",
+      "slug": "edremitte-tabela-yaptirmak-isteyenlere-oneriler",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/edremitte-tabela-yaptirmak-isteyenlere-oneriler/",
+      "title": {
+        "raw": "Edremit’te Tabela Yaptırmak İsteyenlere Öneriler",
+        "rendered": "Edremit’te Tabela Yaptırmak İsteyenlere Öneriler"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 798,
+      "modified": "2026-06-15T16:46:57",
+      "slug": "santiye-tabelasi-ve-insaat-alani-reklamlari",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/santiye-tabelasi-ve-insaat-alani-reklamlari/",
+      "title": {
+        "raw": "Şantiye Tabelası ve İnşaat Alanı Reklamları",
+        "rendered": "Şantiye Tabelası ve İnşaat Alanı Reklamları"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 795,
+      "modified": "2026-06-15T16:42:22",
+      "slug": "led-tabela-ve-neon-tabela-arasindaki-farklar",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/led-tabela-ve-neon-tabela-arasindaki-farklar/",
+      "title": {
+        "raw": "LED Tabela ve Neon Tabela Arasındaki Farklar",
+        "rendered": "LED Tabela ve Neon Tabela Arasındaki Farklar"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 792,
+      "modified": "2026-06-15T16:28:57",
+      "slug": "yonlendirme-tabelalari-nerelerde-kullanilir",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/yonlendirme-tabelalari-nerelerde-kullanilir/",
+      "title": {
+        "raw": "Yönlendirme Tabelaları Nerelerde Kullanılır?",
+        "rendered": "Yönlendirme Tabelaları Nerelerde Kullanılır?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 789,
+      "modified": "2026-06-15T16:25:29",
+      "slug": "kompozit-cephe-kaplama-ile-kurumsal-gorunum",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/kompozit-cephe-kaplama-ile-kurumsal-gorunum/",
+      "title": {
+        "raw": "Kompozit Cephe Kaplama ile Kurumsal Görünüm",
+        "rendered": "Kompozit Cephe Kaplama ile Kurumsal Görünüm"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 786,
+      "modified": "2026-06-15T16:22:42",
+      "slug": "magaza-tabelasi-markaniz-icin-neden-onemli",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/magaza-tabelasi-markaniz-icin-neden-onemli/",
+      "title": {
+        "raw": "Mağaza Tabelası Markanız İçin Neden Önemli?",
+        "rendered": "Mağaza Tabelası Markanız İçin Neden Önemli?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 783,
+      "modified": "2026-06-15T16:19:13",
+      "slug": "one-way-vision-cam-kaplama-avantajlari",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/one-way-vision-cam-kaplama-avantajlari/",
+      "title": {
+        "raw": "One Way Vision Cam Kaplama Avantajları",
+        "rendered": "One Way Vision Cam Kaplama Avantajları"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 780,
+      "modified": "2026-06-15T16:16:28",
+      "slug": "folyo-kesim-ve-uygulama-nedir",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/folyo-kesim-ve-uygulama-nedir/",
+      "title": {
+        "raw": "Folyo Kesim ve Uygulama Nedir?",
+        "rendered": "Folyo Kesim ve Uygulama Nedir?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 777,
+      "modified": "2026-06-15T16:13:22",
+      "slug": "totem-tabela-ile-uzaktan-gorunurluk-saglayin",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/totem-tabela-ile-uzaktan-gorunurluk-saglayin/",
+      "title": {
+        "raw": "Totem Tabela ile Uzaktan Görünürlük Sağlayın",
+        "rendered": "Totem Tabela ile Uzaktan Görünürlük Sağlayın"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 774,
+      "modified": "2026-06-15T16:09:23",
+      "slug": "branda-baski-hangi-alanlarda-kullanilir",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/branda-baski-hangi-alanlarda-kullanilir/",
+      "title": {
+        "raw": "Branda Baskı Hangi Alanlarda Kullanılır?",
+        "rendered": "Branda Baskı Hangi Alanlarda Kullanılır?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 771,
+      "modified": "2026-06-15T16:06:34",
+      "slug": "kutu-harf-tabela-neden-tercih-edilir",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/kutu-harf-tabela-neden-tercih-edilir/",
+      "title": {
+        "raw": "Kutu Harf Tabela Neden Tercih Edilir?",
+        "rendered": "Kutu Harf Tabela Neden Tercih Edilir?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 768,
+      "modified": "2026-06-15T16:03:26",
+      "slug": "vitrin-kaplama-ile-magazanizi-one-cikarin",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/vitrin-kaplama-ile-magazanizi-one-cikarin/",
+      "title": {
+        "raw": "Vitrin Kaplama ile Mağazanızı Öne Çıkarın",
+        "rendered": "Vitrin Kaplama ile Mağazanızı Öne Çıkarın"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 765,
+      "modified": "2026-06-15T15:57:37",
+      "slug": "dijital-baski-nerelerde-kullanilir",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/dijital-baski-nerelerde-kullanilir/",
+      "title": {
+        "raw": "Dijital Baskı Nerelerde Kullanılır?",
+        "rendered": "Dijital Baskı Nerelerde Kullanılır?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 762,
+      "modified": "2026-06-15T15:47:59",
+      "slug": "arac-kaplama-ile-mobil-reklamin-gucu",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/arac-kaplama-ile-mobil-reklamin-gucu/",
+      "title": {
+        "raw": "Araç Kaplama ile Mobil Reklamın Gücü",
+        "rendered": "Araç Kaplama ile Mobil Reklamın Gücü"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 759,
+      "modified": "2026-06-15T15:41:54",
+      "slug": "isikli-tabela-isletmenize-ne-kazandirir",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/isikli-tabela-isletmenize-ne-kazandirir/",
+      "title": {
+        "raw": "Işıklı Tabela İşletmenize Ne Kazandırır?",
+        "rendered": "Işıklı Tabela İşletmenize Ne Kazandırır?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    },
+    {
+      "id": 755,
+      "modified": "2026-06-15T15:38:58",
+      "slug": "tabela-secerken-nelere-dikkat-edilmeli",
+      "status": "publish",
+      "link": "https://classreklamtabela.com.tr/tabela-secerken-nelere-dikkat-edilmeli/",
+      "title": {
+        "raw": "Tabela Seçerken Nelere Dikkat Edilmeli?",
+        "rendered": "Tabela Seçerken Nelere Dikkat Edilmeli?"
+      },
+      "categories": [
+        1
+      ],
+      "tags": []
+    }
+  ],
+  "plugin_endpoint_http": "200",
+  "plugins": [
+    {
+      "plugin": "kadence-blocks/kadence-blocks",
+      "status": "active",
+      "name": "Kadence Blocks — Page Builder Toolkit for Gutenberg Editor",
+      "version": "3.7.6"
+    },
+    {
+      "plugin": "seo-by-rank-math/rank-math",
+      "status": "active",
+      "name": "Rank Math SEO",
+      "version": "1.0.272"
+    },
+    {
+      "plugin": "insert-headers-and-footers/ihaf",
+      "status": "active",
+      "name": "WPCode Lite",
+      "version": "2.3.6"
+    }
+  ]
+}
