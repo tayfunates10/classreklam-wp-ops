@@ -1,0 +1,55 @@
+{
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "curl_exit": 0,
+    "html_chars": 411991,
+    "waf": false,
+    "header_found": true,
+    "header_hits": [],
+    "header_count": 0,
+    "footer_found": true,
+    "footer_hits": [
+      {
+        "text": "Edremit Tabela",
+        "href": "/edremit-tabela/",
+        "path": "/edremit-tabela/"
+      },
+      {
+        "text": "Totem Tabela",
+        "href": "/totem-tabela/",
+        "path": "/totem-tabela/"
+      },
+      {
+        "text": "Dijital Baskı",
+        "href": "/dijital-baski/",
+        "path": "/dijital-baski/"
+      },
+      {
+        "text": "Araç Giydirme",
+        "href": "/arac-giydirme/",
+        "path": "/arac-giydirme/"
+      },
+      {
+        "text": "Cam Giydirme",
+        "href": "/cam-giydirme/",
+        "path": "/cam-giydirme/"
+      },
+      {
+        "text": "Kutu Harf Tabela",
+        "href": "/kutu-harf-tabela/",
+        "path": "/kutu-harf-tabela/"
+      }
+    ],
+    "footer_count": 6,
+    "footer_paths": [
+      "/arac-giydirme/",
+      "/cam-giydirme/",
+      "/dijital-baski/",
+      "/edremit-tabela/",
+      "/kutu-harf-tabela/",
+      "/totem-tabela/"
+    ],
+    "success": true
+  }
+}
