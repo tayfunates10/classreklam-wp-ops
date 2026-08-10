@@ -39,7 +39,7 @@ jobs:
           pathlib.Path('.ops/solutions-animation-v3.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
           PY
           exit 0
-      - name: Verify live HTML
+      - name: Verify live HTML and inspect cache headers
         env:
           WP_URL: ${{ secrets.WP_URL }}
         shell: bash
@@ -48,23 +48,49 @@ jobs:
           python3 - <<'PY'
           import json,os,pathlib,subprocess,time
           base=os.environ['WP_URL'].rstrip('/')
-          url=base+'/?cranimv3='+str(int(time.time()))
-          cp=subprocess.run(['curl','-sS','-L','--max-time','30','-A','Mozilla/5.0 Chrome/138.0.0.0 Safari/537.36',url],capture_output=True,text=True)
-          html=cp.stdout
-          pos=html.rfind('cr-solutions-animation-v2')
-          scope=html[pos:] if pos >= 0 else ''
-          payload={
-            'curl_exit':cp.returncode,
-            'waf_challenge':'One moment, please' in html or 'Imunify360' in html,
-            'override_present':pos >= 0,
-            'base_animation_name_none':'animation-name: none !important' in scope,
-            'base_animation_duration_zero':'animation-duration: 0s !important' in scope,
-            'breathe_keyframe_present':'@keyframes cr-solutions-white-breathe' in scope,
-            'alternate_loop_present':'animation-direction: alternate !important' in scope,
-            'minimum_opacity_nonzero':'opacity: 0.035 !important' in scope,
-            'overlay_text_present':'data-cr-text="Çözümleri"' in html,
-          }
-          pathlib.Path('.ops/solutions-animation-v3-live.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          stamp=str(int(time.time()))
+          def curl(url,extra=None):
+              cmd=['curl','-sS','-L','--max-time','30','-D','-','-A','Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/138.0.0.0 Safari/537.36']
+              if extra: cmd += extra
+              cmd += [url]
+              cp=subprocess.run(cmd,capture_output=True,text=True)
+              raw=cp.stdout
+              split='\r\n\r\n' if '\r\n\r\n' in raw else '\n\n'
+              parts=raw.split(split)
+              headers='\n\n'.join(parts[:-1]) if len(parts)>1 else ''
+              body=parts[-1] if len(parts)>1 else raw
+              return cp.returncode,headers,body
+          rc1,h1,html1=curl(base+'/?cranimv3='+stamp)
+          rc2,h2,html2=curl(base+'/?cranimv3nc='+stamp,['-H','Cache-Control: no-cache, no-store, max-age=0','-H','Pragma: no-cache'])
+          def inspect(html):
+              pos=html.rfind('cr-solutions-animation-v2')
+              scope=html[pos:] if pos >= 0 else ''
+              return {
+                'override_present':pos >= 0,
+                'base_animation_name_none':'animation-name: none !important' in scope,
+                'base_animation_duration_zero':'animation-duration: 0s !important' in scope,
+                'breathe_keyframe_present':'@keyframes cr-solutions-white-breathe' in scope,
+                'alternate_loop_present':'animation-direction: alternate !important' in scope,
+                'minimum_opacity_nonzero':'opacity: 0.035 !important' in scope,
+                'overlay_text_present':'data-cr-text="Çözümleri"' in html,
+              }
+          pathlib.Path('.ops/solutions-animation-v3-live.json').write_text(json.dumps({
+            'normal_curl_exit':rc1,
+            'nocache_curl_exit':rc2,
+            'normal':inspect(html1),
+            'nocache':inspect(html2),
+            'normal_waf':'One moment, please' in html1 or 'Imunify360' in html1,
+            'nocache_waf':'One moment, please' in html2 or 'Imunify360' in html2,
+          },ensure_ascii=False,indent=2)+'\n')
+          interesting=[]
+          for label,h in [('normal',h1),('nocache',h2)]:
+              lines=[]
+              for line in h.splitlines():
+                  low=line.lower()
+                  if low.startswith(('server:','x-','cf-','age:','cache-control:','via:','vary:','date:','last-modified:','etag:')):
+                      lines.append(line[:500])
+              interesting.append({'mode':label,'headers':lines})
+          pathlib.Path('.ops/solutions-cache-headers.json').write_text(json.dumps(interesting,ensure_ascii=False,indent=2)+'\n')
           PY
           exit 0
       - name: Save result
@@ -73,8 +99,8 @@ jobs:
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/solutions-animation-v3.json .ops/solutions-animation-v3-live.json
+          git add .ops/solutions-animation-v3.json .ops/solutions-animation-v3-live.json .ops/solutions-cache-headers.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record no-flash solutions animation v3 result'
+          git commit -m 'chore: record hero animation cache diagnostics'
           git pull --rebase origin main
           git push
