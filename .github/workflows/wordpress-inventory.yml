@@ -1,0 +1,79 @@
+name: WordPress Inventory
+
+on:
+  push:
+    paths:
+      - '.github/workflows/wordpress-inventory.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect non-sensitive WordPress inventory
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          base="${WP_URL%/}"
+          auth=(--user "${WP_USER}:${WP_APP_PASSWORD}" --header 'Accept: application/json')
+
+          curl --fail --silent --show-error "${auth[@]}" "${base}/wp-json/wp/v2/settings" > /tmp/settings.json
+          curl --fail --silent --show-error "${auth[@]}" "${base}/wp-json/wp/v2/pages?context=edit&per_page=100&_fields=id,slug,status,link,parent,template,modified,title" > /tmp/pages.json
+          curl --fail --silent --show-error "${auth[@]}" "${base}/wp-json/wp/v2/posts?context=edit&per_page=100&_fields=id,slug,status,link,modified,title,categories,tags" > /tmp/posts.json
+
+          plugins='[]'
+          plugin_http="$(curl --silent --show-error --output /tmp/plugins.json --write-out '%{http_code}' "${auth[@]}" "${base}/wp-json/wp/v2/plugins?per_page=100" || true)"
+          if [ "$plugin_http" = "200" ]; then
+            plugins="$(jq '[.[] | {plugin,status,name:(.name // ""),version:(.version // "")} ]' /tmp/plugins.json)"
+          fi
+
+          jq -n \
+            --arg checked_at "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --arg site_url "$base" \
+            --arg plugin_endpoint_http "$plugin_http" \
+            --slurpfile settings /tmp/settings.json \
+            --slurpfile pages /tmp/pages.json \
+            --slurpfile posts /tmp/posts.json \
+            --argjson plugins "$plugins" \
+            '{
+              checked_at:$checked_at,
+              site_url:$site_url,
+              settings:{
+                title:($settings[0].title // ""),
+                description:($settings[0].description // ""),
+                url:($settings[0].url // ""),
+                home:($settings[0].home // ""),
+                timezone:($settings[0].timezone // ""),
+                show_on_front:($settings[0].show_on_front // ""),
+                page_on_front:($settings[0].page_on_front // 0),
+                page_for_posts:($settings[0].page_for_posts // 0)
+              },
+              pages:$pages[0],
+              posts:$posts[0],
+              plugin_endpoint_http:$plugin_endpoint_http,
+              plugins:$plugins
+            }' > .ops/wordpress-inventory.json
+
+      - name: Save inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/wordpress-inventory.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'chore: refresh WordPress inventory'
+          git push
