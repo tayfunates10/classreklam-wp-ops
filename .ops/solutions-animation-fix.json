@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "status": "success",
+    "modified": "2026-08-10T12:53:28",
+    "checks": {
+      "v2_marker_count": 1,
+      "v2_keyframe_present": true,
+      "v2_animation_present": true,
+      "pseudo_disabled": true,
+      "reduced_motion_present": true
+    }
+  }
+}
