@@ -1,0 +1,120 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "status": "success",
+    "categories": {
+      "tabela-rehberi": 15,
+      "dijital-baski-rehberi": 16,
+      "arac-giydirme-rehberi": 17,
+      "folyo-cam-giydirme": 18,
+      "reklam-rehberi": 19
+    },
+    "posts_total": 20,
+    "posts_updated": 20,
+    "assignments": [
+      {
+        "id": 813,
+        "slug": "reklam-uygulamalarinda-dogru-malzeme-secimi",
+        "category": "reklam-rehberi"
+      },
+      {
+        "id": 810,
+        "slug": "tabela-montajinda-profesyonel-uygulamanin-onemi",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 807,
+        "slug": "dis-mekan-reklam-baskilarinda-kalite-neden-onemli",
+        "category": "dijital-baski-rehberi"
+      },
+      {
+        "id": 805,
+        "slug": "arac-giydirme-ile-firma-bilinirligi-nasil-artar",
+        "category": "arac-giydirme-rehberi"
+      },
+      {
+        "id": 801,
+        "slug": "edremitte-tabela-yaptirmak-isteyenlere-oneriler",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 798,
+        "slug": "santiye-tabelasi-ve-insaat-alani-reklamlari",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 795,
+        "slug": "led-tabela-ve-neon-tabela-arasindaki-farklar",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 792,
+        "slug": "yonlendirme-tabelalari-nerelerde-kullanilir",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 789,
+        "slug": "kompozit-cephe-kaplama-ile-kurumsal-gorunum",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 786,
+        "slug": "magaza-tabelasi-markaniz-icin-neden-onemli",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 783,
+        "slug": "one-way-vision-cam-kaplama-avantajlari",
+        "category": "folyo-cam-giydirme"
+      },
+      {
+        "id": 780,
+        "slug": "folyo-kesim-ve-uygulama-nedir",
+        "category": "folyo-cam-giydirme"
+      },
+      {
+        "id": 777,
+        "slug": "totem-tabela-ile-uzaktan-gorunurluk-saglayin",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 774,
+        "slug": "branda-baski-hangi-alanlarda-kullanilir",
+        "category": "dijital-baski-rehberi"
+      },
+      {
+        "id": 771,
+        "slug": "kutu-harf-tabela-neden-tercih-edilir",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 768,
+        "slug": "vitrin-kaplama-ile-magazanizi-one-cikarin",
+        "category": "folyo-cam-giydirme"
+      },
+      {
+        "id": 765,
+        "slug": "dijital-baski-nerelerde-kullanilir",
+        "category": "dijital-baski-rehberi"
+      },
+      {
+        "id": 762,
+        "slug": "arac-kaplama-ile-mobil-reklamin-gucu",
+        "category": "arac-giydirme-rehberi"
+      },
+      {
+        "id": 759,
+        "slug": "isikli-tabela-isletmenize-ne-kazandirir",
+        "category": "tabela-rehberi"
+      },
+      {
+        "id": 755,
+        "slug": "tabela-secerken-nelere-dikkat-edilmeli",
+        "category": "tabela-rehberi"
+      }
+    ],
+    "uncategorized_deleted": true
+  }
+}
