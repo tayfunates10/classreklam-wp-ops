@@ -4,237 +4,361 @@
       "path": "/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Anasayfa - Class Reklam | Edremit Tabela ve ReklamToggle Menu",
-      "description": "Class Reklam Edremit Balıkesir’de tabela, kutu harf, totem, araç kaplama, cam folyo ve billboard reklam çözümleri sunar.",
-      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
-      "canonical": [
-        "https://classreklamtabela.com.tr/"
-      ],
-      "h1_count": 1,
-      "h1": [
-        "Baskı, Tabela ve Folyo Çözümlerinde Profesyonel Hizmet"
-      ],
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 99
+      "internal_link_count": 0
     },
     {
       "path": "/iletisim/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/iletisim/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "İletişim - Class Reklam | Edremit Tabela ve ReklamToggle Menu",
+      "title": "One moment, please...Loader",
       "description": "",
-      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
-      "canonical": [
-        "https://classreklamtabela.com.tr/iletisim/"
-      ],
+      "robots": "",
+      "canonical": [],
       "h1_count": 0,
       "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 29
+      "internal_link_count": 0
+    },
+    {
+      "path": "/hizmetlerimiz/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/hakkimizda/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/hakkimizda/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/galeri/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/galeri/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/blog/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/blog/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/edremit-tabela/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/edremit-tabela/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/totem-tabela/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/totem-tabela/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/dijital-baski/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/dijital-baski/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/arac-giydirme/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/arac-giydirme/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/cam-giydirme/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/cam-giydirme/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
+    },
+    {
+      "path": "/kutu-harf-tabela/",
+      "http": "200",
+      "final_url": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
+      "content_type": "text/html",
+      "marker": "html",
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
+      "duplicate_h1": false,
+      "schema_types": [],
+      "internal_link_count": 0
     },
     {
       "path": "/reklam-uygulamalarinda-dogru-malzeme-secimi/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/reklam-uygulamalarinda-dogru-malzeme-secimi/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Reklam Uygulamalarında Doğru Malzeme SeçimiToggle MenuPreviousContinueContinueContinueContinueContinueContinue",
-      "description": "Tabela, baskı, folyo ve araç kaplama işlerinde doğru malzeme seçimi uzun ömürlü ve kaliteli sonuç sağlar.",
-      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
-      "canonical": [
-        "https://classreklamtabela.com.tr/reklam-uygulamalarinda-dogru-malzeme-secimi/"
-      ],
-      "h1_count": 1,
-      "h1": [
-        "Reklam Uygulamalarında Doğru Malzeme Seçimi"
-      ],
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 57
+      "internal_link_count": 0
     },
     {
       "path": "/edremitte-tabela-yaptirmak-isteyenlere-oneriler/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/edremitte-tabela-yaptirmak-isteyenlere-oneriler/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Araç Giydirme ile Firma Bilinirliği Nasıl Artar?Toggle MenuPreviousContinueContinueContinueContinueContinueContinueContinue",
-      "description": "Araç giydirme ile firmanız trafikte reklam yapar. Kısmi ve komple araç kaplama çözümleri için Class Reklam’a ulaşın.",
-      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
-      "canonical": [
-        "https://classreklamtabela.com.tr/edremitte-tabela-yaptirmak-isteyenlere-oneriler/"
-      ],
-      "h1_count": 1,
-      "h1": [
-        "Edremit’te Tabela Yaptırmak İsteyenlere Öneriler"
-      ],
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 57
+      "internal_link_count": 0
     },
     {
       "path": "/arac-giydirme-ile-firma-bilinirligi-nasil-artar/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/arac-giydirme-ile-firma-bilinirligi-nasil-artar/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Araç Giydirme ile Firma Bilinirliği Nasıl Artar?Toggle MenuPreviousContinueContinueContinueContinueContinueContinueContinue",
-      "description": "Araç giydirme ile firmanız trafikte reklam yapar. Kısmi ve komple araç kaplama çözümleri için Class Reklam’a ulaşın.",
-      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
-      "canonical": [
-        "https://classreklamtabela.com.tr/arac-giydirme-ile-firma-bilinirligi-nasil-artar/"
-      ],
-      "h1_count": 1,
-      "h1": [
-        "Araç Giydirme ile Firma Bilinirliği Nasıl Artar?"
-      ],
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 59
+      "internal_link_count": 0
     },
     {
       "path": "/folyo-kesim-ve-uygulama-nedir/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/folyo-kesim-ve-uygulama-nedir/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Folyo Kesim ve Uygulama Nedir?Toggle MenuPreviousContinueContinueContinueContinueContinueContinueContinue",
-      "description": "Folyo kesim; cam, araç, tabela ve vitrinlerde kullanılan pratik bir reklam uygulamasıdır. Profesyonel folyo işleri için ulaşın.",
-      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
-      "canonical": [
-        "https://classreklamtabela.com.tr/folyo-kesim-ve-uygulama-nedir/"
-      ],
-      "h1_count": 1,
-      "h1": [
-        "Folyo Kesim ve Uygulama Nedir?"
-      ],
+      "title": "One moment, please...Loader",
+      "description": "",
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 57
+      "internal_link_count": 0
     },
     {
       "path": "/sample-page/",
-      "http": "404",
+      "http": "200",
       "final_url": "https://classreklamtabela.com.tr/sample-page/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Page Not Found - Class Reklam | Edremit Tabela ve ReklamToggle MenuSearch",
+      "title": "One moment, please...Loader",
       "description": "",
-      "robots": "follow, noindex",
+      "robots": "",
       "canonical": [],
-      "h1_count": 1,
-      "h1": [
-        "Oops! That page can’t be found."
-      ],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 29
+      "internal_link_count": 0
     },
     {
       "path": "/adasda/",
-      "http": "404",
+      "http": "200",
       "final_url": "https://classreklamtabela.com.tr/adasda/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Page Not Found - Class Reklam | Edremit Tabela ve ReklamToggle MenuSearch",
+      "title": "One moment, please...Loader",
       "description": "",
-      "robots": "follow, noindex",
+      "robots": "",
       "canonical": [],
-      "h1_count": 1,
-      "h1": [
-        "Oops! That page can’t be found."
-      ],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 29
+      "internal_link_count": 0
     },
     {
       "path": "/asdasda/",
-      "http": "404",
+      "http": "200",
       "final_url": "https://classreklamtabela.com.tr/asdasda/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Page Not Found - Class Reklam | Edremit Tabela ve ReklamToggle MenuSearch",
+      "title": "One moment, please...Loader",
       "description": "",
-      "robots": "follow, noindex",
+      "robots": "",
       "canonical": [],
-      "h1_count": 1,
-      "h1": [
-        "Oops! That page can’t be found."
-      ],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 29
+      "internal_link_count": 0
     },
     {
       "path": "/category/uncategorized/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/category/uncategorized/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Uncategorized - Class Reklam | Edremit Tabela ve ReklamToggle MenuContinueContinueContinueContinueContinueContinueContinueContinueContinueContinueNext",
+      "title": "One moment, please...Loader",
       "description": "",
-      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
-      "canonical": [
-        "https://classreklamtabela.com.tr/category/uncategorized/"
-      ],
-      "h1_count": 1,
-      "h1": [
-        "Uncategorized"
-      ],
+      "robots": "",
+      "canonical": [],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 71
+      "internal_link_count": 0
     },
     {
       "path": "/author/admin/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/author/admin/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "admin - Class Reklam | Edremit Tabela ve ReklamToggle MenuSearch",
+      "title": "One moment, please...Loader",
       "description": "",
-      "robots": "follow, noindex",
+      "robots": "",
       "canonical": [],
-      "h1_count": 1,
-      "h1": [
-        "Author: admin"
-      ],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 29
+      "internal_link_count": 0
     },
     {
       "path": "/author/recep/",
       "http": "200",
       "final_url": "https://classreklamtabela.com.tr/author/recep/",
-      "content_type": "text/html; charset=UTF-8",
+      "content_type": "text/html",
       "marker": "html",
-      "title": "Recep Göktaş - Class Reklam | Edremit Tabela ve ReklamToggle MenuContinueContinueContinueContinueContinueContinueContinueContinueContinueContinueNext",
+      "title": "One moment, please...Loader",
       "description": "",
-      "robots": "follow, noindex",
+      "robots": "",
       "canonical": [],
-      "h1_count": 1,
-      "h1": [
-        "Author: Recep Göktaş"
-      ],
+      "h1_count": 0,
+      "h1": [],
       "duplicate_h1": false,
       "schema_types": [],
-      "internal_link_count": 71
+      "internal_link_count": 0
     }
   ],
   "host_variants": [
     {
       "url": "http://classreklamtabela.com.tr/",
       "http": "200",
-      "final_url": "https://classreklamtabela.com.tr/",
-      "redirects": "1",
+      "final_url": "http://classreklamtabela.com.tr/",
+      "redirects": "0",
       "curl_exit": 0
     },
     {
@@ -247,8 +371,8 @@
     {
       "url": "https://www.classreklamtabela.com.tr/",
       "http": "200",
-      "final_url": "https://classreklamtabela.com.tr/",
-      "redirects": "1",
+      "final_url": "https://www.classreklamtabela.com.tr/",
+      "redirects": "0",
       "curl_exit": 0
     }
   ]
