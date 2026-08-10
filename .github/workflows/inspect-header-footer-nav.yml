@@ -48,3 +48,5 @@ jobs:
           git commit -m 'chore: record header footer navigation inspection'
           git pull --rebase origin main
           git push
+
+# recheck after header/footer service-link mutation: 2026-08-10T17:40:00+03:00
