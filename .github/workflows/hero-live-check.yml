@@ -1,0 +1,60 @@
+name: Hero Live Cache Check
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hero-live-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check and purge homepage cache
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          base="${WP_URL%/}"
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          ts=$(date +%s)
+          curl -A "$ua" -sS -L --max-time 20 -H 'Cache-Control: no-cache, no-store, max-age=0' -H 'Pragma: no-cache' "$base/?crb=$ts" -o /tmp/bypass.html
+          b_rc=$?
+          purge=$(curl -A "$ua" -sS --max-time 15 -X PURGE -o /tmp/purge.html -w '%{http_code}' "$base/" 2>/tmp/purge.err)
+          sleep 1
+          curl -A "$ua" -sS -L --max-time 20 -H 'Cache-Control: no-cache' "$base/" -o /tmp/normal.html
+          n_rc=$?
+          BRC="$b_rc" NRC="$n_rc" PURGE="$purge" python3 - <<'PY'
+          import json,os,pathlib,re
+          def read(p):
+              x=pathlib.Path(p); return x.read_text(errors='replace') if x.exists() else ''
+          def state(s):
+              low=s.lower()
+              return {
+                'old_phrase_present':'profesyonel hizmet' in low,
+                'new_heading_present':'edremit tabela ve reklam' in low,
+                'waf_challenge':'imunify360' in low or 'one moment, please' in low,
+                'h1_sample': re.sub(r'<[^>]+>',' ',m.group(1)).strip()[:250] if (m:=re.search(r'<h1[^>]*>(.*?)</h1>',s,re.I|re.S)) else ''
+              }
+          out={'bypass_curl_exit':int(os.environ['BRC']),'normal_curl_exit':int(os.environ['NRC']),'purge_http':os.environ['PURGE'],'bypass':state(read('/tmp/bypass.html')),'normal':state(read('/tmp/normal.html')),'purge_body':re.sub(r'\s+',' ',read('/tmp/purge.html'))[:400],'purge_error':re.sub(r'\s+',' ',read('/tmp/purge.err'))[:400]}
+          pathlib.Path('.ops/hero-live-check.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+      - name: Save result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/hero-live-check.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record live hero cache check'
+          git pull --rebase origin main
+          git push
