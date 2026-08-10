@@ -10,8 +10,8 @@ MARK_END='<!-- cr-solutions-animation-v2:end -->'
 CSS='''
 <!-- cr-solutions-animation-v2:start -->
 <style id="cr-solutions-animation-v2">
-/* Single-source final override for the hero word "Çözümleri".
-   It intentionally neutralizes the older gradient/pseudo-element animation stack. */
+/* Seamless final override for the hero word "Çözümleri".
+   The animation uses alternate direction, so there is no 100% -> 0% reset frame. */
 html body section#cr-hero h1.cr-heading span.cr-heading-line2 {
   display: block !important;
   position: relative !important;
@@ -33,7 +33,7 @@ html body section#cr-hero h1.cr-heading span.cr-heading-line2 {
     0 0 5px rgba(237, 28, 36, 0.26),
     0 0 12px rgba(237, 28, 36, 0.14) !important;
 
-  animation: cr-solutions-color-v2 5.6s cubic-bezier(0.42, 0, 0.58, 1) infinite !important;
+  animation: cr-solutions-color-seamless 3.9s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate both !important;
   overflow: visible !important;
   will-change: color, -webkit-text-fill-color, text-shadow !important;
 }
@@ -47,33 +47,26 @@ html body section#cr-hero h1.cr-heading span.cr-heading-line2::after {
   background: none !important;
 }
 
-@keyframes cr-solutions-color-v2 {
-  0%, 18%, 82%, 100% {
+@keyframes cr-solutions-color-seamless {
+  0% {
     color: #ed1c24;
     -webkit-text-fill-color: #ed1c24;
     text-shadow:
       0 0 5px rgba(237, 28, 36, 0.26),
       0 0 12px rgba(237, 28, 36, 0.14);
   }
-  40% {
+  42% {
     color: #ff7378;
     -webkit-text-fill-color: #ff7378;
     text-shadow:
       0 0 5px rgba(255, 115, 120, 0.18),
       0 0 10px rgba(255, 255, 255, 0.08);
   }
-  50% {
+  100% {
     color: #ffffff;
     -webkit-text-fill-color: #ffffff;
     text-shadow:
-      0 0 5px rgba(255, 255, 255, 0.22),
-      0 0 10px rgba(255, 255, 255, 0.10);
-  }
-  60% {
-    color: #ff7378;
-    -webkit-text-fill-color: #ff7378;
-    text-shadow:
-      0 0 5px rgba(255, 115, 120, 0.18),
+      0 0 5px rgba(255, 255, 255, 0.20),
       0 0 10px rgba(255, 255, 255, 0.08);
   }
 }
@@ -116,7 +109,7 @@ def request(method,route,params=None,payload=None,retries=5):
 
 code,page=request('GET','/wp/v2/pages/6',params={'context':'edit','_fields':'id,modified,content'})
 raw=page['content']['raw']
-# Idempotent: replace any previous v2 override instead of stacking copies.
+# Idempotent: replace the previous final override instead of stacking copies.
 raw=re.sub(re.escape(MARK_START)+r'.*?'+re.escape(MARK_END), '', raw, flags=re.S)
 raw=raw.rstrip()+"\n\n"+CSS+"\n"
 code,updated=request('POST','/wp/v2/pages/6',payload={'content':raw})
@@ -125,9 +118,10 @@ if code not in (200,201): raise RuntimeError(f'homepage update failed {code}')
 code,verify=request('GET','/wp/v2/pages/6',params={'context':'edit','_fields':'id,modified,content'})
 vraw=verify['content']['raw']
 checks={
-  'v2_marker_count':vraw.count(MARK_START),
-  'v2_keyframe_present':'@keyframes cr-solutions-color-v2' in vraw,
-  'v2_animation_present':'animation: cr-solutions-color-v2 5.6s' in vraw,
+  'marker_count':vraw.count(MARK_START),
+  'seamless_keyframe_present':'@keyframes cr-solutions-color-seamless' in vraw,
+  'alternate_loop_present':'infinite alternate both' in vraw,
+  'old_v2_animation_absent':'cr-solutions-color-v2 5.6s' not in vraw,
   'pseudo_disabled':'span.cr-heading-line2::after' in vraw and 'content: none !important' in vraw,
   'reduced_motion_present':'prefers-reduced-motion: reduce' in vraw,
 }
