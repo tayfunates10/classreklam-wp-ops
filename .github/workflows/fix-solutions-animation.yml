@@ -50,16 +50,19 @@ jobs:
           cp=subprocess.run(['curl','-sS','-L','--max-time','30','-A','Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/138.0.0.0 Safari/537.36',url],capture_output=True,text=True)
           html=cp.stdout
           new_pos=html.rfind('cr-solutions-animation-v2')
+          scope=html[new_pos:] if new_pos >= 0 else ''
           old_positions=[html.rfind('cr-red-white-title-flow'),html.rfind('cr-profesyonel-renk-gecisi'),html.rfind('cr-profesyonel-beyaz-parlama'),html.rfind('cr-title-red-soft-white')]
           max_old=max(old_positions) if old_positions else -1
           payload={
             'curl_exit':cp.returncode,
             'waf_challenge':'One moment, please' in html or 'Imunify360' in html,
             'new_override_present':new_pos >= 0,
-            'crossfade_keyframe_present':'@keyframes cr-solutions-white-crossfade' in html,
+            'breathe_keyframe_present':'@keyframes cr-solutions-white-breathe' in scope,
             'overlay_text_present':'data-cr-text="Çözümleri"' in html,
-            'base_animation_disabled':'animation: none !important' in html[new_pos:] if new_pos >= 0 else False,
-            'loop_boundary_same_state':'0%   { opacity: 0; }' in html and '100% { opacity: 0; }' in html,
+            'base_animation_name_none':'animation-name: none !important' in scope,
+            'base_animation_duration_zero':'animation-duration: 0s !important' in scope,
+            'alternate_loop_present':'animation-direction: alternate !important' in scope,
+            'nonzero_minimum_opacity':'opacity: 0.035 !important' in scope,
             'new_override_after_old_rules':new_pos > max_old if new_pos >= 0 else False,
             'old_rule_positions':old_positions,
             'new_override_position':new_pos,
@@ -75,6 +78,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .ops/solutions-animation-fix.json .ops/solutions-animation-live.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record seamless overlay animation verification'
+          git commit -m 'chore: record no-flash solutions animation verification'
           git pull --rebase origin main
           git push
