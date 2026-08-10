@@ -1,6 +1,6 @@
 {
-  "status": "failed",
-  "exit_code": 1,
-  "stdout": "",
-  "stderr": "Traceback (most recent call last):\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/apply_phase2_queryrest.py\", line 47, in <module>\n    phase2.main()\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/apply_phase2_cookie.py\", line 81, in main\n    rank_meta(*m); results['meta'].append(m[0])\n    ^^^^^^^^^^^^^\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/apply_phase2_cookie.py\", line 34, in rank_meta\n    ensure(code,body,f'Rank Math meta {object_type}:{object_id}')\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/apply_phase2_cookie.py\", line 28, in ensure\n    if code not in (200,201): raise RuntimeError(f'{label}: HTTP {code} {body}')\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Rank Math meta post:801: HTTP 403 {'message': 'Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted'}"
+  "status": "success",
+  "exit_code": 0,
+  "stdout": "{\n  \"status\": \"success\",\n  \"results\": {\n    \"meta\": [\n      801,\n      18,\n      10,\n      8,\n      12,\n      14\n    ],\n    \"links\": [\n      {\n        \"post\": 801,\n        \"status\": \"linked\"\n      },\n      {\n        \"post\": 805,\n        \"status\": \"linked\"\n      },\n      {\n        \"post\": 777,\n        \"status\": \"linked\"\n      },\n      {\n        \"post\": 771,\n        \"status\": \"linked\"\n      },\n      {\n        \"post\": 774,\n        \"status\": \"linked\"\n      },\n      {\n        \"post\": 783,\n        \"status\": \"linked\"\n      },\n      {\n        \"post\": 780,\n        \"status\": \"linked\"\n      }\n    ],\n    \"category_noindex\": true,\n    \"localbusiness_schema\": \"added\"\n  }\n}",
+  "stderr": ""
 }
