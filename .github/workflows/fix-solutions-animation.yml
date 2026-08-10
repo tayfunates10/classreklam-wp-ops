@@ -56,7 +56,8 @@ jobs:
             'curl_exit':cp.returncode,
             'waf_challenge':'One moment, please' in html or 'Imunify360' in html,
             'new_override_present':new_pos >= 0,
-            'new_keyframe_present':'@keyframes cr-solutions-color-v2' in html,
+            'seamless_keyframe_present':'@keyframes cr-solutions-color-seamless' in html,
+            'alternate_loop_present':'infinite alternate both' in html,
             'new_override_after_old_rules':new_pos > max_old if new_pos >= 0 else False,
             'old_rule_positions':old_positions,
             'new_override_position':new_pos,
@@ -72,6 +73,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .ops/solutions-animation-fix.json .ops/solutions-animation-live.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record solutions animation fix and live verification'
+          git commit -m 'chore: record seamless solutions animation verification'
           git pull --rebase origin main
           git push
