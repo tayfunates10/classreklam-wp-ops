@@ -50,3 +50,5 @@ jobs:
           git commit -m 'chore: record hero heading cleanup result'
           git pull --rebase origin main
           git push
+
+# rerun after query-rest fix: 2026-08-10T15:41:00+03:00
