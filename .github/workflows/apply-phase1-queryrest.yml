@@ -1,4 +1,4 @@
-name: Apply Phase 2 via Query REST
+name: Post-change SEO Audit via Query REST
 
 on:
   push:
@@ -10,12 +10,12 @@ permissions:
   contents: write
 
 jobs:
-  apply:
+  audit:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Apply Phase 2
+      - name: Audit WordPress post-change state
         env:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
@@ -24,14 +24,19 @@ jobs:
         run: |
           set +e
           mkdir -p .ops
-          python3 scripts/apply_phase2_queryrest.py > /tmp/out 2>/tmp/err
+          python3 scripts/postchange_audit_queryrest.py > /tmp/out 2>/tmp/err
           rc=$?
           python3 - "$rc" <<'PY'
           import json,pathlib,sys
           rc=int(sys.argv[1])
           out=pathlib.Path('/tmp/out').read_text(errors='replace').strip()
           err=pathlib.Path('/tmp/err').read_text(errors='replace').strip()
-          pathlib.Path('.ops/phase2-queryrest.json').write_text(json.dumps({'status':'success' if rc==0 else 'failed','exit_code':rc,'stdout':out[-20000:],'stderr':err[-20000:]},ensure_ascii=False,indent=2)+'\n')
+          payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-12000:]}
+          if rc==0:
+              try: payload['audit']=json.loads(out)
+              except Exception: payload['stdout']=out[-20000:]
+          else: payload['stdout']=out[-20000:]
+          pathlib.Path('.ops/postchange-audit.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
           PY
           exit 0
       - name: Save result
@@ -40,10 +45,8 @@ jobs:
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/phase2-queryrest.json
+          git add .ops/postchange-audit.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record Phase 2 query-rest result'
+          git commit -m 'chore: record post-change SEO audit'
           git pull --rebase origin main
           git push
-
-# throttled rerun: 2026-08-10T15:04:00+03:00
