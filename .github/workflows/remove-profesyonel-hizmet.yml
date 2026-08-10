@@ -12,7 +12,7 @@ permissions:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
       - name: Remove phrase and re-save homepage
@@ -39,16 +39,37 @@ jobs:
           pathlib.Path('.ops/remove-profesyonel-hizmet.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
           PY
           exit 0
+      - name: Inspect active plugins
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          python3 scripts/inspect_active_plugins_queryrest.py > /tmp/plugins.out 2>/tmp/plugins.err
+          rc=$?
+          python3 - "$rc" <<'PY'
+          import json,pathlib,sys
+          rc=int(sys.argv[1]); out=pathlib.Path('/tmp/plugins.out').read_text(errors='replace').strip(); err=pathlib.Path('/tmp/plugins.err').read_text(errors='replace').strip()
+          payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-12000:]}
+          if rc==0:
+              try: payload['result']=json.loads(out)
+              except Exception: payload['stdout']=out[-12000:]
+          else: payload['stdout']=out[-12000:]
+          pathlib.Path('.ops/active-plugins.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
       - name: Save result
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/remove-profesyonel-hizmet.json
+          git add .ops/remove-profesyonel-hizmet.json .ops/active-plugins.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record hero heading cleanup result'
+          git commit -m 'chore: record hero cleanup and cache plugin inspection'
           git pull --rebase origin main
           git push
 
-# rerun after query-rest fix: 2026-08-10T15:41:00+03:00
+# cache-layer inspection rerun: 2026-08-10T15:43:00+03:00
