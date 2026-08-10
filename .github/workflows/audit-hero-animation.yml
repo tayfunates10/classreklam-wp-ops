@@ -1,0 +1,50 @@
+name: Audit Hero Animation
+
+on:
+  push:
+    paths:
+      - '.github/workflows/audit-hero-animation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit hero animation
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          python3 scripts/audit_hero_animation_queryrest.py > /tmp/out 2>/tmp/err
+          rc=$?
+          python3 - "$rc" <<'PY'
+          import json,pathlib,sys
+          rc=int(sys.argv[1]); out=pathlib.Path('/tmp/out').read_text(errors='replace').strip(); err=pathlib.Path('/tmp/err').read_text(errors='replace').strip()
+          payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-12000:]}
+          if rc==0:
+              try: payload['audit']=json.loads(out)
+              except Exception: payload['stdout']=out[-40000:]
+          else: payload['stdout']=out[-40000:]
+          pathlib.Path('.ops/hero-animation-audit.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+      - name: Save audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/hero-animation-audit.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record hero animation audit'
+          git pull --rebase origin main
+          git push
