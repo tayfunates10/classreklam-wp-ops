@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 import importlib.util, json, os, urllib.error, urllib.request
 
+# apply_phase1.py also supports Basic Auth. During cookie-session execution those
+# credentials are intentionally unused, but the module reads them at import time.
+# Safe placeholders keep the import side-effect free; request() is replaced below
+# before phase1.main() is called.
+os.environ.setdefault('WP_USER', 'cookie-session-unused')
+os.environ.setdefault('WP_APP_PASSWORD', 'cookie-session-unused')
+
 spec = importlib.util.spec_from_file_location('phase1', 'scripts/apply_phase1.py')
 phase1 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(phase1)
