@@ -1,0 +1,45 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "status": "success",
+    "pages": [
+      {
+        "id": 18,
+        "status": "h1-added",
+        "h1": "İletişim"
+      },
+      {
+        "id": 1132,
+        "status": "h1-added",
+        "h1": "Edremit Tabela"
+      },
+      {
+        "id": 1134,
+        "status": "h1-added",
+        "h1": "Edremit Totem Tabela"
+      },
+      {
+        "id": 1136,
+        "status": "h1-added",
+        "h1": "Edremit Dijital Baskı"
+      },
+      {
+        "id": 1138,
+        "status": "h1-added",
+        "h1": "Edremit Araç Giydirme"
+      },
+      {
+        "id": 1140,
+        "status": "h1-added",
+        "h1": "Edremit Cam Giydirme"
+      },
+      {
+        "id": 1142,
+        "status": "h1-added",
+        "h1": "Edremit Kutu Harf Tabela"
+      }
+    ]
+  }
+}
