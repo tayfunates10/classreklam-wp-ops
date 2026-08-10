@@ -1,0 +1,44 @@
+name: Apply Phase 1 Local SEO
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-phase1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply phase 1 changes
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          python3 scripts/apply_phase1.py | tee .ops/phase1-result.json
+
+      - name: Save execution result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ ! -f .ops/phase1-result.json ]; then
+            printf '{"status":"failed-before-result"}\n' > .ops/phase1-result.json
+          fi
+          git add .ops/phase1-result.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record phase 1 SEO application result'
+          git pull --rebase origin main
+          git push
