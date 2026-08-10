@@ -1,0 +1,85 @@
+name: Alternate WordPress Access Diagnostic
+
+on:
+  push:
+    paths:
+      - '.github/workflows/alternate-access-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test alternate authenticated routes and MCP surface
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          base="${WP_URL%/}"
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          auth="$WP_USER:$WP_APP_PASSWORD"
+          curl -A "$ua" -sS --max-time 20 "$base/wp-json/" -o /tmp/root.json
+          c1=$(curl -A "$ua" -sS --max-time 20 -u "$auth" -o /tmp/me1 -w '%{http_code}' "$base/?rest_route=/wp/v2/users/me&context=edit")
+          c2=$(curl -A "$ua" -sS --max-time 20 -u "$auth" -H 'X-Requested-With: XMLHttpRequest' -e "$base/wp-admin/" -o /tmp/me2 -w '%{http_code}' "$base/index.php?rest_route=/wp/v2/users/me&context=edit")
+          python3 - <<'PY'
+          import json,pathlib,re,os
+          root={}
+          try: root=json.loads(pathlib.Path('/tmp/root.json').read_text(errors='replace'))
+          except: pass
+          routes=root.get('routes',{}) if isinstance(root,dict) else {}
+          mcp={k:v for k,v in routes.items() if '/mcp' in k.lower() or 'abilities' in k.lower()}
+          def classify(path):
+              t=pathlib.Path(path).read_text(errors='replace') if pathlib.Path(path).exists() else ''
+              low=t.lower()
+              return {'marker':'imunify360' if 'imunify360' in low else ('json' if t.lstrip().startswith(('{','[')) else 'html'),'sample':re.sub(r'\s+',' ',re.sub('<[^>]+>',' ',t))[:500]}
+          out={'query_rest_auth':{'http':os.environ.get('C1',''),'body':classify('/tmp/me1')},'index_rest_auth':{'http':os.environ.get('C2',''),'body':classify('/tmp/me2')},'mcp_routes':mcp}
+          pathlib.Path('.ops/alternate-access.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          PY
+        env:
+          C1: ${{ env.c1 }}
+          C2: ${{ env.c2 }}
+      - name: Re-run compact test with exported codes
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          base="${WP_URL%/}"
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          auth="$WP_USER:$WP_APP_PASSWORD"
+          c1=$(curl -A "$ua" -sS --max-time 20 -u "$auth" -o /tmp/me1 -w '%{http_code}' "$base/?rest_route=/wp/v2/users/me&context=edit")
+          c2=$(curl -A "$ua" -sS --max-time 20 -u "$auth" -H 'X-Requested-With: XMLHttpRequest' -e "$base/wp-admin/" -o /tmp/me2 -w '%{http_code}' "$base/index.php?rest_route=/wp/v2/users/me&context=edit")
+          C1="$c1" C2="$c2" python3 - <<'PY'
+          import json,pathlib,re,os
+          p=pathlib.Path('.ops/alternate-access.json')
+          out=json.loads(p.read_text()) if p.exists() else {}
+          def classify(path):
+              t=pathlib.Path(path).read_text(errors='replace') if pathlib.Path(path).exists() else ''
+              low=t.lower()
+              return {'marker':'imunify360' if 'imunify360' in low else ('json' if t.lstrip().startswith(('{','[')) else 'html'),'sample':re.sub(r'\s+',' ',re.sub('<[^>]+>',' ',t))[:500]}
+          out['query_rest_auth']={'http':os.environ['C1'],'body':classify('/tmp/me1')}
+          out['index_rest_auth']={'http':os.environ['C2'],'body':classify('/tmp/me2')}
+          p.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          PY
+      - name: Save
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/alternate-access.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record alternate WordPress access diagnostic'
+          git pull --rebase origin main
+          git push
