@@ -1,0 +1,85 @@
+{
+  "checked_at": "2026-08-10T10:48:34.016944+00:00",
+  "homepage": {
+    "id": 6,
+    "status": "publish",
+    "modified": "2026-06-22T14:59:42",
+    "title_raw": "Anasayfa",
+    "content_length": 120491,
+    "h1_matches": [
+      "\n        <span class=\"cr-heading-line1\">Baskı, Tabela ve Folyo Çözümlerinde</span>\n        <span class=\"cr-heading-line2\">Profesyonel Hizmet</span>\n      "
+    ],
+    "rank_math_meta": {},
+    "meta_keys": [
+      "_kad_post_classname",
+      "_kad_post_content_style",
+      "_kad_post_feature",
+      "_kad_post_feature_position",
+      "_kad_post_footer",
+      "_kad_post_header",
+      "_kad_post_layout",
+      "_kad_post_sidebar_id",
+      "_kad_post_title",
+      "_kad_post_transparent",
+      "_kad_post_vertical_padding",
+      "footnotes"
+    ],
+    "generated_head": {
+      "title": "",
+      "description": "",
+      "canonical": "",
+      "robots": ""
+    }
+  },
+  "settings": {
+    "title": "Class Reklam | Edremit Tabela ve Reklam",
+    "description": "Edremit tabela, reklam, folyo, baskı ve araç giydirme çözümleri",
+    "url": "https://classreklamtabela.com.tr",
+    "show_on_front": "page",
+    "page_on_front": 6,
+    "page_for_posts": 14,
+    "timezone": "",
+    "date_format": "F j, Y",
+    "time_format": "g:i a",
+    "start_of_week": 1,
+    "default_category": 1,
+    "default_post_format": "0"
+  },
+  "active_plugins": [
+    {
+      "plugin": "kadence-blocks/kadence-blocks",
+      "name": "Kadence Blocks — Page Builder Toolkit for Gutenberg Editor",
+      "version": "3.7.6"
+    },
+    {
+      "plugin": "seo-by-rank-math/rank-math",
+      "name": "Rank Math SEO",
+      "version": "1.0.272"
+    },
+    {
+      "plugin": "insert-headers-and-footers/ihaf",
+      "name": "WPCode Lite",
+      "version": "2.3.6"
+    }
+  ],
+  "post_types": [
+    "attachment",
+    "cr_reference",
+    "kadence_form",
+    "kadence_header",
+    "kadence_lottie",
+    "kadence_navigation",
+    "kadence_vector",
+    "nav_menu_item",
+    "page",
+    "post",
+    "rm_content_editor",
+    "wp_block",
+    "wp_font_face",
+    "wp_font_family",
+    "wp_global_styles",
+    "wp_navigation",
+    "wp_template",
+    "wp_template_part"
+  ]
+}
