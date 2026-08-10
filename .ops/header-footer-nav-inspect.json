@@ -1,0 +1,642 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "root_http": 200,
+    "candidate_routes": [
+      "/rankmath/v1/dashboardWidget",
+      "/wp-block-editor/v1/navigation-fallback",
+      "/wp/v2/kadence_navigation",
+      "/wp/v2/kadence_navigation/(?P<id>[\\d]+)",
+      "/wp/v2/kadence_navigation/(?P<id>[\\d]+)/autosaves",
+      "/wp/v2/kadence_navigation/(?P<parent>[\\d]+)/autosaves/(?P<id>[\\d]+)",
+      "/wp/v2/kadence_navigation/(?P<parent>[\\d]+)/revisions",
+      "/wp/v2/kadence_navigation/(?P<parent>[\\d]+)/revisions/(?P<id>[\\d]+)",
+      "/wp/v2/kadence_navigation/auto-draft",
+      "/wp/v2/menu-items",
+      "/wp/v2/menu-items/(?P<id>[\\d]+)",
+      "/wp/v2/menu-items/(?P<id>[\\d]+)/autosaves",
+      "/wp/v2/menu-items/(?P<parent>[\\d]+)/autosaves/(?P<id>[\\d]+)",
+      "/wp/v2/menu-locations",
+      "/wp/v2/menu-locations/(?P<location>[\\w-]+)",
+      "/wp/v2/menus",
+      "/wp/v2/menus/(?P<id>[\\d]+)",
+      "/wp/v2/navigation",
+      "/wp/v2/navigation/(?P<id>[\\d]+)",
+      "/wp/v2/navigation/(?P<id>[\\d]+)/autosaves",
+      "/wp/v2/navigation/(?P<parent>[\\d]+)/autosaves/(?P<id>[\\d]+)",
+      "/wp/v2/navigation/(?P<parent>[\\d]+)/revisions",
+      "/wp/v2/navigation/(?P<parent>[\\d]+)/revisions/(?P<id>[\\d]+)",
+      "/wp/v2/sidebars",
+      "/wp/v2/sidebars/(?P<id>[\\w-]+)",
+      "/wp/v2/template-parts",
+      "/wp/v2/template-parts/(?P<id>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)",
+      "/wp/v2/template-parts/(?P<id>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/autosaves",
+      "/wp/v2/template-parts/(?P<parent>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/autosaves/(?P<id>[\\d]+)",
+      "/wp/v2/template-parts/(?P<parent>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/revisions",
+      "/wp/v2/template-parts/(?P<parent>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/revisions/(?P<id>[\\d]+)",
+      "/wp/v2/template-parts/lookup",
+      "/wp/v2/templates",
+      "/wp/v2/templates/(?P<id>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)",
+      "/wp/v2/templates/(?P<id>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/autosaves",
+      "/wp/v2/templates/(?P<parent>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/autosaves/(?P<id>[\\d]+)",
+      "/wp/v2/templates/(?P<parent>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/revisions",
+      "/wp/v2/templates/(?P<parent>([^\\/:<>\\*\\?\"\\|]+(?:\\/[^\\/:<>\\*\\?\"\\|]+)?)[\\/\\w%-]+)/revisions/(?P<id>[\\d]+)",
+      "/wp/v2/templates/lookup",
+      "/wp/v2/widget-types",
+      "/wp/v2/widget-types/(?P<id>[a-zA-Z0-9_-]+)",
+      "/wp/v2/widget-types/(?P<id>[a-zA-Z0-9_-]+)/encode",
+      "/wp/v2/widget-types/(?P<id>[a-zA-Z0-9_-]+)/render",
+      "/wp/v2/widgets",
+      "/wp/v2/widgets/(?P<id>[\\w\\-]+)"
+    ],
+    "/wp/v2/navigation": {
+      "http": 200,
+      "items": [
+        {
+          "id": 4,
+          "slug": "navigation",
+          "status": "publish",
+          "title": {
+            "raw": "Navigation",
+            "rendered": "Navigation"
+          },
+          "type": "wp_navigation"
+        }
+      ]
+    },
+    "/wp/v2/menu-items": {
+      "http": 200,
+      "items": [
+        {
+          "id": 22,
+          "status": "publish",
+          "title": {
+            "raw": "Anasayfa",
+            "rendered": "Anasayfa"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 23,
+          "status": "publish",
+          "title": {
+            "raw": "Hakkımızda",
+            "rendered": "Hakkımızda"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 24,
+          "status": "publish",
+          "title": {
+            "raw": "Hizmetlerimiz",
+            "rendered": "Hizmetlerimiz"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 25,
+          "status": "publish",
+          "title": {
+            "raw": "Galeri",
+            "rendered": "Galeri"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 26,
+          "status": "publish",
+          "title": {
+            "raw": "Blog",
+            "rendered": "Blog"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 28,
+          "status": "publish",
+          "title": {
+            "raw": "İletişim",
+            "rendered": "İletişim"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 1133,
+          "status": "publish",
+          "title": {
+            "raw": "Edremit Tabela",
+            "rendered": "Edremit Tabela"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 1135,
+          "status": "publish",
+          "title": {
+            "raw": "Totem Tabela",
+            "rendered": "Totem Tabela"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 1137,
+          "status": "publish",
+          "title": {
+            "raw": "Dijital Baskı",
+            "rendered": "Dijital Baskı"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 1139,
+          "status": "publish",
+          "title": {
+            "raw": "Araç Giydirme",
+            "rendered": "Araç Giydirme"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 1141,
+          "status": "publish",
+          "title": {
+            "raw": "Cam Giydirme",
+            "rendered": "Cam Giydirme"
+          },
+          "type": "post_type"
+        },
+        {
+          "id": 1143,
+          "status": "publish",
+          "title": {
+            "raw": "Kutu Harf Tabela",
+            "rendered": "Kutu Harf Tabela"
+          },
+          "type": "post_type"
+        }
+      ]
+    },
+    "/wp/v2/widgets": {
+      "http": 200,
+      "items": [
+        {
+          "id": "block-8",
+          "rendered": ""
+        },
+        {
+          "id": "nav_menu-3",
+          "rendered": ""
+        },
+        {
+          "id": "nav_menu-4",
+          "rendered": ""
+        },
+        {
+          "id": "block-10",
+          "rendered": ""
+        },
+        {
+          "id": "block-11",
+          "rendered": ""
+        },
+        {
+          "id": "block-12",
+          "rendered": ""
+        },
+        {
+          "id": "block-14",
+          "rendered": ""
+        },
+        {
+          "id": "block-13",
+          "rendered": ""
+        },
+        {
+          "id": "block-16",
+          "rendered": ""
+        },
+        {
+          "id": "block-17",
+          "rendered": ""
+        },
+        {
+          "id": "block-18",
+          "rendered": ""
+        },
+        {
+          "id": "block-19",
+          "rendered": ""
+        },
+        {
+          "id": "block-20",
+          "rendered": ""
+        },
+        {
+          "id": "block-22",
+          "rendered": ""
+        },
+        {
+          "id": "block-23",
+          "rendered": ""
+        },
+        {
+          "id": "block-24",
+          "rendered": ""
+        },
+        {
+          "id": "block-26",
+          "rendered": ""
+        },
+        {
+          "id": "block-29",
+          "rendered": ""
+        },
+        {
+          "id": "block-37",
+          "rendered": ""
+        },
+        {
+          "id": "block-39",
+          "rendered": ""
+        },
+        {
+          "id": "block-40",
+          "rendered": ""
+        },
+        {
+          "id": "block-41",
+          "rendered": ""
+        },
+        {
+          "id": "block-42",
+          "rendered": ""
+        },
+        {
+          "id": "block-47",
+          "rendered": ""
+        },
+        {
+          "id": "block-48",
+          "rendered": ""
+        },
+        {
+          "id": "block-54",
+          "rendered": ""
+        },
+        {
+          "id": "block-55",
+          "rendered": ""
+        },
+        {
+          "id": "block-65",
+          "rendered": ""
+        },
+        {
+          "id": "block-66",
+          "rendered": ""
+        },
+        {
+          "id": "block-67",
+          "rendered": ""
+        },
+        {
+          "id": "block-73",
+          "rendered": ""
+        },
+        {
+          "id": "block-2",
+          "rendered": "<section id=\"block-2\" class=\"widget widget_block widget_search\"><form role=\"search\" method=\"get\" action=\"https://classreklamtabela.com.tr/\" class=\"wp-block-search__button-outside wp-block-search__text-button wp-block-search\"    ><label class=\"wp-block-search__label\" for=\"wp-block-search__input-1\" >Ara</label><div class=\"wp-block-search__inside-wrapper\" ><input class=\"wp-block-search__input\" id=\"wp-block-search__input-1\" placeholder=\"\" value=\"\" type=\"search\" name=\"s\" required /><button aria-label=\"Ara\" class=\"wp-block-search__button wp-element-button\" type=\"submit\" >Ara</button></div></form></section>"
+        },
+        {
+          "id": "block-3",
+          "rendered": "<section id=\"block-3\" class=\"widget widget_block\"><div class=\"wp-block-group\"><div class=\"wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow\"><h2 class=\"wp-block-heading\">Recent Posts</h2><ul class=\"wp-block-latest-posts__list wp-block-latest-posts\"><li><a class=\"wp-block-latest-posts__post-title\" href=\"https://classreklamtabela.com.tr/reklam-uygulamalarinda-dogru-malzeme-secimi/\">Reklam Uygulamalarında Doğru Malzeme Seçimi</a></li>\n<li><a class=\"wp-block-latest-posts__post-title\" href=\"https://classreklamtabela.com.tr/tabela-montajinda-profesyonel-uygulamanin-onemi/\">Tabela Montajında Profesyonel Uygulamanın Önemi</a></li>\n<li><a class=\"wp-block-latest-posts__post-title\" href=\"https://classreklamtabela.com.tr/dis-mekan-reklam-baskilarinda-kalite-neden-onemli/\">Dış Mekân Reklam Baskılarında Kalite Neden Önemli?</a></li>\n<li><a class=\"wp-block-latest-posts__post-title\" href=\"https://classreklamtabela.com.tr/arac-giydirme-ile-firma-bilinirligi-nasil-artar/\">Araç Giydirme ile Firma Bilinirliği Nasıl Artar?</a></li>\n<li><a class=\"wp-block-latest-posts__post-title\" href=\"https://classreklamtabela.com.tr/edremitte-tabela-yaptirmak-isteyenlere-oneriler/\">Edremit’te Tabela Yaptırmak İsteyenlere Öneriler</a></li>\n</ul></div></div></section>"
+        },
+        {
+          "id": "block-4",
+          "rendered": "<section id=\"block-4\" class=\"widget widget_block\"><div class=\"wp-block-group\"><div class=\"wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow\"><h2 class=\"wp-block-heading\">Recent Comments</h2><ol class=\"wp-block-latest-comments\"><li class=\"wp-block-latest-comments__comment\"><article><footer class=\"wp-block-latest-comments__comment-meta\"><span class=\"wp-block-latest-comments__comment-author\">yakup</span> - <a class=\"wp-block-latest-comments__comment-link\" href=\"https://classreklamtabela.com.tr/tabela-montajinda-profesyonel-uygulamanin-onemi/#comment-9\">Tabela Montajında Profesyonel Uygulamanın Önemi</a></footer></article></li><li class=\"wp-block-latest-comments__comment\"><article><footer class=\"wp-block-latest-comments__comment-meta\"><span class=\"wp-block-latest-comments__comment-author\">Can</span> - <a class=\"wp-block-latest-comments__comment-link\" href=\"https://classreklamtabela.com.tr/arac-giydirme-ile-firma-bilinirligi-nasil-artar/#comment-8\">Araç Giydirme ile Firma Bilinirliği Nasıl Artar?</a></footer></article></li><li class=\"wp-block-latest-comments__comment\"><article><footer class=\"wp-block-latest-comments__comment-meta\"><span class=\"wp-block-latest-comments__comment-author\">Adil</span> - <a class=\"wp-block-latest-comments__comment-link\" href=\"https://classreklamtabela.com.tr/tabela-montajinda-profesyonel-uygulamanin-onemi/#comment-7\">Tabela Montajında Profesyonel Uygulamanın Önemi</a></footer></article></li><li class=\"wp-block-latest-comments__comment\"><article><footer class=\"wp-block-latest-comments__comment-meta\"><span class=\"wp-block-latest-comments__comment-author\">Cihan</span> - <a class=\"wp-block-latest-comments__comment-link\" href=\"https://classreklamtabela.com.tr/dis-mekan-reklam-baskilarinda-kalite-neden-onemli/#comment-6\">Dış Mekân Reklam Baskılarında Kalite Neden Önemli?</a></footer></article></li><li class=\"wp-block-latest-comments__comment\"><article><footer class=\"wp-block-latest-comments__comment-meta\"><span class=\"wp-block-latest-comments__comment-author\">Mehmet</span> - <a class=\"wp-block-latest-comments__comment-link\" href=\"https://classreklamtabela.com.tr/arac-giydirme-ile-firma-bilinirligi-nasil-artar/#comment-5\">Araç Giydirme ile Firma Bilinirliği Nasıl Artar?</a></footer></article></li></ol></div></div></section>"
+        },
+        {
+          "id": "block-5",
+          "rendered": "<section id=\"block-5\" class=\"widget widget_block\"><div class=\"wp-block-group\"><div class=\"wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow\"><h2 class=\"wp-block-heading\">Archives</h2><ul class=\"wp-block-archives-list wp-block-archives\">\t<li><a href='https://classreklamtabela.com.tr/2026/06/'>Haziran 2026</a></li>\n</ul></div></div></section>"
+        },
+        {
+          "id": "block-6",
+          "rendered": "<section id=\"block-6\" class=\"widget widget_block\"><div class=\"wp-block-group\"><div class=\"wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow\"><h2 class=\"wp-block-heading\">Categories</h2><ul class=\"wp-block-categories-list wp-block-categories-taxonomy-category wp-block-categories\">\t<li class=\"cat-item cat-item-17\"><a href=\"https://classreklamtabela.com.tr/category/arac-giydirme-rehberi/\">Araç Giydirme Rehberi</a>\n</li>\n\t<li class=\"cat-item cat-item-16\"><a href=\"https://classreklamtabela.com.tr/category/dijital-baski-rehberi/\">Dijital Baskı Rehberi</a>\n</li>\n\t<li class=\"cat-item cat-item-18\"><a href=\"https://classreklamtabela.com.tr/category/folyo-cam-giydirme/\">Folyo ve Cam Giydirme</a>\n</li>\n\t<li class=\"cat-item cat-item-19\"><a href=\"https://classreklamtabela.com.tr/category/reklam-rehberi/\">Reklam Rehberi</a>\n</li>\n\t<li class=\"cat-item cat-item-15\"><a href=\"https://classreklamtabela.com.tr/category/tabela-rehberi/\">Tabela Rehberi</a>\n</li>\n</ul></div></div></section>"
+        },
+        {
+          "id": "block-82",
+          "rendered": "<section id=\"block-82\" class=\"widget widget_block widget_media_image\">\n<figure class=\"wp-block-image size-full cr-footer-logo\"><img loading=\"lazy\" decoding=\"async\" width=\"2559\" height=\"428\" src=\"http://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png\" alt=\"\" class=\"wp-image-853\" style=\"object-fit:contain;object-position:50% 47%\" srcset=\"https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png 2559w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-300x50.png 300w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1024x171.png 1024w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-768x128.png 768w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1536x257.png 1536w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-2048x343.png 2048w\" sizes=\"auto, (max-width: 2559px) 100vw, 2559px\" /></figure>\n</section>"
+        },
+        {
+          "id": "block-80",
+          "rendered": "<section id=\"block-80\" class=\"widget widget_block widget_text\">\n<p class=\"wp-block-paragraph\"></p>\n</section>"
+        },
+        {
+          "id": "block-9",
+          "rendered": "<section id=\"block-9\" class=\"widget widget_block widget_text\">\n<p class=\"wp-block-paragraph\">Edremit tabela ve reklam çözümlerinde, kaliteli işçilikle işletmenizi görünür kılıyoruz.</p>\n</section>"
+        },
+        {
+          "id": "block-70",
+          "rendered": "<section id=\"block-70\" class=\"widget widget_block\"><div class=\"footer-social-map\">\n\n  <div class=\"footer-social-icons\">\n\n    <a href=\"https://www.instagram.com/classreklaam\" target=\"_blank\" rel=\"noopener\" aria-label=\"Instagram\" title=\"Instagram\">\n      <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\">\n        <path d=\"M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8zm4.2 3.4A4.6 4.6 0 1 1 12 16.6a4.6 4.6 0 0 1 0-9.2zm0 2A2.6 2.6 0 1 0 14.6 12 2.6 2.6 0 0 0 12 9.4zM17.1 6.6a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z\"/>\n      </svg>\n    </a>\n\n    <a href=\"https://wa.me/905469364271\" target=\"_blank\" rel=\"noopener\" aria-label=\"WhatsApp\" title=\"WhatsApp\">\n      <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\">\n        <path d=\"M12.04 2A9.93 9.93 0 0 0 2 11.84a9.7 9.7 0 0 0 1.36 4.96L2 22l5.34-1.32A10.11 10.11 0 0 0 12.04 22 9.93 9.93 0 0 0 22 12 9.93 9.93 0 0 0 12.04 2zm0 18.1a8.13 8.13 0 0 1-4.16-1.14l-.3-.18-3.16.78.84-3.04-.2-.32A7.86 7.86 0 0 1 3.88 12a8.16 8.16 0 1 1 8.16 8.1zm4.48-6.08c-.24-.12-1.42-.7-1.64-.78s-.38-.12-.54.12-.62.78-.76.94-.28.18-.52.06a6.67 6.67 0 0 1-1.96-1.2 7.31 7.31 0 0 1-1.36-1.68c-.14-.24 0-.37.1-.49.11-.11.24-.28.36-.42a1.6 1.6 0 0 0 .24-.4.45.45 0 0 0-.02-.42c-.06-.12-.54-1.3-.74-1.78s-.4-.41-.54-.42h-.46a.88.88 0 0 0-.64.3 2.69 2.69 0 0 0-.84 2 4.68 4.68 0 0 0 .98 2.48 10.67 10.67 0 0 0 4.08 3.62 13.8 13.8 0 0 0 1.36.5 3.26 3.26 0 0 0 1.5.1 2.45 2.45 0 0 0 1.6-1.12 2 2 0 0 0 .14-1.12c-.06-.1-.22-.16-.46-.28z\"/>\n      </svg>\n    </a>\n\n  </div>\n\n  <a class=\"footer-map-link\" href=\"https://maps.app.goo.gl/affDVawoTfAPMPWS9\" target=\"_blank\" rel=\"noopener\" aria-label=\"Google Haritalar konumunu aç\">\n    <div class=\"footer-map-preview\">\n      <iframe\n        src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6148.931113049945!2d27.007089682744677!3d39.594193832037625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b0c90ca3acd849%3A0x5ab65996f36faff3!2sClass%20Reklam%20%26%20Tabela!5e0!3m2!1str!2sus!4v1780420538980!5m2!1str!2sus\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"\n        loading=\"lazy\"\n        referrerpolicy=\"no-referrer-when-downgrade\">\n      </iframe>\n    </div>\n  </a>\n\n</div></section>"
+        },
+        {
+          "id": "block-45",
+          "rendered": "<section id=\"block-45\" class=\"widget widget_block\">\n<h3 class=\"wp-block-heading has-theme-palette-7-color has-text-color has-link-color wp-elements-186f7235642c6ed019ff75fd2fa53adc\" style=\"font-size:20px\">HIZLI MENÜ</h3>\n</section>"
+        },
+        {
+          "id": "block-52",
+          "rendered": "<section id=\"block-52\" class=\"widget widget_block\"><div class=\"footer-title-line\"></div></section>"
+        },
+        {
+          "id": "block-49",
+          "rendered": "<section id=\"block-49\" class=\"widget widget_block\"><ul class=\"footer-link-list\">\n  <li><a href=\"/\">Ana Sayfa</a></li>\n  <li><a href=\"/hakkimizda\">Hakkımızda</a></li>\n  <li><a href=\"/hizmetlerimiz\">Hizmetlerimiz</a></li>\n  <li><a href=\"/galeri\">Galeri</a></li>\n  <li><a href=\"/blog\">Blog</a></li>\n  <li><a href=\"/iletisim\">İletişim</a></li>\n</ul></section>"
+        },
+        {
+          "id": "block-46",
+          "rendered": "<section id=\"block-46\" class=\"widget widget_block\">\n<div style=\"height:0px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>\n</section>"
+        },
+        {
+          "id": "block-58",
+          "rendered": "<section id=\"block-58\" class=\"widget widget_block\">\n<h3 class=\"wp-block-heading has-theme-palette-7-color has-text-color has-link-color wp-elements-f2337dccc31df42cd4d7aff03ca2c11a\" style=\"font-size:20px\">HİZMETLERİMİZ</h3>\n</section>"
+        },
+        {
+          "id": "block-60",
+          "rendered": "<section id=\"block-60\" class=\"widget widget_block\"><div class=\"footer-title-line\"></div></section>"
+        },
+        {
+          "id": "block-61",
+          "rendered": "<section id=\"block-61\" class=\"widget widget_block\"><ul class=\"footer-link-list\">\n  <li><a href=\"/hizmetlerimiz\">Tabela</a></li>\n  <li><a href=\"/hizmetlerimiz\">Totem</a></li>\n  <li><a href=\"/hizmetlerimiz\">Dijital Baskı</a></li>\n  <li><a href=\"/hizmetlerimiz\">Araç Giydirme</a></li>\n  <li><a href=\"/hizmetlerimiz\">Cam Giydirme</a></li>\n  <li><a href=\"/hizmetlerimiz\">Kutu Harf</a></li>\n</ul></section>"
+        },
+        {
+          "id": "block-62",
+          "rendered": "<section id=\"block-62\" class=\"widget widget_block\">\n<h3 class=\"wp-block-heading has-theme-palette-7-color has-text-color has-link-color wp-elements-cb9ca0a950725d8f6d4ae4172a2fb923\" style=\"font-size:20px\">İLETİŞİM</h3>\n</section>"
+        },
+        {
+          "id": "block-63",
+          "rendered": "<section id=\"block-63\" class=\"widget widget_block\"><div class=\"footer-title-line\"></div></section>"
+        },
+        {
+          "id": "block-68",
+          "rendered": "<section id=\"block-68\" class=\"widget widget_block\"><div class=\"footer-contact-box\">\n\n  <div class=\"footer-contact-item\">\n    <div class=\"footer-contact-text\">\n      <strong>Telefon</strong>\n      <span>0546 936 42 71</span>\n    </div>\n    <div class=\"footer-contact-actions\">\n      <a class=\"footer-contact-btn\" href=\"tel:+905469364271\">Ara</a>\n      <a class=\"footer-contact-btn footer-sms-btn\" href=\"sms:+905469364271\">Mesaj</a>\n    </div>\n  </div>\n\n  <div class=\"footer-contact-item\">\n    <div class=\"footer-contact-text\">\n      <strong>E-posta</strong>\n      <span>classreklam0@gmail.com</span>\n    </div>\n    <div class=\"footer-contact-actions\">\n      <a class=\"footer-contact-btn\" href=\"mailto:classreklam0@gmail.com\">Mail Gönder</a>\n    </div>\n  </div>\n\n  <div class=\"footer-contact-item\">\n    <div class=\"footer-contact-text\">\n      <strong>Adres</strong>\n      <span>Hamidiye Mh. Mithatpaşa<br>Cd. NO: 18/C<br>10300 Edremit/Balıkesir</span>\n    </div>\n    <div class=\"footer-contact-actions\">\n      <a class=\"footer-contact-btn\" href=\"https://maps.app.goo.gl/affDVawoTfAPMPWS9\" target=\"_blank\" rel=\"noopener\">Yol Tarifi Al</a>\n    </div>\n  </div>\n\n</div></section>"
+        },
+        {
+          "id": "block-72",
+          "rendered": "<section id=\"block-72\" class=\"widget widget_block\"><div class=\"footer-bottom-links\">\n  <a href=\"/gizlilik-politikasi\">Gizlilik Politikası</a>\n  <span></span>\n  <a href=\"/kullanim-sartlari\">Kullanım Şartları</a>\n  <span></span>\n  <a href=\"/kvkk\">KVKK</a>\n</div></section>"
+        },
+        {
+          "id": "block-75",
+          "rendered": "<section id=\"block-75\" class=\"widget widget_block\"><a class=\"fixed-scroll-top\" href=\"#\" aria-label=\"Yukarı çık\">\n  <span>↑</span>\n</a>\n\n<script>\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n  const scrollBtn = document.querySelector(\".fixed-scroll-top\");\n\n  if (!scrollBtn) return;\n\n  window.addEventListener(\"scroll\", function () {\n    if (window.scrollY > 300) {\n      scrollBtn.classList.add(\"show\");\n    } else {\n      scrollBtn.classList.remove(\"show\");\n    }\n  });\n\n  scrollBtn.addEventListener(\"click\", function (e) {\n    e.preventDefault();\n    window.scrollTo({\n      top: 0,\n      behavior: \"smooth\"\n    });\n  });\n});\n</script></section>"
+        }
+      ]
+    },
+    "/wp/v2/sidebars": {
+      "http": 200,
+      "items": [
+        {
+          "id": "wp_inactive_widgets",
+          "status": "inactive",
+          "name": "Etkin olmayan bileşenler"
+        },
+        {
+          "id": "sidebar-primary",
+          "status": "active",
+          "name": "Sidebar 1"
+        },
+        {
+          "id": "sidebar-secondary",
+          "status": "active",
+          "name": "Sidebar 2"
+        },
+        {
+          "id": "footer1",
+          "status": "active",
+          "name": "Footer 1"
+        },
+        {
+          "id": "footer2",
+          "status": "active",
+          "name": "Footer 2"
+        },
+        {
+          "id": "footer3",
+          "status": "active",
+          "name": "Footer 3"
+        },
+        {
+          "id": "footer4",
+          "status": "active",
+          "name": "Footer 4"
+        },
+        {
+          "id": "footer5",
+          "status": "active",
+          "name": "Footer 5"
+        },
+        {
+          "id": "footer6",
+          "status": "active",
+          "name": "Footer 6"
+        }
+      ]
+    },
+    "/wp/v2/template-parts": {
+      "http": 200,
+      "items": []
+    },
+    "/wp/v2/templates": {
+      "http": 200,
+      "items": []
+    },
+    "homepage_http": 200,
+    "header": {
+      "found": true,
+      "links": [
+        {
+          "href": "https://classreklamtabela.com.tr/",
+          "text": ""
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/",
+          "text": "Anasayfa"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/hakkimizda/",
+          "text": "Hakkımızda"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+          "text": "Hizmetlerimiz"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/galeri/",
+          "text": "Galeri"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/iletisim/",
+          "text": "İletişim"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/edremit-tabela/",
+          "text": "Edremit Tabela"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/totem-tabela/",
+          "text": "Totem Tabela"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/dijital-baski/",
+          "text": "Dijital Baskı"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/arac-giydirme/",
+          "text": "Araç Giydirme"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/cam-giydirme/",
+          "text": "Cam Giydirme"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
+          "text": "Kutu Harf Tabela"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/",
+          "text": ""
+        }
+      ],
+      "target_hits": [
+        {
+          "href": "https://classreklamtabela.com.tr/edremit-tabela/",
+          "text": "Edremit Tabela"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/totem-tabela/",
+          "text": "Totem Tabela"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/dijital-baski/",
+          "text": "Dijital Baskı"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/arac-giydirme/",
+          "text": "Araç Giydirme"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/cam-giydirme/",
+          "text": "Cam Giydirme"
+        },
+        {
+          "href": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
+          "text": "Kutu Harf Tabela"
+        }
+      ],
+      "html_excerpt": "<header id=\"masthead\" class=\"site-header\" role=\"banner\" itemtype=\"https://schema.org/WPHeader\" itemscope> <div id=\"main-header\" class=\"site-header-wrap\"> <div class=\"site-header-inner-wrap\"> <div class=\"site-header-upper-wrap\"> <div class=\"site-header-upper-inner-wrap\"> <div class=\"site-main-header-wrap site-header-row-container site-header-focus-item site-header-row-layout-standard\" data-section=\"kadence_customizer_header_main\"> <div class=\"site-header-row-container-inner\"> <div class=\"site-container\"> <div class=\"site-main-header-inner-wrap site-header-row site-header-row-has-sides site-header-row-no-center\"> <div class=\"site-header-main-section-left site-header-section site-header-section-left\"> <div class=\"site-header-item site-header-focus-item\" data-section=\"title_tagline\"> <div class=\"site-branding branding-layout-standard site-brand-logo-only\"><a class=\"brand has-logo-image\" href=\"https://classreklamtabela.com.tr/\" rel=\"home\"><img width=\"2559\" height=\"428\" src=\"https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png\" class=\"custom-logo\" alt=\"Class Reklam | Edremit Tabela ve Reklam\" decoding=\"async\" fetchpriority=\"high\" srcset=\"https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png 2559w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-300x50.png 300w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1024x171.png 1024w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-768x128.png 768w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1536x257.png 1536w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-2048x343.png 2048w\" sizes=\"(max-width: 2559px) 100vw, 2559px\" /></a></div></div><!-- data-section=\"title_tagline\" --> </div> <div class=\"site-header-main-section-right site-header-section site-header-section-right\"> <div class=\"site-header-item site-header-focus-item site-header-item-main-navigation header-navigation-layout-stretch-false header-navigation-layout-fill-stretch-false\" data-section=\"kadence_customizer_primary_navigation\"> <nav id=\"site-navigation\" class=\"main-navigation header-navigation hover-to-open nav--toggle-sub header-navigation-style-standard header-navigation-dropdown-animation-none\" role=\"navigation\" aria-label=\"Primary\"> <div class=\"primary-menu-container header-menu-container\"> <ul id=\"primary-menu\" class=\"menu\"><li id=\"menu-item-22\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-6 current_page_item menu-item-22\"><a href=\"https://classreklamtabela.com.tr/\" aria-current=\"page\">Anasayfa</a></li> <li id=\"menu-item-23\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-23\"><a href=\"https://classreklamtabela.com.tr/hakkimizda/\">Hakkımızda</a></li> <li id=\"menu-item-24\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-24\"><a href=\"https://classreklamtabela.com.tr/hizmetlerimiz/\">Hizmetlerimiz</a></li> <li id=\"menu-item-25\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-25\"><a href=\"https://classreklamtabela.com.tr/galeri/\">Galeri</a></li> <li id=\"menu-item-26\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-26\"><a href=\"https://classreklamtabela.com.tr/blog/\">Blog</a></li> <li id=\"menu-item-28\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-28\"><a href=\"https://classreklamtabela.com.tr/iletisim/\">İletişim</a></li> <li id=\"menu-item-1133\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-1133\"><a href=\"https://classreklamtabela.com.tr/edremit-tabela/\">Edremit Tabela</a></li> <li id=\"menu-item-1135\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-1135\"><a href=\"https://classreklamtabela.com.tr/totem-tabela/\">Totem Tabela</a></li> <li id=\"menu-item-1137\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-1137\"><a href=\"https://classreklamtabela.com.tr/dijital-baski/\">Dijital Baskı</a></li> <li id=\"menu-item-1139\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-1139\"><a href=\"https://classreklamtabela.com.tr/arac-giydirme/\">Araç Giydirme</a></li> <li id=\"menu-item-1141\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-1141\"><a href=\"https://classreklamtabela.com.tr/cam-giydirme/\">Cam Giydirme</a></li> <li id=\"menu-item-1143\" class=\"menu-item menu-item-type-post_type menu-item-object-page menu-item-1143\"><a href=\"https://classreklamtabela.com.tr/kutu-harf-tabela/\">Kutu Harf Tabela</a></li> </ul> </div> </nav><!-- #site-navigation --> </div><!-- data-section=\"primary_navigation\" --> </div> </div> </div> </div> </div> </div> </div> </div> </div> <div id=\"mobile-header\" class=\"site-mobile-header-wrap\"> <div class=\"site-header-inner-wrap\"> <div class=\"site-header-upper-wrap\"> <div class=\"site-header-upper-inner-wrap\"> <div class=\"site-main-header-wrap site-header-focus-item site-header-row-layout-standard site-header-row-tablet-layout-default site-header-row-mobile-layout-default \"> <div class=\"site-header-row-container-inner\"> <div class=\"site-container\"> <div class=\"site-main-header-inner-wrap site-header-row site-header-row-has-sides site-header-row-no-center\"> <div class=\"site-header-main-section-left site-header-section site-header-section-left\"> <div class=\"site-header-item site-header-focus-item\" data-section=\"title_tagline\"> <div class=\"site-branding mobile-site-branding branding-layout-standard branding-tablet-layout-inherit site-brand-logo-only branding-mobile-layout-standard site-brand-logo-only\"><a class=\"brand has-logo-image\" href=\"https://classreklamtabela.com.tr/\" rel=\"home\"><img width=\"2559\" height=\"428\" src=\"https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png\" class=\"custom-logo\" alt=\"Class Reklam | Edremit Tabela ve Reklam\" decoding=\"async\" srcset=\"https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png 2559w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-300x50.png 300w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1024x171.png 1024w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-768x128.png 768w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1536x257.png 1536w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-2048x343.png 2048w\" sizes=\"(max-width: 2559px) 100vw, 2559px\" /></a></div></div><!-- data-section=\"title_tagline\" --> </div> <div class=\"site-header-main-section-right site-header-section site-header-section-right\"> <div class=\"site-header-item site-header-focus-item site-header-item-navgation-popup-toggle\" data-section=\"kadence_customizer_mobile_trigger\"> <div class=\"mobile-toggle-open-container\"> <button id=\"mobile-toggle\" class=\"menu-toggle-open drawer-toggle menu-toggle-style-default\" aria-label=\"Open menu\" data-toggle-target=\"#mobile-drawer\" data-toggle-body-class=\"showing-popup-drawer-from-right\" aria-expanded=\"false\" data-set-focus=\".menu-toggle-close\" > <span class=\"menu-toggle-icon\"><span class=\"kadence-svg-iconset\"><svg aria-hidden=\"true\" class=\"kadence-svg-icon kadence-menu-svg\" fill=\"currentColor\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><title>Toggle Menu</title><path d=\"M3 13h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 7h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 19h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1z\"></path> </svg></span></span> </button> </div> </div><!-- data-section=\"mobile_trigger\" --> </div> </div> </div> </div> </div> </div> </div> </div> </div> </header>"
+    },
+    "footer": {
+      "found": true,
+      "links": [
+        {
+          "href": "https://www.instagram.com/classreklaam",
+          "text": ""
+        },
+        {
+          "href": "https://wa.me/905469364271",
+          "text": ""
+        },
+        {
+          "href": "https://maps.app.goo.gl/affDVawoTfAPMPWS9",
+          "text": ""
+        },
+        {
+          "href": "/",
+          "text": "Ana Sayfa"
+        },
+        {
+          "href": "/hakkimizda",
+          "text": "Hakkımızda"
+        },
+        {
+          "href": "/hizmetlerimiz",
+          "text": "Hizmetlerimiz"
+        },
+        {
+          "href": "/galeri",
+          "text": "Galeri"
+        },
+        {
+          "href": "/blog",
+          "text": "Blog"
+        },
+        {
+          "href": "/iletisim",
+          "text": "İletişim"
+        },
+        {
+          "href": "/hizmetlerimiz",
+          "text": "Tabela"
+        },
+        {
+          "href": "/hizmetlerimiz",
+          "text": "Totem"
+        },
+        {
+          "href": "/hizmetlerimiz",
+          "text": "Dijital Baskı"
+        },
+        {
+          "href": "/hizmetlerimiz",
+          "text": "Araç Giydirme"
+        },
+        {
+          "href": "/hizmetlerimiz",
+          "text": "Cam Giydirme"
+        },
+        {
+          "href": "/hizmetlerimiz",
+          "text": "Kutu Harf"
+        },
+        {
+          "href": "tel:+905469364271",
+          "text": "Ara"
+        },
+        {
+          "href": "sms:+905469364271",
+          "text": "Mesaj"
+        },
+        {
+          "href": "mailto:classreklam0@gmail.com",
+          "text": "Mail Gönder"
+        },
+        {
+          "href": "https://maps.app.goo.gl/affDVawoTfAPMPWS9",
+          "text": "Yol Tarifi Al"
+        },
+        {
+          "href": "/gizlilik-politikasi",
+          "text": "Gizlilik Politikası"
+        },
+        {
+          "href": "/kullanim-sartlari",
+          "text": "Kullanım Şartları"
+        },
+        {
+          "href": "/kvkk",
+          "text": "KVKK"
+        },
+        {
+          "href": "#",
+          "text": "↑"
+        }
+      ],
+      "target_hits": [],
+      "html_excerpt": "<footer id=\"colophon\" class=\"site-footer\" role=\"contentinfo\"> <div class=\"site-footer-wrap\"> <div class=\"site-middle-footer-wrap site-footer-row-container site-footer-focus-item site-footer-row-layout-standard site-footer-row-tablet-layout-default site-footer-row-mobile-layout-default\" data-section=\"kadence_customizer_footer_middle\"> <div class=\"site-footer-row-container-inner\"> <div class=\"site-container\"> <div class=\"site-middle-footer-inner-wrap site-footer-row site-footer-row-columns-4 site-footer-row-column-layout-equal site-footer-row-tablet-column-layout-default site-footer-row-mobile-column-layout-row ft-ro-dir-row ft-ro-collapse-normal ft-ro-t-dir-default ft-ro-m-dir-default ft-ro-lstyle-plain\"> <div class=\"site-footer-middle-section-1 site-footer-section footer-section-inner-items-1\"> <div class=\"footer-widget-area widget-area site-footer-focus-item footer-widget1 content-align-default content-tablet-align-default content-mobile-align-default content-valign-default content-tablet-valign-default content-mobile-valign-default\" data-section=\"sidebar-widgets-footer1\"> <div class=\"footer-widget-area-inner site-info-inner\"> <section id=\"block-82\" class=\"widget widget_block widget_media_image\"> <figure class=\"wp-block-image size-full cr-footer-logo\"><img loading=\"lazy\" decoding=\"async\" width=\"2559\" height=\"428\" src=\"http://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png\" alt=\"\" class=\"wp-image-853\" style=\"object-fit:contain;object-position:50% 47%\" srcset=\"https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1.png 2559w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-300x50.png 300w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1024x171.png 1024w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-768x128.png 768w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-1536x257.png 1536w, https://classreklamtabela.com.tr/wp-content/uploads/2026/06/cropped-class-reklam-logo-header-scaled-1-2048x343.png 2048w\" sizes=\"auto, (max-width: 2559px) 100vw, 2559px\" /></figure> </section><section id=\"block-80\" class=\"widget widget_block widget_text\"> <p class=\"wp-block-paragraph\"></p> </section><section id=\"block-9\" class=\"widget widget_block widget_text\"> <p class=\"wp-block-paragraph\">Edremit tabela ve reklam çözümlerinde, kaliteli işçilikle işletmenizi görünür kılıyoruz.</p> </section><section id=\"block-70\" class=\"widget widget_block\"><div class=\"footer-social-map\"> <div class=\"footer-social-icons\"> <a href=\"https://www.instagram.com/classreklaam\" target=\"_blank\" rel=\"noopener\" aria-label=\"Instagram\" title=\"Instagram\"> <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"> <path d=\"M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8zm4.2 3.4A4.6 4.6 0 1 1 12 16.6a4.6 4.6 0 0 1 0-9.2zm0 2A2.6 2.6 0 1 0 14.6 12 2.6 2.6 0 0 0 12 9.4zM17.1 6.6a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z\"/> </svg> </a> <a href=\"https://wa.me/905469364271\" target=\"_blank\" rel=\"noopener\" aria-label=\"WhatsApp\" title=\"WhatsApp\"> <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\" focusable=\"false\"> <path d=\"M12.04 2A9.93 9.93 0 0 0 2 11.84a9.7 9.7 0 0 0 1.36 4.96L2 22l5.34-1.32A10.11 10.11 0 0 0 12.04 22 9.93 9.93 0 0 0 22 12 9.93 9.93 0 0 0 12.04 2zm0 18.1a8.13 8.13 0 0 1-4.16-1.14l-.3-.18-3.16.78.84-3.04-.2-.32A7.86 7.86 0 0 1 3.88 12a8.16 8.16 0 1 1 8.16 8.1zm4.48-6.08c-.24-.12-1.42-.7-1.64-.78s-.38-.12-.54.12-.62.78-.76.94-.28.18-.52.06a6.67 6.67 0 0 1-1.96-1.2 7.31 7.31 0 0 1-1.36-1.68c-.14-.24 0-.37.1-.49.11-.11.24-.28.36-.42a1.6 1.6 0 0 0 .24-.4.45.45 0 0 0-.02-.42c-.06-.12-.54-1.3-.74-1.78s-.4-.41-.54-.42h-.46a.88.88 0 0 0-.64.3 2.69 2.69 0 0 0-.84 2 4.68 4.68 0 0 0 .98 2.48 10.67 10.67 0 0 0 4.08 3.62 13.8 13.8 0 0 0 1.36.5 3.26 3.26 0 0 0 1.5.1 2.45 2.45 0 0 0 1.6-1.12 2 2 0 0 0 .14-1.12c-.06-.1-.22-.16-.46-.28z\"/> </svg> </a> </div> <a class=\"footer-map-link\" href=\"https://maps.app.goo.gl/affDVawoTfAPMPWS9\" target=\"_blank\" rel=\"noopener\" aria-label=\"Google Haritalar konumunu aç\"> <div class=\"footer-map-preview\"> <iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6148.931113049945!2d27.007089682744677!3d39.594193832037625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b0c90ca3acd849%3A0x5ab65996f36faff3!2sClass%20Reklam%20%26%20Tabela!5e0!3m2!1str!2sus!4v1780420538980!5m2!1str!2sus\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"> </iframe> </div> </a> </div></section> </div> </div><!-- .footer-widget1 --> </div> <div class=\"site-footer-middle-section-2 site-footer-section footer-section-inner-items-1\"> <div class=\"footer-widget-area widget-area site-footer-focus-item footer-widget2 content-align-default content-tablet-align-default content-mobile-align-default content-valign-default content-tablet-valign-default content-mobile-valign-default\" data-section=\"sidebar-widgets-footer2\"> <div class=\"footer-widget-area-inner site-info-inner\"> <section id=\"block-45\" class=\"widget widget_block\"> <h3 class=\"wp-block-heading has-theme-palette-7-color has-text-color has-link-color wp-elements-186f7235642c6ed019ff75fd2fa53adc\" style=\"font-size:20px\">HIZLI MENÜ</h3> </section><section id=\"block-52\" class=\"widget widget_block\"><div class=\"footer-title-line\"></div></section><section id=\"block-49\" class=\"widget widget_block\"><ul class=\"footer-link-list\"> <li><a href=\"/\">Ana Sayfa</a></li> <li><a href=\"/hakkimizda\">Hakkımızda</a></li> <li><a href=\"/hizmetlerimiz\">Hizmetlerimiz</a></li> <li><a href=\"/galeri\">Galeri</a></li> <li><a href=\"/blog\">Blog</a></li> <li><a href=\"/iletisim\">İletişim</a></li> </ul></section><section id=\"block-46\" class=\"widget widget_block\"> <div style=\"height:0px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div> </section> </div> </div><!-- .footer-widget2 --> </div> <div class=\"site-footer-middle-section-3 site-footer-section footer-section-inner-items-1\"> <div class=\"footer-widget-area widget-area site-footer-focus-item footer-widget3 content-align-default content-tablet-align-default content-mobile-align-default content-valign-default content-tablet-valign-default content-mobile-valign-default\" data-section=\"sidebar-widgets-footer3\"> <div class=\"footer-widget-area-inner site-info-inner\"> <section id=\"block-58\" class=\"widget widget_block\"> <h3 class=\"wp-block-heading has-theme-palette-7-color has-text-color has-link-color wp-elements-f2337dccc31df42cd4d7aff03ca2c11a\" style=\"font-size:20px\">HİZMETLERİMİZ</h3> </section><section id=\"block-60\" class=\"widget widget_block\"><div class=\"footer-title-line\"></div></section><section id=\"block-61\" class=\"widget widget_block\"><ul class=\"footer-link-list\"> <li><a href=\"/hizmetlerimiz\">Tabela</a></li> <li><a href=\"/hizmetlerimiz\">Totem</a></li> <li><a href=\"/hizmetlerimiz\">Dijital Baskı</a></li> <li><a href=\"/hizmetlerimiz\">Araç Giydirme</a></li> <li><a href=\"/hizmetlerimiz\">Cam Giydirme</a></li> <li><a href=\"/hizmetlerimiz\">Kutu Harf</a></li> </ul></section> </div> </div><!-- .footer-widget3 --> </div> <div class=\"site-footer-middle-section-4 site-footer-section footer-section-inner-items-1\"> <div class=\"footer-widget-area widget-area site-footer-focus-item footer-widget4 content-align-default content-tablet-align-default content-mobile-align-default content-valign-default content-tablet-valign-default content-mobile-valign-default\" data-section=\"sidebar-widgets-footer4\"> <div class=\"footer-widget-area-inner site-info-inner\"> <section id=\"block-62\" class=\"widget widget_block\"> <h3 class=\"wp-block-heading has-theme-palette-7-color has-text-color has-link-color wp-elements-cb9ca0a950725d8f6d4ae4172a2fb923\" style=\"font-size:20px\">İLETİŞİM</h3> </section><section id=\"block-63\" class=\"widget widget_block\"><div class=\"footer-title-line\"></div></section><section id=\"block-68\" class=\"widget widget_block\"><div class=\"footer-contact-box\"> <div class=\"footer-contact-item\"> <div class=\"footer-contact-text\"> <strong>Telefon</strong> <span>0546 936 42 71</span> </div> <div class=\"footer-contact-actions\"> <a class=\"footer-contact-btn\" href=\"tel:+905469364271\">Ara</a> <a class=\"footer-contact-btn footer-sms-btn\" href=\"sms:+905469364271\">Mesaj</a> </div> </div> <div class=\"footer-contact-item\"> <div class=\"footer-contact-text\"> <strong>E-posta</strong> <span>classreklam0@gmail.com</span> </div> <div class=\"footer-contact-actions\"> <a class=\"footer-contact-btn\" href=\"mailto:classreklam0@gmail.com\">Mail Gönder</a> </div> </div> <div class=\"footer-contact-item\"> <div class=\"footer-contact-text\"> <strong>Adres</strong> <span>Hamidiye Mh. Mithatpaşa<br>Cd. NO: 18/C<br>10300 Edremit/Balıkesir</span> </div> <div class=\"footer-contact-actions\"> <a class=\"footer-contact-btn\" href=\"https://maps.app.goo.gl/affDVawoTfAPMPWS9\" target=\"_blank\" rel=\"noopener\">Yol Tarifi Al</a> </div> </div> </div></section> </div> </div><!-- .footer-widget4 --> </div> </div> </div> </div> </div> <div class=\"site-bottom-footer-wrap site-footer-row-container site-footer-focus-item site-footer-row-layout-standard site-footer-row-tablet-layout-default site-footer-row-mobile-layout-default\" data-section=\"kadence_customizer_footer_bottom\"> <div class=\"site-footer-row-container-inner\"> <div class=\"site-container\"> <div class=\"site-bottom-footer-inner-wrap site-footer-row site-footer-row-columns-3 site-footer-row-column-layout-equal site-footer-row-tablet-column-layout-default site-footer-row-mobile-column-layout-row ft-ro-dir-row ft-ro-collapse-normal ft-ro-t-dir-default ft-ro-m-dir-default ft-ro-lstyle-plain\"> <div class=\"site-footer-bottom-section-1 site-footer-section footer-section-inner-items-1\"> <div class=\"footer-widget-area site-info site-footer-focus-item content-align-left content-tablet-align-center content-mobile-align-default content-valign-middle content-tablet-valign-default content-mobile-valign-default\" data-section=\"kadence_customizer_footer_html\"> <div class=\"footer-widget-area-inner site-info-inner\"> <div class=\"footer-html inner-link-style-normal\"><div class=\"footer-html-inner\"><div class=\"footer-copyright\"> © 2026 <span>Class Reklam.</span> Tüm hakları saklıdır. </div> </div></div> </div> </div><!-- .site-info --> </div> <div class=\"site-footer-bottom-section-2 site-footer-section footer-section-inner-items-1\"> <div class=\"footer-widget-area widget-area site-footer-focus-item footer-widget5 content-align-default content-tablet-align-default content-mobile-align-default content-valign-default content-tablet-valign-default content-mobile-valign-default\" data-section=\"sidebar-widgets-footer5\"> <div class=\"footer-widget-area-inner site-info-inner\"> <section id=\"block-72\" class=\"widget widget_block\"><div class=\"footer-bottom-links\"> <a href=\"/gizlilik-politikasi\">Gizlilik Politikası</a> <span></span> <a href=\"/kullanim-sartlari\">Kullanım Şartları</a> <span></span> <a href=\"/kvkk\">KVKK</a> </div></section> </div> </div><!-- .footer-widget5 --> </div> <div class=\"site-footer-bottom-section-3 site-footer-section footer-section-inner-items-1\"> <div class=\"footer-widget-area widget-area site-footer-focus-item footer-widget6 content-align-default content-tablet-align-default content-mobile-align-default content-valign-default content-tablet-valign-default content-mobile-valign-default\" data-section=\"sidebar-widgets-footer6\"> <div class=\"footer-widget-area-inner site-info-inner\"> <section id=\"block-75\" class=\"widget widget_block\"><a class=\"fixed-scroll-top\" href=\"#\" aria-label=\"Yukarı çık\"> <span>↑</span> </a> <script> document.addEventListener(\"DOMContentLoaded\", function () { c"
+    }
+  }
+}
