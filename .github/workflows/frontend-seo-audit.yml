@@ -1,0 +1,118 @@
+name: Frontend SEO Audit
+
+on:
+  push:
+    paths:
+      - '.github/workflows/frontend-seo-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit public frontend
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops /tmp/front-audit
+          python3 - <<'PY'
+          import html, json, os, pathlib, re, subprocess, urllib.parse
+          from html.parser import HTMLParser
+
+          base=os.environ['WP_URL'].rstrip('/')
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          paths=[
+            '/', '/iletisim/',
+            '/reklam-uygulamalarinda-dogru-malzeme-secimi/',
+            '/edremitte-tabela-yaptirmak-isteyenlere-oneriler/',
+            '/arac-giydirme-ile-firma-bilinirligi-nasil-artar/',
+            '/folyo-kesim-ve-uygulama-nedir/',
+            '/sample-page/', '/adasda/', '/asdasda/',
+            '/category/uncategorized/', '/author/admin/', '/author/recep/'
+          ]
+
+          class Parser(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.title=''; self.in_title=False; self.h1=[]; self.hstack=[]; self.meta={}; self.canonicals=[]; self.schemas=[]; self.links=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='title': self.in_title=True
+                  if tag=='h1': self.hstack.append([])
+                  if tag=='meta':
+                      n=(a.get('name') or a.get('property') or '').lower(); c=a.get('content','')
+                      if n in ('description','robots','og:title','og:description'): self.meta[n]=c
+                  if tag=='link' and 'canonical' in (a.get('rel') or '').lower(): self.canonicals.append(a.get('href',''))
+                  if tag=='script' and (a.get('type') or '').lower()=='application/ld+json': self.schemas.append('__SCRIPT_START__')
+                  if tag=='a' and a.get('href'): self.links.append(a.get('href'))
+              def handle_endtag(self,tag):
+                  if tag=='title': self.in_title=False
+                  if tag=='h1' and self.hstack:
+                      self.h1.append(re.sub(r'\s+',' ',' '.join(self.hstack.pop())).strip())
+              def handle_data(self,data):
+                  if self.in_title: self.title += data
+                  if self.hstack: self.hstack[-1].append(data)
+                  if self.schemas and self.schemas[-1].startswith('__SCRIPT_START__'): self.schemas[-1]+=data
+
+          def schema_types(scripts):
+              types=[]
+              for raw in scripts:
+                  raw=raw.replace('__SCRIPT_START__','').strip()
+                  try: obj=json.loads(raw)
+                  except Exception: continue
+                  stack=[obj]
+                  while stack:
+                      x=stack.pop()
+                      if isinstance(x,dict):
+                          t=x.get('@type')
+                          if isinstance(t,str): types.append(t)
+                          elif isinstance(t,list): types.extend(str(v) for v in t)
+                          stack.extend(x.values())
+                      elif isinstance(x,list): stack.extend(x)
+              return sorted(set(types))
+
+          results=[]
+          for i,path in enumerate(paths):
+              url=base+path
+              outfile=f'/tmp/front-audit/{i}.html'
+              fmt='%{http_code}\n%{url_effective}\n%{content_type}\n'
+              cp=subprocess.run(['curl','-A',ua,'-sS','-L','--max-time','25','-o',outfile,'-w',fmt,url],capture_output=True,text=True)
+              lines=cp.stdout.splitlines()
+              http=lines[0] if len(lines)>0 else '000'; final=lines[1] if len(lines)>1 else ''; ctype=lines[2] if len(lines)>2 else ''
+              text=pathlib.Path(outfile).read_text(errors='replace') if pathlib.Path(outfile).exists() else ''
+              marker='imunify360' if 'Imunify360' in text else ('html' if '<html' in text.lower() else '')
+              p=Parser();
+              try: p.feed(text)
+              except Exception: pass
+              hnorm=[re.sub(r'\s+',' ',x).strip() for x in p.h1 if x.strip()]
+              results.append({
+                'path':path,'http':http,'final_url':final,'content_type':ctype,'marker':marker,
+                'title':re.sub(r'\s+',' ',p.title).strip(),
+                'description':p.meta.get('description',''),'robots':p.meta.get('robots',''),
+                'canonical':p.canonicals[:3], 'h1_count':len(hnorm),'h1':hnorm[:8],
+                'duplicate_h1':len(hnorm)!=len(set(hnorm)), 'schema_types':schema_types(p.schemas),
+                'internal_link_count':sum(1 for x in p.links if x.startswith('/') or x.startswith(base))
+              })
+          # host variants
+          variants=[]
+          for url in ['http://classreklamtabela.com.tr/','https://classreklamtabela.com.tr/','https://www.classreklamtabela.com.tr/']:
+              cp=subprocess.run(['curl','-A',ua,'-sS','-L','--max-time','20','-o','/dev/null','-w','%{http_code}\n%{url_effective}\n%{num_redirects}\n',url],capture_output=True,text=True)
+              l=cp.stdout.splitlines(); variants.append({'url':url,'http':l[0] if l else '000','final_url':l[1] if len(l)>1 else '','redirects':l[2] if len(l)>2 else '', 'curl_exit':cp.returncode})
+          pathlib.Path('.ops/frontend-seo-audit.json').write_text(json.dumps({'pages':results,'host_variants':variants},ensure_ascii=False,indent=2)+'\n')
+          PY
+      - name: Save audit
+        shell: bash
+        run: |
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/frontend-seo-audit.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record frontend SEO audit'
+          git pull --rebase origin main
+          git push
