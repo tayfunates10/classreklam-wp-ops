@@ -1,0 +1,6 @@
+{
+  "status": "failed",
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/apply_phase1.py\", line 238, in <module>\n    main()\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/apply_phase1.py\", line 233, in main\n    results['service_pages'].append(upsert_page(item))\n                                    ^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/classreklam-wp-ops/classreklam-wp-ops/scripts/apply_phase1.py\", line 178, in upsert_page\n    raise RuntimeError(f'Page lookup failed {item[\"slug\"]}: {code} {found}')\nRuntimeError: Page lookup failed edremit-tabela: 403 {'message': 'Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted'}"
+}
