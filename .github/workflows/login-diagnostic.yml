@@ -84,3 +84,5 @@ jobs:
           git commit -m 'chore: record WordPress login diagnostic v3'
           git pull --rebase origin main
           git push
+
+# rerun after secret update: 2026-08-10T14:55:00+03:00
