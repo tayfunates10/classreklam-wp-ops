@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import base64, importlib.util, json, os, urllib.error, urllib.parse, urllib.request
+import base64, importlib.util, json, os, time, urllib.error, urllib.parse, urllib.request
 
 BASE=os.environ['WP_URL'].rstrip('/')
 USER=os.environ['WP_USER']
@@ -19,7 +19,7 @@ def queryrest_url(path):
         url+='&'+parsed.query
     return url
 
-def request(method,path,payload=None):
+def one_request(method,path,payload=None):
     data=None
     headers={'Authorization':AUTH,'Accept':'application/json','User-Agent':UA,'Referer':BASE+'/wp-admin/'}
     if payload is not None:
@@ -37,6 +37,20 @@ def request(method,path,payload=None):
         try: body=json.loads(raw)
         except Exception: body={'raw':raw[:1500]}
         return e.code,body
+
+def request(method,path,payload=None):
+    # Keep automation traffic deliberately slow so Imunify360 does not classify it as a bot burst.
+    time.sleep(2.5)
+    last=(0,{})
+    for attempt in range(3):
+        code,body=one_request(method,path,payload)
+        last=(code,body)
+        text=json.dumps(body,ensure_ascii=False).lower() if isinstance(body,(dict,list)) else str(body).lower()
+        if code != 403 or 'imunify360' not in text:
+            return code,body
+        if attempt < 2:
+            time.sleep(12*(attempt+1))
+    return last
 
 os.environ.setdefault('WP_SESSION_COOKIE_HEADER','')
 os.environ.setdefault('WP_REST_NONCE','')
