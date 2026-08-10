@@ -1,0 +1,11 @@
+{
+  "curl_exit": 0,
+  "waf_challenge": false,
+  "override_present": true,
+  "base_animation_name_none": false,
+  "base_animation_duration_zero": false,
+  "breathe_keyframe_present": false,
+  "alternate_loop_present": false,
+  "minimum_opacity_nonzero": false,
+  "overlay_text_present": true
+}

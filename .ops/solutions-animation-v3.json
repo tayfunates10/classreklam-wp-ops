@@ -1,0 +1,19 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "status": "success",
+    "modified": "2026-08-10T13:11:42",
+    "checks": {
+      "marker_count": 1,
+      "overlay_text_attribute_present": true,
+      "base_animation_name_none": true,
+      "base_animation_duration_zero": true,
+      "breathe_keyframe_present": true,
+      "alternate_loop_present": true,
+      "nonzero_minimum_opacity": true,
+      "reduced_motion_present": true
+    }
+  }
+}
