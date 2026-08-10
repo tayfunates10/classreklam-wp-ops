@@ -4,9 +4,9 @@
   "stderr": "",
   "result": {
     "status": "success",
-    "phrase_present_before": true,
+    "phrase_present_before": false,
     "phrase_present_after": false,
-    "content_changed": true,
-    "modified": "2026-08-10T12:44:12"
+    "content_changed": false,
+    "modified": "2026-08-10T12:45:37"
   }
 }

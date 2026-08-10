@@ -1,0 +1,28 @@
+{
+  "status": "success",
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "status": "success",
+    "plugins": [
+      {
+        "plugin": "kadence-blocks/kadence-blocks",
+        "status": "active",
+        "name": "Kadence Blocks — Page Builder Toolkit for Gutenberg Editor",
+        "version": "3.7.6"
+      },
+      {
+        "plugin": "seo-by-rank-math/rank-math",
+        "status": "active",
+        "name": "Rank Math SEO",
+        "version": "1.0.272"
+      },
+      {
+        "plugin": "insert-headers-and-footers/ihaf",
+        "status": "active",
+        "name": "WPCode Lite",
+        "version": "2.3.6"
+      }
+    ]
+  }
+}
