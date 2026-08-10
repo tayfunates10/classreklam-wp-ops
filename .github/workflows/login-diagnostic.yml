@@ -1,0 +1,87 @@
+name: WordPress Login Diagnostic
+
+on:
+  push:
+    paths:
+      - '.github/workflows/login-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Diagnose login without exposing credentials
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_LOGIN_USER: ${{ secrets.WP_LOGIN_USER }}
+          WP_LOGIN_PASSWORD: ${{ secrets.WP_LOGIN_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          base="${WP_URL%/}"
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          jar=/tmp/wp-cookies.txt
+          curl -A "$ua" -sS --max-time 20 -c "$jar" -D /tmp/pre.headers "$base/wp-login.php" -o /tmp/pre.html
+          curl -A "$ua" -sS --max-time 30 -b "$jar" -c "$jar" -L -D /tmp/post.headers \
+            --data-urlencode "log=$WP_LOGIN_USER" \
+            --data-urlencode "pwd=$WP_LOGIN_PASSWORD" \
+            --data-urlencode "wp-submit=Log In" \
+            --data-urlencode "redirect_to=$base/wp-admin/" \
+            --data-urlencode "testcookie=1" \
+            -w '%{http_code}\n%{url_effective}\n%{num_redirects}\n' \
+            "$base/wp-login.php" -o /tmp/post.html > /tmp/curl.meta
+          python3 - <<'PY'
+          import json,re,pathlib
+          meta=pathlib.Path('/tmp/curl.meta').read_text(errors='replace').splitlines()
+          html=pathlib.Path('/tmp/post.html').read_text(errors='replace')
+          cookie_names=[]
+          p=pathlib.Path('/tmp/wp-cookies.txt')
+          if p.exists():
+              for line in p.read_text(errors='replace').splitlines():
+                  if line.startswith('#HttpOnly_'):
+                      parts=line.split('\t')
+                      if len(parts)>=7: cookie_names.append(parts[5])
+                  elif line and not line.startswith('#'):
+                      parts=line.split('\t')
+                      if len(parts)>=7: cookie_names.append(parts[5])
+          markers={
+            'login_error': 'login_error' in html or 'incorrect' in html.lower() or 'unknown username' in html.lower(),
+            'two_factor': any(x in html.lower() for x in ['two-factor','2fa','verification code','authentication code','doğrulama kodu']),
+            'imunify360': 'imunify360' in html.lower(),
+            'captcha': any(x in html.lower() for x in ['captcha','recaptcha','turnstile','cf-chl']),
+            'wp_dashboard': any(x in html.lower() for x in ['wp-admin-bar','dashboard','wpbody-content']),
+            'login_form': 'id="loginform"' in html.lower(),
+          }
+          title=''
+          m=re.search(r'<title[^>]*>(.*?)</title>',html,re.I|re.S)
+          if m: title=re.sub(r'\s+',' ',re.sub('<[^>]+>','',m.group(1))).strip()[:200]
+          result={
+            'status':'diagnostic',
+            'http_code': meta[0] if len(meta)>0 else '',
+            'final_url': meta[1] if len(meta)>1 else '',
+            'redirects': meta[2] if len(meta)>2 else '',
+            'cookie_names': sorted(set(cookie_names)),
+            'markers':markers,
+            'title':title,
+            'login_user_present': bool(__import__('os').environ.get('WP_LOGIN_USER')),
+            'login_password_present': bool(__import__('os').environ.get('WP_LOGIN_PASSWORD')),
+          }
+          pathlib.Path('.ops/login-diagnostic.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+          PY
+      - name: Save result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/login-diagnostic.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record WordPress login diagnostic'
+          git pull --rebase origin main
+          git push
