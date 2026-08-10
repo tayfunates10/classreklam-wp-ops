@@ -12,7 +12,7 @@ permissions:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@v4
       - name: Remove phrase and re-save homepage
@@ -60,16 +60,65 @@ jobs:
           pathlib.Path('.ops/active-plugins.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
           PY
           exit 0
+      - name: Verify live HTML and attempt URL cache purge
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+        shell: bash
+        run: |
+          set +e
+          base="${WP_URL%/}"
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          ts=$(date +%s)
+          curl -A "$ua" -sS -L --max-time 25 -H 'Cache-Control: no-cache, no-store, max-age=0' -H 'Pragma: no-cache' "$base/?cr_cache_bust=$ts" -D /tmp/bypass.headers -o /tmp/bypass.html
+          bypass_rc=$?
+          purge_meta=$(curl -A "$ua" -sS --max-time 20 -X PURGE -o /tmp/purge.body -w '%{http_code}|%{content_type}' "$base/" 2>/tmp/purge.err)
+          sleep 2
+          curl -A "$ua" -sS -L --max-time 25 -H 'Cache-Control: no-cache' "$base/" -D /tmp/normal.headers -o /tmp/normal.html
+          normal_rc=$?
+          BYPASS_RC="$bypass_rc" NORMAL_RC="$normal_rc" PURGE_META="$purge_meta" python3 - <<'PY'
+          import json,os,pathlib,re
+          def text(path):
+              p=pathlib.Path(path)
+              return p.read_text(errors='replace') if p.exists() else ''
+          bypass=text('/tmp/bypass.html'); normal=text('/tmp/normal.html')
+          bh=text('/tmp/bypass.headers'); nh=text('/tmp/normal.headers')
+          def summary(s):
+              low=s.lower()
+              return {
+                'old_phrase_present':'profesyonel hizmet' in low,
+                'new_heading_present':'edremit tabela ve reklam' in low,
+                'waf_challenge':('imunify360' in low or 'one moment, please' in low),
+                'title_sample': re.sub(r'\s+',' ',re.search(r'<title[^>]*>(.*?)</title>',s,re.I|re.S).group(1)).strip()[:200] if re.search(r'<title[^>]*>(.*?)</title>',s,re.I|re.S) else '',
+              }
+          def cache_headers(h):
+              out=[]
+              for line in h.splitlines():
+                  if re.match(r'(?i)^(cache-control|age|x-cache|x-litespeed-cache|cf-cache-status|server|x-powered-cache):',line): out.append(line.strip())
+              return out[:20]
+          out={
+            'bypass_curl_exit':int(os.environ.get('BYPASS_RC','0')),
+            'normal_curl_exit':int(os.environ.get('NORMAL_RC','0')),
+            'purge_meta':os.environ.get('PURGE_META',''),
+            'bypass':summary(bypass),
+            'normal':summary(normal),
+            'bypass_cache_headers':cache_headers(bh),
+            'normal_cache_headers':cache_headers(nh),
+            'purge_body_sample':re.sub(r'\s+',' ',text('/tmp/purge.body'))[:500],
+            'purge_error':re.sub(r'\s+',' ',text('/tmp/purge.err'))[:500],
+          }
+          pathlib.Path('.ops/live-cache-check.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
       - name: Save result
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/remove-profesyonel-hizmet.json .ops/active-plugins.json
+          git add .ops/remove-profesyonel-hizmet.json .ops/active-plugins.json .ops/live-cache-check.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record hero cleanup and cache plugin inspection'
+          git commit -m 'chore: record hero cleanup and cache verification'
           git pull --rebase origin main
           git push
 
-# cache-layer inspection rerun: 2026-08-10T15:43:00+03:00
+# hosting-cache verification rerun: 2026-08-10T15:45:00+03:00
