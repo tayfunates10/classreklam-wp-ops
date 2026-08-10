@@ -1,0 +1,86 @@
+name: Apply Phase 1 via WordPress Browser Session
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-phase1-browser-session.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login and apply SEO
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_LOGIN_USER: ${{ secrets.WP_LOGIN_USER }}
+          WP_LOGIN_PASSWORD: ${{ secrets.WP_LOGIN_PASSWORD }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .ops
+          result=.ops/browser-session-phase1.json
+          if [ -z "$WP_LOGIN_USER" ] || [ -z "$WP_LOGIN_PASSWORD" ]; then
+            printf '{"status":"waiting-for-login-secrets"}\n' > "$result"
+            exit 0
+          fi
+
+          base="${WP_URL%/}"
+          ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          jar=/tmp/wp-cookies.txt
+
+          curl -A "$ua" -sS --max-time 20 -c "$jar" "$base/wp-login.php" -o /tmp/login-page.html
+          curl -A "$ua" -sS --max-time 30 -b "$jar" -c "$jar" -L \
+            --data-urlencode "log=$WP_LOGIN_USER" \
+            --data-urlencode "pwd=$WP_LOGIN_PASSWORD" \
+            --data-urlencode "wp-submit=Log In" \
+            --data-urlencode "redirect_to=$base/wp-admin/" \
+            --data-urlencode "testcookie=1" \
+            "$base/wp-login.php" -o /tmp/login-result.html
+
+          if ! grep -q 'wordpress_logged_in_' "$jar"; then
+            python3 - <<'PY'
+          import json,pathlib
+          pathlib.Path('.ops/browser-session-phase1.json').write_text(json.dumps({'status':'login-failed','detail':'wordpress_logged_in cookie not issued'},ensure_ascii=False,indent=2)+'\n')
+          PY
+            exit 0
+          fi
+
+          nonce=$(curl -A "$ua" -sS --max-time 20 -b "$jar" -e "$base/wp-admin/" "$base/wp-admin/admin-ajax.php?action=rest-nonce" | tr -d '\r\n')
+          if [ -z "$nonce" ] || [ "$nonce" = "-1" ] || [ "$nonce" = "0" ]; then
+            printf '{"status":"nonce-failed"}\n' > "$result"
+            exit 0
+          fi
+
+          cookie_header=$(awk 'BEGIN{ORS=""} $0 !~ /^#/ && NF>=7 {if(n++) printf "; "; printf "%s=%s",$6,$7}' "$jar")
+          WP_SESSION_COOKIE_HEADER="$cookie_header" WP_REST_NONCE="$nonce" \
+            python3 scripts/apply_phase1_cookie.py > /tmp/phase1.out 2> /tmp/phase1.err
+          rc=$?
+
+          python3 - "$rc" <<'PY'
+          import json,pathlib,sys
+          rc=int(sys.argv[1])
+          out=pathlib.Path('/tmp/phase1.out').read_text(errors='replace').strip()
+          err=pathlib.Path('/tmp/phase1.err').read_text(errors='replace').strip()
+          data={'status':'success' if rc==0 else 'failed','exit_code':rc,'stdout':out[-12000:],'stderr':err[-12000:]}
+          pathlib.Path('.ops/browser-session-phase1.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+          PY
+          exit 0
+
+      - name: Save result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ops/browser-session-phase1.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record browser-session SEO deployment result'
+          git pull --rebase origin main
+          git push
