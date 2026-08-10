@@ -4,13 +4,14 @@
   "stderr": "",
   "result": {
     "status": "success",
-    "modified": "2026-08-10T12:59:29",
+    "modified": "2026-08-10T13:04:40",
     "checks": {
       "marker_count": 1,
-      "seamless_keyframe_present": true,
-      "alternate_loop_present": true,
-      "old_v2_animation_absent": true,
-      "pseudo_disabled": true,
+      "overlay_text_attribute_present": true,
+      "base_animation_disabled": true,
+      "crossfade_keyframe_present": true,
+      "white_overlay_present": true,
+      "loop_boundary_same_state": true,
       "reduced_motion_present": true
     }
   }

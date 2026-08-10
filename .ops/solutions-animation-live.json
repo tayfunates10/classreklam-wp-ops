@@ -2,8 +2,10 @@
   "curl_exit": 0,
   "waf_challenge": false,
   "new_override_present": true,
-  "seamless_keyframe_present": true,
-  "alternate_loop_present": true,
+  "crossfade_keyframe_present": true,
+  "overlay_text_present": true,
+  "base_animation_disabled": false,
+  "loop_boundary_same_state": true,
   "new_override_after_old_rules": true,
   "old_rule_positions": [
     240818,
@@ -11,5 +13,5 @@
     244063,
     209240
   ],
-  "new_override_position": 387924
+  "new_override_position": 388538
 }
