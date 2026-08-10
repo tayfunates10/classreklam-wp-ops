@@ -1,0 +1,6 @@
+{
+  "channel": "xmlrpc",
+  "status": "failed",
+  "error_type": "ExpatError",
+  "error": "mismatched tag: line 93, column 2"
+}
