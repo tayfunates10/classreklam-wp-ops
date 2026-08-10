@@ -1,1 +1,4 @@
-{"status":"waiting-for-login-secrets"}
+{
+  "status": "login-failed",
+  "detail": "wordpress_logged_in cookie not issued"
+}
