@@ -48,3 +48,5 @@ jobs:
           git commit -m 'chore: record blog taxonomy inventory'
           git pull --rebase origin main
           git push
+
+# WAF-safe rerun 2026-08-10T15:16:00+03:00
