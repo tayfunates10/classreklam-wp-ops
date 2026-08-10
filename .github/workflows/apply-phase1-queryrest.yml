@@ -1,4 +1,4 @@
-name: Post-change SEO Audit via Query REST
+name: Fix SEO H1 Structure via Query REST
 
 on:
   push:
@@ -10,12 +10,12 @@ permissions:
   contents: write
 
 jobs:
-  audit:
+  fix:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Audit WordPress post-change state
+      - name: Add missing H1 headings
         env:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
@@ -24,7 +24,7 @@ jobs:
         run: |
           set +e
           mkdir -p .ops
-          python3 scripts/postchange_audit_queryrest.py > /tmp/out 2>/tmp/err
+          python3 scripts/fix_h1_queryrest.py > /tmp/out 2>/tmp/err
           rc=$?
           python3 - "$rc" <<'PY'
           import json,pathlib,sys
@@ -33,10 +33,10 @@ jobs:
           err=pathlib.Path('/tmp/err').read_text(errors='replace').strip()
           payload={'status':'success' if rc==0 else 'failed','exit_code':rc,'stderr':err[-12000:]}
           if rc==0:
-              try: payload['audit']=json.loads(out)
+              try: payload['result']=json.loads(out)
               except Exception: payload['stdout']=out[-20000:]
           else: payload['stdout']=out[-20000:]
-          pathlib.Path('.ops/postchange-audit.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
+          pathlib.Path('.ops/h1-fix-result.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n')
           PY
           exit 0
       - name: Save result
@@ -45,8 +45,8 @@ jobs:
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/postchange-audit.json
+          git add .ops/h1-fix-result.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: record post-change SEO audit'
+          git commit -m 'chore: record H1 structure fix result'
           git pull --rebase origin main
           git push
