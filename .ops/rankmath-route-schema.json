@@ -1,0 +1,160 @@
+{
+  "updateMeta": {
+    "namespace": "rankmath/v1",
+    "methods": [
+      "POST"
+    ],
+    "endpoints": [
+      {
+        "methods": [
+          "POST"
+        ],
+        "args": {
+          "objectType": {
+            "type": "string",
+            "description": "Obje Tipi örneğin: yazı,terim,kullanıcı",
+            "required": true
+          },
+          "objectID": {
+            "type": "integer",
+            "description": "Obje eşsiz no",
+            "required": true
+          },
+          "meta": {
+            "description": "Meta ekle veya veriyi güncelle",
+            "required": true
+          }
+        }
+      }
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://classreklamtabela.com.tr/wp-json/rankmath/v1/updateMeta"
+        }
+      ]
+    }
+  },
+  "updateSettings": {
+    "namespace": "rankmath/v1",
+    "methods": [
+      "POST",
+      "PUT",
+      "PATCH"
+    ],
+    "endpoints": [
+      {
+        "methods": [
+          "POST",
+          "PUT",
+          "PATCH"
+        ],
+        "args": []
+      }
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://classreklamtabela.com.tr/wp-json/rankmath/v1/updateSettings"
+        }
+      ]
+    }
+  },
+  "updateRedirection": {
+    "namespace": "rankmath/v1",
+    "methods": [
+      "POST"
+    ],
+    "endpoints": [
+      {
+        "methods": [
+          "POST"
+        ],
+        "args": {
+          "objectID": {
+            "type": "integer",
+            "description": "Obje eşsiz no",
+            "required": true
+          },
+          "objectType": {
+            "type": "string",
+            "default": "post",
+            "description": "Obje Tipi örneğin: yazı,terim,kullanıcı",
+            "required": true
+          },
+          "hasRedirect": {
+            "type": "boolean",
+            "description": "Whether the object has a redirect or not",
+            "required": true
+          },
+          "redirectionID": {
+            "type": "string",
+            "description": "Redirection ID",
+            "required": false
+          },
+          "redirectionUrl": {
+            "type": "string",
+            "description": "Redirection URL",
+            "required": false
+          },
+          "redirectionType": {
+            "type": "string",
+            "default": "301",
+            "description": "Yönlendirme Türü",
+            "enum": [
+              "301",
+              "302",
+              "307",
+              "410",
+              "451"
+            ],
+            "required": true
+          }
+        }
+      }
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://classreklamtabela.com.tr/wp-json/rankmath/v1/updateRedirection"
+        }
+      ]
+    }
+  },
+  "updateSchemas": {
+    "namespace": "rankmath/v1",
+    "methods": [
+      "POST"
+    ],
+    "endpoints": [
+      {
+        "methods": [
+          "POST"
+        ],
+        "args": {
+          "objectType": {
+            "type": "string",
+            "description": "Obje Tipi örneğin: yazı,terim,kullanıcı",
+            "required": true
+          },
+          "objectID": {
+            "type": "integer",
+            "description": "Obje eşsiz no",
+            "required": true
+          },
+          "schemas": {
+            "description": "veri eklemek veya güncellemek için şemalar.",
+            "required": true
+          }
+        }
+      }
+    ],
+    "_links": {
+      "self": [
+        {
+          "href": "https://classreklamtabela.com.tr/wp-json/rankmath/v1/updateSchemas"
+        }
+      ]
+    }
+  }
+}
