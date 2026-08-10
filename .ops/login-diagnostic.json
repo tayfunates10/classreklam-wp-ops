@@ -1,20 +1,12 @@
 {
-  "status": "diagnostic",
+  "status": "diagnostic-v2",
   "http_code": "200",
   "final_url": "https://classreklamtabela.com.tr/wp-login.php",
   "redirects": "0",
   "cookie_names": [
     "wordpress_test_cookie"
   ],
-  "markers": {
-    "login_error": true,
-    "two_factor": false,
-    "imunify360": false,
-    "captcha": false,
-    "wp_dashboard": false,
-    "login_form": true
-  },
-  "title": "Oturum aç &lsaquo; Class Reklam | Edremit Tabela ve Reklam &#8212; WordPress",
+  "login_error_category": "unknown",
   "login_user_present": true,
   "login_password_present": true
 }
