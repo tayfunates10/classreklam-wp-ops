@@ -71,6 +71,14 @@ class Parser(HTMLParser):
             self._h1_buf.append(data)
 
 
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+OPENER = urllib.request.build_opener(NoRedirect)
+
+
 def clean(s):
     return re.sub(r'\s+', ' ', html.unescape(str(s or ''))).strip()
 
@@ -93,21 +101,32 @@ def canonicalize(raw, base=BASE + '/'):
     if any(k in EXCLUDE_QUERY_KEYS or k.startswith('utm_') for k in qs):
         qs = {k: v for k, v in qs.items() if k not in EXCLUDE_QUERY_KEYS and not k.startswith('utm_')}
     query = urllib.parse.urlencode([(k, x) for k in sorted(qs) for x in qs[k]]) if qs else ''
-    # Crawl only canonical host; host normalization itself is tested elsewhere.
     return urllib.parse.urlunsplit(('https', 'classreklamtabela.com.tr', path, query, ''))
 
 
 def get(url, limit=1_500_000):
     req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'text/html,application/xml,text/xml;q=0.9,*/*;q=0.5'})
     try:
-        with urllib.request.urlopen(req, timeout=40) as r:
+        with OPENER.open(req, timeout=40) as r:
             body = r.read(limit).decode('utf-8', errors='replace')
-            return {'http': r.status, 'url': r.geturl(), 'content_type': r.headers.get('Content-Type', ''), 'body': body}
+            return {
+                'http': r.status,
+                'url': r.geturl(),
+                'location': r.headers.get('Location', ''),
+                'content_type': r.headers.get('Content-Type', ''),
+                'body': body,
+            }
     except urllib.error.HTTPError as e:
         body = e.read(limit).decode('utf-8', errors='replace')
-        return {'http': e.code, 'url': e.geturl(), 'content_type': e.headers.get('Content-Type', ''), 'body': body}
+        return {
+            'http': e.code,
+            'url': e.geturl(),
+            'location': e.headers.get('Location', ''),
+            'content_type': e.headers.get('Content-Type', ''),
+            'body': body,
+        }
     except Exception as e:
-        return {'http': 0, 'url': url, 'content_type': '', 'body': '', 'error': f'{type(e).__name__}: {e}'}
+        return {'http': 0, 'url': url, 'location': '', 'content_type': '', 'body': '', 'error': f'{type(e).__name__}: {e}'}
 
 
 def waf(body):
@@ -127,7 +146,14 @@ def sitemap_urls():
         seen_maps.add(sm)
         time.sleep(DELAY)
         res = get(sm)
-        item = {'url': sm, 'http': res['http'], 'content_type': res['content_type'], 'waf': waf(res['body']), 'locs': 0}
+        item = {
+            'url': sm,
+            'http': res['http'],
+            'location': res.get('location', ''),
+            'content_type': res['content_type'],
+            'waf': waf(res['body']),
+            'locs': 0,
+        }
         if res['http'] != 200 or item['waf']:
             evidence.append(item)
             continue
@@ -184,6 +210,7 @@ def main():
         record = {
             'url': url,
             'http': res.get('http'),
+            'location': res.get('location', ''),
             'final_url': res.get('url'),
             'content_type': res.get('content_type'),
             'waf': is_waf,
@@ -248,9 +275,12 @@ def main():
     with open(args.output, 'w', encoding='utf-8') as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
     print(json.dumps({
-        'crawled': len(pages), 'sitemap_seeds': len(seeds), 'waf': len(waf_urls),
-        'broken_edges': len(broken_edges), 'duplicate_titles': len(report['duplicate_titles']),
-        'duplicate_descriptions': len(report['duplicate_descriptions'])
+        'crawled': len(pages),
+        'sitemap_seeds': len(seeds),
+        'waf': len(waf_urls),
+        'broken_edges': len(broken_edges),
+        'duplicate_titles': len(report['duplicate_titles']),
+        'duplicate_descriptions': len(report['duplicate_descriptions']),
     }, ensure_ascii=False, indent=2))
 
 
