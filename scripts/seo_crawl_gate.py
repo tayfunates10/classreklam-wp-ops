@@ -52,6 +52,10 @@ def main():
         failures.append({'check': 'duplicate_titles', 'detail': data['duplicate_titles'][:20]})
     if data.get('duplicate_descriptions'):
         failures.append({'check': 'duplicate_descriptions', 'detail': data['duplicate_descriptions'][:20]})
+    if data.get('pagination_duplicate_titles'):
+        warnings.append({'check': 'pagination_duplicate_titles', 'detail': data['pagination_duplicate_titles'][:20]})
+    if data.get('pagination_duplicate_descriptions'):
+        warnings.append({'check': 'pagination_duplicate_descriptions', 'detail': data['pagination_duplicate_descriptions'][:20]})
 
     sitemap_urls = set(data.get('sitemap_seed_urls') or [])
     for url in sorted(sitemap_urls):

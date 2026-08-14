@@ -26,6 +26,7 @@ class Parser(HTMLParser):
         self.links = []
         self.title = ''
         self._in_title = False
+        self._title_done = False
         self._title_buf = []
         self.h1 = []
         self._h1_depth = 0
@@ -35,8 +36,10 @@ class Parser(HTMLParser):
         self.canonical = ''
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs); tag = tag.lower()
-        if tag == 'a' and attrs.get('href'): self.links.append(attrs['href'])
-        elif tag == 'title': self._in_title = True; self._title_buf = []
+        if tag == 'a' and attrs.get('href'):
+            self.links.append(attrs['href'])
+        elif tag == 'title' and not self._title_done:
+            self._in_title = True; self._title_buf = []
         elif tag == 'h1':
             self._h1_depth += 1
             if self._h1_depth == 1: self._h1_buf = []
@@ -51,7 +54,7 @@ class Parser(HTMLParser):
     def handle_endtag(self, tag):
         tag = tag.lower()
         if tag == 'title' and self._in_title:
-            self.title = clean(' '.join(self._title_buf)); self._in_title = False
+            self.title = clean(' '.join(self._title_buf)); self._in_title = False; self._title_done = True
         elif tag == 'h1' and self._h1_depth:
             if self._h1_depth == 1: self.h1.append(clean(' '.join(self._h1_buf)))
             self._h1_depth -= 1
@@ -83,6 +86,13 @@ def canonicalize(raw, base=BASE + '/'):
         qs = {k: v for k, v in qs.items() if k not in EXCLUDE_QUERY_KEYS and not k.startswith('utm_')}
     query = urllib.parse.urlencode([(k, x) for k in sorted(qs) for x in qs[k]]) if qs else ''
     return urllib.parse.urlunsplit(('https', 'classreklamtabela.com.tr', path, query, ''))
+
+
+def is_pagination_url(url):
+    try:
+        return bool(re.search(r'/page/\d+/?$', urllib.parse.urlsplit(url).path, re.I))
+    except Exception:
+        return False
 
 
 def get(url, limit=1_500_000):
@@ -126,6 +136,17 @@ def sitemap_urls():
         except Exception as exc: item['parse_error'] = str(exc)
         evidence.append(item)
     return discovered, evidence
+
+
+def split_duplicate_groups(groups):
+    hard, pagination = [], []
+    for urls in groups:
+        non_pagination = [u for u in urls if not is_pagination_url(u)]
+        if len(non_pagination) >= 2:
+            hard.append(urls)
+        else:
+            pagination.append(urls)
+    return hard, pagination
 
 
 def main():
@@ -180,16 +201,30 @@ def main():
         if rec['title']: title_map[rec['title'].casefold()].append(url)
         if rec['description']: desc_map[rec['description'].casefold()].append(url)
 
+    raw_title_dups = [v for v in title_map.values() if len(v) > 1]
+    raw_desc_dups = [v for v in desc_map.values() if len(v) > 1]
+    duplicate_titles, pagination_duplicate_titles = split_duplicate_groups(raw_title_dups)
+    duplicate_descriptions, pagination_duplicate_descriptions = split_duplicate_groups(raw_desc_dups)
+
     report = {
         'checked_at': dt.datetime.now(dt.timezone.utc).isoformat(), 'base': BASE,
         'limits': {'max_urls': MAX_URLS, 'delay_seconds': DELAY}, 'sitemaps': sm_evidence,
         'sitemap_seed_count': len(sitemap_seeds), 'sitemap_seed_urls': sorted(sitemap_seeds),
         'crawled_count': len(pages), 'waf_urls': waf_urls, 'broken_internal_edges': broken_edges,
-        'duplicate_titles': [v for v in title_map.values() if len(v) > 1],
-        'duplicate_descriptions': [v for v in desc_map.values() if len(v) > 1], 'pages': list(pages.values()),
+        'duplicate_titles': duplicate_titles,
+        'duplicate_descriptions': duplicate_descriptions,
+        'pagination_duplicate_titles': pagination_duplicate_titles,
+        'pagination_duplicate_descriptions': pagination_duplicate_descriptions,
+        'pages': list(pages.values()),
     }
     with open(args.output, 'w', encoding='utf-8') as f: json.dump(report, f, ensure_ascii=False, indent=2)
-    print(json.dumps({'crawled': len(pages), 'sitemap_seeds': len(sitemap_seeds), 'waf': len(waf_urls), 'broken_edges': len(broken_edges), 'duplicate_titles': len(report['duplicate_titles']), 'duplicate_descriptions': len(report['duplicate_descriptions'])}, ensure_ascii=False, indent=2))
+    print(json.dumps({
+        'crawled': len(pages), 'sitemap_seeds': len(sitemap_seeds), 'waf': len(waf_urls),
+        'broken_edges': len(broken_edges), 'duplicate_titles': len(duplicate_titles),
+        'duplicate_descriptions': len(duplicate_descriptions),
+        'pagination_duplicate_titles': len(pagination_duplicate_titles),
+        'pagination_duplicate_descriptions': len(pagination_duplicate_descriptions),
+    }, ensure_ascii=False, indent=2))
 
 
 if __name__ == '__main__': main()
