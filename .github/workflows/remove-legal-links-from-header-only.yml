@@ -1,0 +1,50 @@
+name: Remove Legal Links From Header Only
+
+on:
+  push:
+    branches:
+      - seo/full-seo-optimization
+    paths:
+      - '.github/workflows/remove-legal-links-from-header-only.yml'
+      - 'scripts/remove_legal_links_from_header_only.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: classreklam-header-legal-only
+  cancel-in-progress: true
+
+jobs:
+  fix:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Remove only legal links from header menu
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: pwsh
+        run: |
+          python scripts/remove_legal_links_from_header_only.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Save evidence
+        if: always()
+        shell: pwsh
+        run: |
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          $files = @('.ops/header-legal-links-only-2026-08-15.json', '.ops/header-legal-links-backup-2026-08-15.json')
+          foreach ($f in $files) { if (Test-Path $f) { git add $f } }
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) { exit 0 }
+          git commit -m 'chore: record header legal-link cleanup evidence'
+          git pull --rebase origin $env:GITHUB_REF_NAME
+          git push origin "HEAD:$env:GITHUB_REF_NAME"
