@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: classreklam-header-restore
+  group: classreklam-header-baseline-final
   cancel-in-progress: true
 
 jobs:
