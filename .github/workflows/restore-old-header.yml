@@ -30,6 +30,8 @@ jobs:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          PYTHONUTF8: '1'
+          PYTHONIOENCODING: 'utf-8'
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
