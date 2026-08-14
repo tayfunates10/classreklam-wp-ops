@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "kind": "created",
+    "id": 1186,
+    "slug": "gizlilik-politikasi"
+  },
+  {
+    "kind": "created",
+    "id": 1188,
+    "slug": "kullanim-sartlari"
+  },
+  {
+    "kind": "created",
+    "id": 1190,
+    "slug": "kvkk"
+  }
+]

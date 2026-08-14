@@ -1,6 +1,63 @@
 {
-  "status": "failed-rollback-attempted",
-  "targets": [],
-  "rollback": [],
-  "error": "RuntimeError: query page gizlilik-politikasi: HTTP 403 {'message': 'Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted'}"
+  "status": "success",
+  "targets": [
+    {
+      "slug": "gizlilik-politikasi",
+      "id": 1186,
+      "action": "created",
+      "before": {
+        "http": 404,
+        "waf": false,
+        "title": "Page Not Found - Class Reklam | Edremit Tabela ve Reklam",
+        "canonical": "",
+        "robots": "follow, noindex"
+      },
+      "after": {
+        "http": 200,
+        "waf": false,
+        "title": "Gizlilik Politikası | Class Reklam",
+        "canonical": "",
+        "robots": "noindex, follow"
+      }
+    },
+    {
+      "slug": "kullanim-sartlari",
+      "id": 1188,
+      "action": "created",
+      "before": {
+        "http": 404,
+        "waf": false,
+        "title": "Page Not Found - Class Reklam | Edremit Tabela ve Reklam",
+        "canonical": "",
+        "robots": "follow, noindex"
+      },
+      "after": {
+        "http": 200,
+        "waf": false,
+        "title": "Kullanım Şartları | Class Reklam",
+        "canonical": "",
+        "robots": "noindex, follow"
+      }
+    },
+    {
+      "slug": "kvkk",
+      "id": 1190,
+      "action": "created",
+      "before": {
+        "http": 404,
+        "waf": false,
+        "title": "Page Not Found - Class Reklam | Edremit Tabela ve Reklam",
+        "canonical": "",
+        "robots": "follow, noindex"
+      },
+      "after": {
+        "http": 200,
+        "waf": false,
+        "title": "KVKK Bilgilendirme | Class Reklam",
+        "canonical": "",
+        "robots": "noindex, follow"
+      }
+    }
+  ],
+  "rollback": []
 }
