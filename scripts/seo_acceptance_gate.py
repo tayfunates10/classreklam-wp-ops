@@ -9,6 +9,10 @@ CRITICAL_PATHS = [
     '/edremit-tabela/', '/totem-tabela/', '/dijital-baski/', '/arac-giydirme/',
     '/cam-giydirme/', '/kutu-harf-tabela/'
 ]
+REQUIRED_CONTENT_H1_SLUGS = {
+    'iletisim', 'edremit-tabela', 'totem-tabela', 'dijital-baski',
+    'arac-giydirme', 'cam-giydirme', 'kutu-harf-tabela'
+}
 
 
 def fail(results, key, detail):
@@ -72,6 +76,50 @@ def main():
         fail(checks, 'homepage_single_h1', f"h1_count={len(h1s)} h1={h1s}")
     else:
         indeterminate(checks, 'homepage_single_h1', f"homepage source unavailable: {home}")
+
+    page_source = data.get('critical_page_source_audit')
+    if isinstance(page_source, list):
+        by_slug = {p.get('slug'): p for p in page_source if isinstance(p, dict)}
+        for slug in sorted(REQUIRED_CONTENT_H1_SLUGS):
+            item = by_slug.get(slug)
+            key = f'content_h1:{slug}'
+            if not item:
+                fail(checks, key, 'source audit item missing')
+            elif item.get('h1_count') == 1:
+                passed(checks, key, f"h1={item.get('h1')}")
+            else:
+                fail(checks, key, f"h1_count={item.get('h1_count')} h1={item.get('h1')}")
+    else:
+        indeterminate(checks, 'critical_page_source_audit', f"source audit unavailable: {page_source}")
+
+    blog_source = data.get('blog_source_audit')
+    if isinstance(blog_source, list):
+        duplicate_title_h1 = [
+            {'id': p.get('id'), 'slug': p.get('slug'), 'count': p.get('title_matching_h1_count')}
+            for p in blog_source if int(p.get('title_matching_h1_count') or 0) > 0
+        ]
+        repeated_intro = [
+            {'id': p.get('id'), 'slug': p.get('slug'), 'count': p.get('first_paragraph_occurrences')}
+            for p in blog_source if int(p.get('first_paragraph_occurrences') or 0) > 1
+        ]
+        literal_uncategorized = [
+            {'id': p.get('id'), 'slug': p.get('slug')}
+            for p in blog_source if p.get('literal_uncategorized_in_content')
+        ]
+        if duplicate_title_h1:
+            fail(checks, 'blog_embedded_duplicate_title_h1', f"affected={duplicate_title_h1}")
+        else:
+            passed(checks, 'blog_embedded_duplicate_title_h1', f"posts={len(blog_source)}")
+        if repeated_intro:
+            fail(checks, 'blog_repeated_first_paragraph', f"affected={repeated_intro}")
+        else:
+            passed(checks, 'blog_repeated_first_paragraph', f"posts={len(blog_source)}")
+        if literal_uncategorized:
+            fail(checks, 'blog_literal_uncategorized_content', f"affected={literal_uncategorized}")
+        else:
+            passed(checks, 'blog_literal_uncategorized_content', f"posts={len(blog_source)}")
+    else:
+        indeterminate(checks, 'blog_source_audit', f"source audit unavailable: {blog_source}")
 
     heads = data.get('rankmath_heads', {})
     for path in CRITICAL_PATHS:
