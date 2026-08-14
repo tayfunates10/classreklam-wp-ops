@@ -18,8 +18,11 @@ OUT = '.ops/seo-retire-legacy-reference-2026-08-14.json'
 BACKUP = '.ops/seo-retire-legacy-reference-backup-2026-08-14.json'
 
 
-def api(method, route, payload=None):
-    q = urllib.parse.urlencode({'rest_route': route})
+def api(method, route, params=None, payload=None):
+    query = {'rest_route': route}
+    if params:
+        query.update(params)
+    q = urllib.parse.urlencode(query, doseq=True, safe='/:')
     data = None
     headers = {'Authorization': AUTH, 'Accept': 'application/json', 'User-Agent': UA, 'Referer': BASE + '/wp-admin/'}
     if payload is not None:
@@ -92,7 +95,10 @@ def main():
         print(json.dumps(result, ensure_ascii=False, indent=2))
         raise SystemExit(4)
 
-    code, page = api('GET', '/wp/v2/pages/683?context=edit&_fields=id,slug,status,link,title,content,excerpt,modified,meta')
+    code, page = api(
+        'GET', '/wp/v2/pages/683',
+        params={'context': 'edit', '_fields': 'id,slug,status,link,title,content,excerpt,modified,meta'}
+    )
     result['page_read_http'] = code
     if code != 200 or not isinstance(page, dict) or page.get('id') != 683 or page.get('slug') != 'referans-isler' or page.get('status') != 'publish':
         result['status'] = 'blocked-page-identity'
@@ -103,7 +109,7 @@ def main():
 
     save(BACKUP, page)
 
-    code, body = api('POST', '/wp/v2/pages/683', {'status': 'draft'})
+    code, body = api('POST', '/wp/v2/pages/683', payload={'status': 'draft'})
     result['draft_write_http'] = code
     if code not in (200, 201):
         result['status'] = 'draft-write-failed'
@@ -129,8 +135,7 @@ def main():
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return
 
-    # Verification failed; restore the exact publication state. Content was never modified.
-    rb_code, rb_body = api('POST', '/wp/v2/pages/683', {'status': 'publish'})
+    rb_code, rb_body = api('POST', '/wp/v2/pages/683', payload={'status': 'publish'})
     result['rollback_http'] = rb_code
     result['rollback_body'] = rb_body
     result['status'] = 'verification-failed-rollback-attempted'
