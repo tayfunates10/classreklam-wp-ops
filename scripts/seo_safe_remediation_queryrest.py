@@ -50,7 +50,7 @@ def api_url(route, params=None):
     return BASE + '/?' + urllib.parse.urlencode(q, doseq=True, safe='/:')
 
 
-def one(method, route, params=None, payload=None):
+def api_once(method, route, params=None, payload=None):
     data = None
     headers = {'Authorization': AUTH, 'Accept': 'application/json', 'User-Agent': UA, 'Referer': BASE + '/wp-admin/'}
     if payload is not None:
@@ -74,11 +74,11 @@ def one(method, route, params=None, payload=None):
         return e.code, body
 
 
-def request(method, route, params=None, payload=None, delay=2.5):
+def api(method, route, params=None, payload=None, delay=2.5):
     time.sleep(delay)
     last = None
     for attempt in range(4):
-        code, body = one(method, route, params, payload)
+        code, body = api_once(method, route, params, payload)
         last = (code, body)
         text = json.dumps(body, ensure_ascii=False).lower() if isinstance(body, (dict, list)) else str(body).lower()
         if code != 403 or 'imunify360' not in text:
@@ -99,7 +99,7 @@ def plain(value):
 
 
 def get_page(page_id):
-    code, body = request('GET', f'/wp/v2/pages/{page_id}', {
+    code, body = api('GET', f'/wp/v2/pages/{page_id}', {
         'context': 'edit', '_fields': 'id,slug,status,link,modified,title,content'
     })
     ensure(code, body, f'get page {page_id}')
@@ -107,7 +107,7 @@ def get_page(page_id):
 
 
 def get_posts():
-    code, body = request('GET', '/wp/v2/posts', {
+    code, body = api('GET', '/wp/v2/posts', {
         'context': 'edit', 'per_page': 100,
         '_fields': 'id,slug,status,link,modified,title,content,categories'
     })
@@ -118,7 +118,7 @@ def get_posts():
 
 
 def write_content(kind, object_id, content):
-    code, body = request('POST', f'/wp/v2/{kind}/{object_id}', payload={'content': content})
+    code, body = api('POST', f'/wp/v2/{kind}/{object_id}', payload={'content': content})
     ensure(code, body, f'update {kind}/{object_id}')
 
 
@@ -130,7 +130,7 @@ def update_meta(object_id, title, description, canonical, robots=None):
     }
     if robots is not None:
         meta['rank_math_robots'] = robots
-    code, body = request('POST', '/rankmath/v1/updateMeta', payload={
+    code, body = api('POST', '/rankmath/v1/updateMeta', payload={
         'objectType': 'post', 'objectID': int(object_id), 'meta': meta
     })
     ensure(code, body, f'Rank Math meta {object_id}')
@@ -143,28 +143,47 @@ def update_redirect(object_id, target=None):
     }
     if target:
         payload['redirectionUrl'] = target
-    code, body = request('POST', '/rankmath/v1/updateRedirection', payload=payload)
+    code, body = api('POST', '/rankmath/v1/updateRedirection', payload=payload)
     ensure(code, body, f'Rank Math redirect {object_id}')
 
 
-def rank_head(url):
-    code, body = request('GET', '/rankmath/v1/getHead', {'url': url})
-    ensure(code, body, f'Rank Math head {url}')
-    return body
-
-
-def parse_head(body):
-    head = body.get('head', '') if isinstance(body, dict) else ''
-    def grab(pattern):
-        m = re.search(pattern, head, re.I | re.S)
-        return html.unescape(m.group(1)).strip() if m else ''
+def parse_head(raw):
+    def grab(pattern, alt=None):
+        match = re.search(pattern, raw, re.I | re.S)
+        if not match and alt:
+            match = re.search(alt, raw, re.I | re.S)
+        return html.unescape(match.group(1)).strip() if match else ''
     return {
         'title': grab(r'<title[^>]*>(.*?)</title>'),
-        'description': grab(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)'),
-        'canonical': grab(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)'),
-        'robots': grab(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)'),
-        'head_chars': len(head),
+        'description': grab(
+            r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)',
+            r'<meta[^>]+content=["\']([^"\']*)["\'][^>]+name=["\']description["\']'
+        ),
+        'canonical': grab(
+            r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)',
+            r'<link[^>]+href=["\']([^"\']+)["\'][^>]+rel=["\']canonical["\']'
+        ),
+        'robots': grab(
+            r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)',
+            r'<meta[^>]+content=["\']([^"\']*)["\'][^>]+name=["\']robots["\']'
+        ),
+        'head_chars': len(raw),
     }
+
+
+def public_head(url):
+    req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'text/html,*/*'})
+    try:
+        with urllib.request.urlopen(req, timeout=40) as r:
+            raw = r.read(500000).decode('utf-8', errors='replace')
+            blocked = 'one moment, please' in raw.lower() or 'imunify360' in raw.lower()
+            return {'http': r.status, 'waf': blocked, **parse_head(raw)}
+    except urllib.error.HTTPError as e:
+        raw = e.read(500000).decode('utf-8', errors='replace')
+        blocked = 'one moment, please' in raw.lower() or 'imunify360' in raw.lower()
+        return {'http': e.code, 'waf': blocked, **parse_head(raw)}
+    except Exception as e:
+        return {'http': 0, 'waf': False, 'title': '', 'description': '', 'canonical': '', 'robots': '', 'head_chars': 0, 'error': f'{type(e).__name__}: {e}'}
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -201,21 +220,28 @@ def replace_home_h1(raw):
     inner = match.group(1)
     if 'cr-heading-line1' not in inner or 'cr-heading-line2' not in inner:
         return raw, False, 'blocked:expected-line-spans-missing'
-    changed = re.sub(r'(<span\b[^>]*class=["\'][^"\']*cr-heading-line1[^"\']*["\'][^>]*>).*?(</span>)',
-                     r'\1Edremit Tabela ve Reklam\2', inner, count=1, flags=re.I | re.S)
-    changed = re.sub(r'(<span\b[^>]*class=["\'][^"\']*cr-heading-line2[^"\']*["\'][^>]*>).*?(</span>)',
-                     r'\1Çözümleri\2', changed, count=1, flags=re.I | re.S)
+    changed = re.sub(
+        r'(<span\b[^>]*class=["\'][^"\']*cr-heading-line1[^"\']*["\'][^>]*>).*?(</span>)',
+        r'\1Edremit Tabela ve Reklam\2', inner, count=1, flags=re.I | re.S
+    )
+    changed = re.sub(
+        r'(<span\b[^>]*class=["\'][^"\']*cr-heading-line2[^"\']*["\'][^>]*>).*?(</span>)',
+        r'\1Çözümleri\2', changed, count=1, flags=re.I | re.S
+    )
     return raw[:match.start(1)] + changed + raw[match.end(1):], True, 'updated'
 
 
 def ensure_home_copy(raw):
     old = 'Edremit’te tabela, totem, dijital baskı, araç giydirme, cam giydirme ve kutu harf çözümleriyle markanızı profesyonel şekilde görünür kılıyoruz.'
-    new = 'Edremit’te reklam ve tabela firması olarak; totem, dijital baskı, araç giydirme, cam giydirme ve kutu harf çözümleriyle markanızı profesyonel şekilde görünür kılıyoruz.'
-    if new in raw:
+    intermediate = 'Edremit’te tabela ve reklam firması olarak; totem, dijital baskı, araç giydirme, cam giydirme ve kutu harf çözümleriyle markanızı profesyonel şekilde görünür kılıyoruz.'
+    desired = 'Edremit’te reklam ve tabela firması olarak; totem, dijital baskı, araç giydirme, cam giydirme ve kutu harf çözümleriyle markanızı profesyonel şekilde görünür kılıyoruz.'
+    if desired in raw:
         return raw, False, 'already-correct'
+    if intermediate in raw:
+        return raw.replace(intermediate, desired, 1), True, 'normalized-known-intermediate-copy'
     if old in raw:
-        return raw.replace(old, new, 1), True, 'updated'
-    return raw, False, 'blocked:expected-home-copy-not-found'
+        return raw.replace(old, desired, 1), True, 'updated'
+    return raw, False, 'blocked:unexpected-home-copy'
 
 
 def ensure_service_hub_links(raw):
@@ -231,35 +257,55 @@ def remove_duplicate_title_h1_block(raw, title):
     if not exact:
         return raw, False, 'no-embedded-title-h1'
     if len(exact) != 1 or len(h1s) != 1:
-        return raw, False, f'blocked:h1_count={len(h1s)} exact_title_h1={len(exact)}'
+        return raw, False, f'ambiguous:h1_count={len(h1s)} exact_title_h1={len(exact)}'
     target = exact[0]
-    pattern = re.compile(r'<!--\s*wp:heading(?:\s+\{.*?\})?\s*-->\s*<h1\b[^>]*>.*?</h1>\s*<!--\s*/wp:heading\s*-->', re.I | re.S)
+    pattern = re.compile(
+        r'<!--\s*wp:heading(?:\s+\{.*?\})?\s*-->\s*<h1\b[^>]*>.*?</h1>\s*<!--\s*/wp:heading\s*-->',
+        re.I | re.S
+    )
     candidates = [m for m in pattern.finditer(raw) if m.start() <= target.start() and m.end() >= target.end()]
     if len(candidates) != 1:
-        return raw, False, 'blocked:matching-gutenberg-h1-block-not-found'
+        return raw, False, 'ambiguous:matching-gutenberg-h1-block-not-found'
     block = candidates[0]
     return raw[:block.start()] + raw[block.end():], True, 'removed-duplicate-title-h1-block'
 
 
 def first_paragraph_repeat_count(raw):
-    ps = [plain(x) for x in re.findall(r'<p\b[^>]*>(.*?)</p>', raw, re.I | re.S)]
-    ps = [p for p in ps if p]
-    if not ps:
+    paragraphs = [plain(x) for x in re.findall(r'<p\b[^>]*>(.*?)</p>', raw, re.I | re.S)]
+    paragraphs = [p for p in paragraphs if p]
+    if not paragraphs:
         return 0
-    first = ps[0].casefold()
-    return sum(1 for p in ps if p.casefold() == first)
+    first = paragraphs[0].casefold()
+    return sum(1 for p in paragraphs if p.casefold() == first)
 
 
-def result_file(data):
-    (EVIDENCE_DIR / 'seo-remediation-result-2026-08-14.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
+def save_result(data):
+    (EVIDENCE_DIR / 'seo-remediation-result-2026-08-14.json').write_text(
+        json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8'
+    )
 
 
 def main():
     started = dt.datetime.now(dt.timezone.utc).isoformat()
-    results = {'started_at': started, 'status': 'preflight', 'planned': [], 'changes': [], 'blocked': [], 'rollback': []}
-    backup = {'checked_at': started, 'base': BASE, 'pages': {}, 'posts': {}, 'rank_heads': {}, 'legacy_public': None}
+    results = {
+        'started_at': started,
+        'status': 'preflight',
+        'planned': [],
+        'changes': [],
+        'fatal_blockers': [],
+        'deferred': [],
+        'rollback': [],
+    }
+    backup = {
+        'checked_at': started,
+        'base': BASE,
+        'pages': {},
+        'posts': {},
+        'rendered_heads': {},
+        'legacy_public': None,
+    }
 
-    code, settings = request('GET', '/wp/v2/settings')
+    code, settings = api('GET', '/wp/v2/settings')
     ensure(code, settings, 'settings preflight')
     wp_url = str(settings.get('url') or '').rstrip('/')
     wp_home = str(settings.get('home') or '').rstrip('/')
@@ -272,9 +318,9 @@ def main():
     for pid, slug in required_pages.items():
         try:
             page = get_page(pid)
-        except Exception as exc:
+        except Exception:
             if pid == 683:
-                results['planned'].append({'page': 683, 'legacy': 'page-not-present; no redirect write'})
+                results['deferred'].append({'page': 683, 'scope': 'legacy_redirect', 'detail': 'legacy page not available through authenticated REST'})
                 continue
             raise
         if page.get('slug') != slug or page.get('status') != 'publish':
@@ -286,25 +332,22 @@ def main():
     for post in posts:
         backup['posts'][str(post.get('id'))] = post
 
-    # Backup/validate every Rank Math surface before any write.
-    parsed_heads = {}
+    rendered_heads = {}
     for pid, (_, path, _, _) in META_TARGETS.items():
-        body = rank_head(BASE + path)
-        parsed = parse_head(body)
-        if not parsed['head_chars']:
-            results['blocked'].append({'page': pid, 'field': 'rank_math_head', 'detail': 'generated head unavailable'})
-        backup['rank_heads'][str(pid)] = {'path': path, 'raw': body, 'parsed': parsed}
-        parsed_heads[pid] = parsed
+        current = public_head(BASE + path)
+        backup['rendered_heads'][str(pid)] = {'path': path, **current}
+        rendered_heads[pid] = current
+        if current.get('http') != 200 or current.get('waf') or not current.get('head_chars'):
+            results['fatal_blockers'].append({'page': pid, 'field': 'rendered_head', 'detail': current})
 
-    # Build content plan, but do not write yet.
     content_plan = []
     home_raw = pages[6].get('content', {}).get('raw', '')
-    home_stage, h1_changed, h1_status = replace_home_h1(home_raw)
+    staged, h1_changed, h1_status = replace_home_h1(home_raw)
     if h1_status.startswith('blocked:'):
-        results['blocked'].append({'page': 6, 'field': 'h1', 'detail': h1_status})
-    home_final, copy_changed, copy_status = ensure_home_copy(home_stage)
+        results['fatal_blockers'].append({'page': 6, 'field': 'h1', 'detail': h1_status})
+    home_final, copy_changed, copy_status = ensure_home_copy(staged)
     if copy_status.startswith('blocked:'):
-        results['blocked'].append({'page': 6, 'field': 'hero-copy', 'detail': copy_status})
+        results['fatal_blockers'].append({'page': 6, 'field': 'hero-copy', 'detail': copy_status})
     if h1_changed or copy_changed:
         content_plan.append({'kind': 'pages', 'id': 6, 'content': home_final, 'reason': {'h1': h1_status, 'copy': copy_status}})
 
@@ -319,20 +362,20 @@ def main():
         title = plain(title_obj.get('raw') if isinstance(title_obj, dict) else title_obj)
         raw = (post.get('content') or {}).get('raw', '')
         if first_paragraph_repeat_count(raw) > 1:
-            results['blocked'].append({'post': pid, 'field': 'content', 'detail': 'repeated first paragraph exists in source'})
+            results['deferred'].append({'post': pid, 'scope': 'blog_content', 'detail': 'repeated first paragraph in source; skipped'})
             continue
         if 'uncategorized' in plain(raw).casefold():
-            results['blocked'].append({'post': pid, 'field': 'content', 'detail': 'literal Uncategorized exists in source'})
+            results['deferred'].append({'post': pid, 'scope': 'blog_content', 'detail': 'literal Uncategorized in source; skipped'})
             continue
         new_raw, changed, status = remove_duplicate_title_h1_block(raw, title)
-        if status.startswith('blocked:'):
-            results['blocked'].append({'post': pid, 'field': 'h1', 'detail': status})
+        if status.startswith('ambiguous:'):
+            results['deferred'].append({'post': pid, 'scope': 'blog_h1', 'detail': status})
         elif changed:
             content_plan.append({'kind': 'posts', 'id': pid, 'content': new_raw, 'reason': {'duplicate_title_h1': status}})
 
     meta_plan = []
     for pid, (_, path, title, description) in META_TARGETS.items():
-        current = parsed_heads.get(pid, {})
+        current = rendered_heads.get(pid, {})
         canonical = BASE + ('/' if path == '/' else path)
         robots = ['index', 'follow'] if 'noindex' in str(current.get('robots', '')).lower() else None
         if current.get('title') != title or current.get('description') != description or current.get('canonical') != canonical or robots:
@@ -343,28 +386,27 @@ def main():
         legacy = public_status(BASE + '/referans-isler/')
         backup['legacy_public'] = legacy
         target = BASE + '/referanslar/'
-        if legacy.get('waf') or legacy.get('http') == 0:
-            results['blocked'].append({'page': 683, 'field': 'redirect', 'detail': f'legacy public state indeterminate: {legacy}'})
-        elif legacy.get('http') == 200:
+        if legacy.get('http') == 200 and not legacy.get('waf'):
             redirect_plan = {'id': 683, 'target': target}
         elif legacy.get('http') in (301, 308) and legacy.get('location') == target:
             results['planned'].append({'page': 683, 'redirect': 'already-correct'})
         elif legacy.get('http') in (404, 410):
             results['planned'].append({'page': 683, 'redirect': f'legacy already unavailable HTTP {legacy.get("http")}'})
         else:
-            results['blocked'].append({'page': 683, 'field': 'redirect', 'detail': f'unexpected legacy public state: {legacy}'})
+            results['deferred'].append({'page': 683, 'scope': 'legacy_redirect', 'detail': f'public state not safe to change: {legacy}'})
 
-    backup_path = EVIDENCE_DIR / 'seo-remediation-backup-2026-08-14.json'
-    backup_path.write_text(json.dumps(backup, ensure_ascii=False, indent=2), encoding='utf-8')
+    (EVIDENCE_DIR / 'seo-remediation-backup-2026-08-14.json').write_text(
+        json.dumps(backup, ensure_ascii=False, indent=2), encoding='utf-8'
+    )
     results['planned'].extend([{'content': {'kind': p['kind'], 'id': p['id'], **p['reason']}} for p in content_plan])
     results['planned'].extend([{'meta': {'id': p['id'], 'canonical': p['canonical']}} for p in meta_plan])
     if redirect_plan:
         results['planned'].append({'redirect': redirect_plan})
 
-    if results['blocked']:
+    if results['fatal_blockers']:
         results['status'] = 'blocked-no-writes'
         results['finished_at'] = dt.datetime.now(dt.timezone.utc).isoformat()
-        result_file(results)
+        save_result(results)
         print(json.dumps(results, ensure_ascii=False, indent=2))
         raise SystemExit(2)
 
@@ -390,19 +432,17 @@ def main():
     except Exception as exc:
         results['status'] = 'write-failed-rollback-attempted'
         results['write_error'] = f'{type(exc).__name__}: {exc}'
-        # Restore exact content for every object already written.
         for kind, oid in reversed(applied_content):
             try:
-                src = backup['pages'].get(str(oid)) if kind == 'pages' else backup['posts'].get(str(oid))
-                old = (src or {}).get('content', {}).get('raw', '')
+                source = backup['pages'].get(str(oid)) if kind == 'pages' else backup['posts'].get(str(oid))
+                old = (source or {}).get('content', {}).get('raw', '')
                 write_content(kind, oid, old)
                 results['rollback'].append({'content': {'kind': kind, 'id': oid, 'status': 'restored'}})
             except Exception as rb_exc:
                 results['rollback'].append({'content': {'kind': kind, 'id': oid, 'status': 'FAILED', 'error': str(rb_exc)}})
-        # Restore the previously rendered metadata surface. Focus keyword is intentionally never modified.
         for oid in reversed(applied_meta):
             try:
-                old = backup['rank_heads'][str(oid)]['parsed']
+                old = backup['rendered_heads'][str(oid)]
                 old_robots = str(old.get('robots', '')).lower()
                 robots = ['noindex' if 'noindex' in old_robots else 'index', 'nofollow' if 'nofollow' in old_robots else 'follow']
                 update_meta(oid, old.get('title', ''), old.get('description', ''), old.get('canonical', ''), robots)
@@ -416,13 +456,13 @@ def main():
             except Exception as rb_exc:
                 results['rollback'].append({'redirect': {'id': 683, 'status': 'FAILED', 'error': str(rb_exc)}})
         results['finished_at'] = dt.datetime.now(dt.timezone.utc).isoformat()
-        result_file(results)
+        save_result(results)
         print(json.dumps(results, ensure_ascii=False, indent=2))
         raise
 
-    results['status'] = 'success'
+    results['status'] = 'success-with-deferred' if results['deferred'] else 'success'
     results['finished_at'] = dt.datetime.now(dt.timezone.utc).isoformat()
-    result_file(results)
+    save_result(results)
     print(json.dumps(results, ensure_ascii=False, indent=2))
 
 
