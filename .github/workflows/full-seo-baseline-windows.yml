@@ -1,0 +1,46 @@
+name: Full SEO Baseline Windows
+
+on:
+  push:
+    branches:
+      - seo/full-seo-optimization
+    paths:
+      - '.github/workflows/full-seo-baseline-windows.yml'
+      - 'scripts/full_seo_baseline_queryrest.py'
+      - 'scripts/seo_acceptance_gate.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline-windows:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect fresh read-only SEO baseline
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path .ops | Out-Null
+          python scripts/full_seo_baseline_queryrest.py | Tee-Object -FilePath .ops/full-seo-baseline-live.json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m json.tool .ops/full-seo-baseline-live.json | Out-Null
+
+      - name: Run fail-closed SEO acceptance gate
+        shell: pwsh
+        run: |
+          python scripts/seo_acceptance_gate.py .ops/full-seo-baseline-live.json | Tee-Object -FilePath .ops/seo-acceptance-live.json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Print evidence
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path .ops/full-seo-baseline-live.json) { Get-Content .ops/full-seo-baseline-live.json }
+          if (Test-Path .ops/seo-acceptance-live.json) { Get-Content .ops/seo-acceptance-live.json }
