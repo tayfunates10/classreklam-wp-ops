@@ -1,0 +1,23 @@
+{
+  "source": "https://classreklamtabela.com.tr/referans-isler/",
+  "target": "https://classreklamtabela.com.tr/referanslar/",
+  "status": "blocked-page-identity",
+  "before_source": {
+    "http": 200,
+    "location": "",
+    "waf": false
+  },
+  "before_target": {
+    "http": 200,
+    "location": "",
+    "waf": false
+  },
+  "page_read_http": 404,
+  "page": {
+    "code": "rest_no_route",
+    "message": "İstek yöntemi ve bağlantıyla eşleşen yol bulunamadı.",
+    "data": {
+      "status": 404
+    }
+  }
+}
