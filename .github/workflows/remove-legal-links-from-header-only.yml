@@ -48,3 +48,5 @@ jobs:
           git commit -m 'chore: record header legal-link cleanup evidence'
           git pull --rebase origin $env:GITHUB_REF_NAME
           git push origin "HEAD:$env:GITHUB_REF_NAME"
+
+# Trigger marker: header-only cleanup, no footer/page deletion.
