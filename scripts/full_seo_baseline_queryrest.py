@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import base64
 import datetime as dt
+import html
 import json
 import os
 import re
@@ -121,14 +122,62 @@ def safe_settings(res):
     }
 
 
+def plain(value):
+    value = html.unescape(str(value or ''))
+    value = re.sub(r'<[^>]+>', ' ', value)
+    return re.sub(r'\s+', ' ', value).strip()
+
+
+def h1_texts(raw):
+    return [plain(x) for x in re.findall(r'<h1\b[^>]*>(.*?)</h1>', raw or '', re.I | re.S)]
+
+
+def first_paragraph(raw):
+    match = re.search(r'<p\b[^>]*>(.*?)</p>', raw or '', re.I | re.S)
+    return plain(match.group(1)) if match else ''
+
+
+def source_audit(items):
+    audited = []
+    for item in items if isinstance(items, list) else []:
+        if not isinstance(item, dict):
+            continue
+        title_obj = item.get('title') or {}
+        title = plain(title_obj.get('raw') if isinstance(title_obj, dict) else title_obj)
+        content_obj = item.get('content') or {}
+        raw = content_obj.get('raw', '') if isinstance(content_obj, dict) else str(content_obj)
+        h1s = h1_texts(raw)
+        title_h1_count = sum(1 for h in h1s if h.casefold() == title.casefold() and title)
+        intro = first_paragraph(raw)
+        intro_occurrences = 0
+        if intro:
+            # Compare normalized paragraph text, not raw markup, so Gutenberg attributes do not matter.
+            paragraphs = [plain(x) for x in re.findall(r'<p\b[^>]*>(.*?)</p>', raw, re.I | re.S)]
+            intro_occurrences = sum(1 for p in paragraphs if p.casefold() == intro.casefold())
+        audited.append({
+            'id': item.get('id'),
+            'slug': item.get('slug'),
+            'status': item.get('status'),
+            'title': title,
+            'h1_count': len(h1s),
+            'h1': h1s,
+            'title_matching_h1_count': title_h1_count,
+            'first_paragraph_occurrences': intro_occurrences,
+            'literal_uncategorized_in_content': 'uncategorized' in plain(raw).casefold(),
+            'content_chars': len(raw),
+            'modified': item.get('modified'),
+        })
+    return audited
+
+
 def rankmath_head(target_url):
     res = request_json('/rankmath/v1/getHead', {'url': target_url}, delay=2.5)
     body = res.get('body')
-    html = body.get('head', '') if isinstance(body, dict) else ''
-    title_match = re.search(r'<title[^>]*>(.*?)</title>', html, re.I | re.S)
-    desc_match = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)', html, re.I)
-    canonical_match = re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', html, re.I)
-    robots_match = re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)', html, re.I)
+    html_head = body.get('head', '') if isinstance(body, dict) else ''
+    title_match = re.search(r'<title[^>]*>(.*?)</title>', html_head, re.I | re.S)
+    desc_match = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)', html_head, re.I)
+    canonical_match = re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', html_head, re.I)
+    robots_match = re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)', html_head, re.I)
     return {
         'http': res.get('http'),
         'ok': res.get('ok'),
@@ -136,8 +185,8 @@ def rankmath_head(target_url):
         'description': desc_match.group(1) if desc_match else '',
         'canonical': canonical_match.group(1) if canonical_match else '',
         'robots': robots_match.group(1) if robots_match else '',
-        'has_jsonld': 'application/ld+json' in html.lower(),
-        'head_chars': len(html),
+        'has_jsonld': 'application/ld+json' in html_head.lower(),
+        'head_chars': len(html_head),
         'error': res.get('error', ''),
     }
 
@@ -177,12 +226,36 @@ if home.get('ok') and isinstance(home.get('body'), dict):
         'http': home['http'],
         'id': home['body'].get('id'),
         'modified': home['body'].get('modified'),
-        'h1': [re.sub(r'<[^>]+>', '', x).strip() for x in re.findall(r'<h1[^>]*>(.*?)</h1>', raw, re.I | re.S)],
+        'h1': h1_texts(raw),
         'localbusiness_marker': 'class-reklam-localbusiness-schema' in raw,
         'content_chars': len(raw),
     }
 else:
     out['homepage_source'] = home
+
+page_source = request_json('/wp/v2/pages', {
+    'context': 'edit', 'per_page': 100,
+    '_fields': 'id,slug,status,modified,title,content'
+}, delay=2.5)
+if page_source.get('ok') and isinstance(page_source.get('body'), list):
+    critical_slugs = {
+        'iletisim', 'hizmetlerimiz', 'hakkimizda', 'blog', 'edremit-tabela', 'totem-tabela',
+        'dijital-baski', 'arac-giydirme', 'cam-giydirme', 'kutu-harf-tabela'
+    }
+    out['critical_page_source_audit'] = source_audit([
+        p for p in page_source['body'] if p.get('slug') in critical_slugs
+    ])
+else:
+    out['critical_page_source_audit'] = {'ok': False, 'http': page_source.get('http'), 'error': page_source.get('error', '')}
+
+post_source = request_json('/wp/v2/posts', {
+    'context': 'edit', 'per_page': 100,
+    '_fields': 'id,slug,status,modified,title,content,categories'
+}, delay=2.5)
+if post_source.get('ok') and isinstance(post_source.get('body'), list):
+    out['blog_source_audit'] = source_audit(post_source['body'])
+else:
+    out['blog_source_audit'] = {'ok': False, 'http': post_source.get('http'), 'error': post_source.get('error', '')}
 
 critical_urls = [
     '/', '/iletisim/', '/hizmetlerimiz/', '/hakkimizda/', '/blog/', '/referanslar/',
