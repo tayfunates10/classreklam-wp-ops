@@ -69,6 +69,7 @@ def public_fetch(url, method='GET'):
     try:
         with opener.open(req, timeout=35) as r:
             raw = r.read(300000).decode('utf-8', errors='replace') if method != 'HEAD' else ''
+            title_match = re.search(r'<title[^>]*>(.*?)</title>', raw, re.I | re.S)
             return {
                 'http': r.status,
                 'location': r.headers.get('Location', ''),
@@ -76,8 +77,7 @@ def public_fetch(url, method='GET'):
                 'server': r.headers.get('Server', ''),
                 'cache_control': r.headers.get('Cache-Control', ''),
                 'waf_challenge': 'one moment, please' in raw.lower() or 'imunify360' in raw.lower(),
-                'title': (re.search(r'<title[^>]*>(.*?)</title>', raw, re.I | re.S).group(1).strip()
-                          if re.search(r'<title[^>]*>(.*?)</title>', raw, re.I | re.S) else ''),
+                'title': title_match.group(1).strip() if title_match else '',
                 'sample': re.sub(r'\s+', ' ', raw[:500]).strip(),
             }
     except urllib.error.HTTPError as e:
@@ -106,21 +106,36 @@ def slim_list(res, keys):
     }
 
 
+def safe_settings(res):
+    body = res.get('body')
+    allowed = [
+        'title', 'description', 'url', 'home', 'timezone', 'show_on_front',
+        'page_on_front', 'page_for_posts', 'default_category', 'permalink_structure'
+    ]
+    if not isinstance(body, dict):
+        return {'http': res.get('http'), 'ok': res.get('ok'), 'error': res.get('error', '')}
+    return {
+        'http': res.get('http'),
+        'ok': res.get('ok'),
+        'values': {key: body.get(key) for key in allowed if key in body},
+    }
+
+
 def rankmath_head(target_url):
     res = request_json('/rankmath/v1/getHead', {'url': target_url}, delay=2.5)
     body = res.get('body')
     html = body.get('head', '') if isinstance(body, dict) else ''
+    title_match = re.search(r'<title[^>]*>(.*?)</title>', html, re.I | re.S)
+    desc_match = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)', html, re.I)
+    canonical_match = re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', html, re.I)
+    robots_match = re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)', html, re.I)
     return {
         'http': res.get('http'),
         'ok': res.get('ok'),
-        'title': (re.search(r'<title[^>]*>(.*?)</title>', html, re.I | re.S).group(1).strip()
-                  if re.search(r'<title[^>]*>(.*?)</title>', html, re.I | re.S) else ''),
-        'description': (re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)', html, re.I).group(1)
-                        if re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)', html, re.I) else ''),
-        'canonical': (re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', html, re.I).group(1)
-                      if re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', html, re.I) else ''),
-        'robots': (re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)', html, re.I).group(1)
-                   if re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)', html, re.I) else ''),
+        'title': title_match.group(1).strip() if title_match else '',
+        'description': desc_match.group(1) if desc_match else '',
+        'canonical': canonical_match.group(1) if canonical_match else '',
+        'robots': robots_match.group(1) if robots_match else '',
         'has_jsonld': 'application/ld+json' in html.lower(),
         'head_chars': len(html),
         'error': res.get('error', ''),
@@ -133,8 +148,7 @@ out = {
     'mode': 'read-only',
 }
 
-settings = request_json('/wp/v2/settings')
-out['settings'] = settings
+out['settings'] = safe_settings(request_json('/wp/v2/settings'))
 out['plugins'] = slim_list(
     request_json('/wp/v2/plugins', {'status': 'active', 'per_page': 100}),
     ['plugin', 'status', 'name', 'version'],
@@ -177,9 +191,9 @@ critical_urls = [
 out['rankmath_heads'] = {path: rankmath_head(BASE + path) for path in critical_urls}
 
 out['host_variants'] = {
-    'http_non_www': public_fetch('http://classreklamtabela.com.tr/', method='GET'),
-    'https_non_www': public_fetch('https://classreklamtabela.com.tr/', method='GET'),
-    'https_www': public_fetch('https://www.classreklamtabela.com.tr/', method='GET'),
+    'http_non_www': public_fetch('http://classreklamtabela.com.tr/'),
+    'https_non_www': public_fetch('https://classreklamtabela.com.tr/'),
+    'https_www': public_fetch('https://www.classreklamtabela.com.tr/'),
 }
 out['technical_public'] = {
     'robots': public_fetch(BASE + '/robots.txt'),
