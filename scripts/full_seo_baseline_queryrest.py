@@ -151,7 +151,6 @@ def source_audit(items):
         intro = first_paragraph(raw)
         intro_occurrences = 0
         if intro:
-            # Compare normalized paragraph text, not raw markup, so Gutenberg attributes do not matter.
             paragraphs = [plain(x) for x in re.findall(r'<p\b[^>]*>(.*?)</p>', raw, re.I | re.S)]
             intro_occurrences = sum(1 for p in paragraphs if p.casefold() == intro.casefold())
         audited.append({
@@ -170,24 +169,81 @@ def source_audit(items):
     return audited
 
 
+def parse_rendered_head(raw):
+    title_match = re.search(r'<title[^>]*>(.*?)</title>', raw, re.I | re.S)
+    desc_match = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)', raw, re.I)
+    if not desc_match:
+        desc_match = re.search(r'<meta[^>]+content=["\']([^"\']*)["\'][^>]+name=["\']description["\']', raw, re.I)
+    canonical_match = re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', raw, re.I)
+    if not canonical_match:
+        canonical_match = re.search(r'<link[^>]+href=["\']([^"\']+)["\'][^>]+rel=["\']canonical["\']', raw, re.I)
+    robots_match = re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)', raw, re.I)
+    if not robots_match:
+        robots_match = re.search(r'<meta[^>]+content=["\']([^"\']*)["\'][^>]+name=["\']robots["\']', raw, re.I)
+    return {
+        'title': html.unescape(title_match.group(1)).strip() if title_match else '',
+        'description': html.unescape(desc_match.group(1)).strip() if desc_match else '',
+        'canonical': html.unescape(canonical_match.group(1)).strip() if canonical_match else '',
+        'robots': html.unescape(robots_match.group(1)).strip() if robots_match else '',
+        'has_jsonld': 'application/ld+json' in raw.lower(),
+        'head_chars': len(raw),
+    }
+
+
+def public_rendered_head(target_url):
+    req = urllib.request.Request(target_url, headers={'User-Agent': UA, 'Accept': 'text/html,*/*'})
+    try:
+        with urllib.request.urlopen(req, timeout=40, context=CTX) as r:
+            raw = r.read(500000).decode('utf-8', errors='replace')
+            is_waf = 'one moment, please' in raw.lower() or 'imunify360' in raw.lower()
+            parsed = parse_rendered_head(raw)
+            return {
+                'http': r.status,
+                'ok': r.status == 200 and not is_waf,
+                'waf_challenge': is_waf,
+                **parsed,
+                'error': '',
+            }
+    except urllib.error.HTTPError as e:
+        raw = e.read(500000).decode('utf-8', errors='replace')
+        is_waf = 'one moment, please' in raw.lower() or 'imunify360' in raw.lower()
+        parsed = parse_rendered_head(raw)
+        return {
+            'http': e.code,
+            'ok': False,
+            'waf_challenge': is_waf,
+            **parsed,
+            'error': '',
+        }
+    except Exception as e:
+        return {
+            'http': 0, 'ok': False, 'waf_challenge': False,
+            'title': '', 'description': '', 'canonical': '', 'robots': '',
+            'has_jsonld': False, 'head_chars': 0,
+            'error': f'{type(e).__name__}: {e}',
+        }
+
+
 def rankmath_head(target_url):
     res = request_json('/rankmath/v1/getHead', {'url': target_url}, delay=2.5)
     body = res.get('body')
     html_head = body.get('head', '') if isinstance(body, dict) else ''
-    title_match = re.search(r'<title[^>]*>(.*?)</title>', html_head, re.I | re.S)
-    desc_match = re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']*)', html_head, re.I)
-    canonical_match = re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', html_head, re.I)
-    robots_match = re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']*)', html_head, re.I)
+    if res.get('ok') and html_head:
+        parsed = parse_rendered_head(html_head)
+        return {
+            'http': res.get('http'),
+            'ok': True,
+            'source': 'rankmath_rest',
+            'rankmath_rest_http': res.get('http'),
+            'waf_challenge': False,
+            **parsed,
+            'error': res.get('error', ''),
+        }
+    public = public_rendered_head(target_url)
     return {
-        'http': res.get('http'),
-        'ok': res.get('ok'),
-        'title': title_match.group(1).strip() if title_match else '',
-        'description': desc_match.group(1) if desc_match else '',
-        'canonical': canonical_match.group(1) if canonical_match else '',
-        'robots': robots_match.group(1) if robots_match else '',
-        'has_jsonld': 'application/ld+json' in html_head.lower(),
-        'head_chars': len(html_head),
-        'error': res.get('error', ''),
+        **public,
+        'source': 'public_rendered_fallback',
+        'rankmath_rest_http': res.get('http'),
     }
 
 
