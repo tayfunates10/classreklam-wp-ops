@@ -7,12 +7,12 @@
     "location": "",
     "waf": false
   },
-  "admin_page_http": 403,
+  "initial_admin_page_http": 401,
   "page": {
-    "code": "rest_cookie_invalid_nonce",
-    "message": "Çerez denetlenemedi",
+    "code": "rest_forbidden_context",
+    "message": "Ne yazık ki, bu yazıyı düzenleme izniniz yok.",
     "data": {
-      "status": 403
+      "status": 401
     }
   }
 }
