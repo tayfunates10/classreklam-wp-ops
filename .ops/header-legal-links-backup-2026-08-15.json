@@ -1,0 +1,158 @@
+{
+  "all_menu_items_before": [
+    {
+      "id": 22,
+      "title": "Anasayfa",
+      "url": "https://classreklamtabela.com.tr/",
+      "path": "/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 23,
+      "title": "Hakkımızda",
+      "url": "https://classreklamtabela.com.tr/hakkimizda/",
+      "path": "/hakkimizda/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 24,
+      "title": "Hizmetlerimiz",
+      "url": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+      "path": "/hizmetlerimiz/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 25,
+      "title": "Galeri",
+      "url": "https://classreklamtabela.com.tr/galeri/",
+      "path": "/galeri/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 26,
+      "title": "Blog",
+      "url": "https://classreklamtabela.com.tr/blog/",
+      "path": "/blog/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 28,
+      "title": "İletişim",
+      "url": "https://classreklamtabela.com.tr/iletisim/",
+      "path": "/iletisim/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1197,
+      "title": "Edremit Tabela",
+      "url": "https://classreklamtabela.com.tr/edremit-tabela/",
+      "path": "/edremit-tabela/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1184,
+      "title": "Gizlilik Politikası",
+      "url": "https://classreklamtabela.com.tr/?page_id=1183",
+      "path": "/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1196,
+      "title": "Gizlilik Politikası",
+      "url": "https://classreklamtabela.com.tr/gizlilik-politikasi-2/",
+      "path": "/gizlilik-politikasi-2/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1198,
+      "title": "Totem Tabela",
+      "url": "https://classreklamtabela.com.tr/totem-tabela/",
+      "path": "/totem-tabela/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1189,
+      "title": "Kullanım Şartları",
+      "url": "https://classreklamtabela.com.tr/kullanim-sartlari/",
+      "path": "/kullanim-sartlari/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1199,
+      "title": "Dijital Baskı",
+      "url": "https://classreklamtabela.com.tr/dijital-baski/",
+      "path": "/dijital-baski/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1200,
+      "title": "Araç Giydirme",
+      "url": "https://classreklamtabela.com.tr/arac-giydirme/",
+      "path": "/arac-giydirme/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1193,
+      "title": "Gizlilik Politikası",
+      "url": "https://classreklamtabela.com.tr/gizlilik-politikasi-2/",
+      "path": "/gizlilik-politikasi-2/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1191,
+      "title": "KVKK Bilgilendirme",
+      "url": "https://classreklamtabela.com.tr/kvkk/",
+      "path": "/kvkk/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1201,
+      "title": "Cam Giydirme",
+      "url": "https://classreklamtabela.com.tr/cam-giydirme/",
+      "path": "/cam-giydirme/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1202,
+      "title": "Kutu Harf Tabela",
+      "url": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
+      "path": "/kutu-harf-tabela/",
+      "menus": 2,
+      "status": "publish"
+    }
+  ],
+  "legal_menu_items_before": [
+    {
+      "id": 1189,
+      "title": "Kullanım Şartları",
+      "url": "https://classreklamtabela.com.tr/kullanim-sartlari/",
+      "path": "/kullanim-sartlari/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1191,
+      "title": "KVKK Bilgilendirme",
+      "url": "https://classreklamtabela.com.tr/kvkk/",
+      "path": "/kvkk/",
+      "menus": 2,
+      "status": "publish"
+    }
+  ]
+}
