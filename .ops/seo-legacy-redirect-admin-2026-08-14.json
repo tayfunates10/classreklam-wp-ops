@@ -1,10 +1,18 @@
 {
   "source": "https://classreklamtabela.com.tr/referans-isler/",
   "target": "https://classreklamtabela.com.tr/referanslar/",
-  "status": "blocked-before-write",
+  "status": "identity-or-admin-auth-failed",
   "before": {
     "http": 200,
     "location": "",
-    "waf": true
+    "waf": false
+  },
+  "admin_page_http": 403,
+  "page": {
+    "code": "rest_cookie_invalid_nonce",
+    "message": "Çerez denetlenemedi",
+    "data": {
+      "status": 403
+    }
   }
 }
