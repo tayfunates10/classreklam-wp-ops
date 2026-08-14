@@ -9,6 +9,8 @@ on:
       - 'scripts/seo_safe_remediation_queryrest.py'
       - 'scripts/full_seo_baseline_queryrest.py'
       - 'scripts/seo_acceptance_gate.py'
+      - 'scripts/seo_live_qa.mjs'
+      - 'scripts/lighthouse_seo_gate.mjs'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +23,7 @@ concurrency:
 jobs:
   remediate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -64,6 +66,8 @@ jobs:
 
       - name: Collect post-change authoritative baseline
         if: always()
+        id: postbaseline
+        continue-on-error: true
         env:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
@@ -83,6 +87,55 @@ jobs:
           set -o pipefail
           python3 scripts/seo_acceptance_gate.py .ops/seo-post-remediation-baseline-2026-08-14.json | tee .ops/seo-post-remediation-gate-2026-08-14.json
 
+      - name: Prepare Node browser QA
+        if: steps.remediation.outcome == 'success' && steps.postgate.outcome == 'success'
+        id: qasetup
+        continue-on-error: true
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install browser QA dependencies
+        if: steps.qasetup.outcome == 'success'
+        id: qadeps
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save playwright lighthouse
+          npx playwright install chromium
+
+      - name: Run 360/390/412/tablet/desktop live regression suite
+        if: steps.qadeps.outcome == 'success'
+        id: liveqa
+        continue-on-error: true
+        shell: bash
+        env:
+          SEO_LIVE_QA_OUT: .ops/seo-live-qa-2026-08-14.json
+        run: |
+          set -euo pipefail
+          node scripts/seo_live_qa.mjs
+
+      - name: Run mobile and desktop Lighthouse
+        if: steps.qadeps.outcome == 'success'
+        id: lighthouse
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          npx lighthouse https://classreklamtabela.com.tr/ \
+            --quiet \
+            --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --output=json --output-path=.ops/lighthouse-mobile.json
+          npx lighthouse https://classreklamtabela.com.tr/ \
+            --quiet --preset=desktop \
+            --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --output=json --output-path=.ops/lighthouse-desktop.json
+          node scripts/lighthouse_seo_gate.mjs .ops/lighthouse-mobile.json .ops/lighthouse-desktop.json
+
       - name: Save remediation and validation evidence to SEO branch
         if: always()
         shell: bash
@@ -90,12 +143,19 @@ jobs:
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/seo-pre-remediation-baseline-2026-08-14.json \
-                  .ops/seo-pre-remediation-gate-2026-08-14.json \
-                  .ops/seo-post-remediation-baseline-2026-08-14.json \
-                  .ops/seo-post-remediation-gate-2026-08-14.json
-          if [ -f .ops/seo-remediation-backup-2026-08-14.json ]; then git add .ops/seo-remediation-backup-2026-08-14.json; fi
-          if [ -f .ops/seo-remediation-result-2026-08-14.json ]; then git add .ops/seo-remediation-result-2026-08-14.json; fi
+          for f in \
+            .ops/seo-pre-remediation-baseline-2026-08-14.json \
+            .ops/seo-pre-remediation-gate-2026-08-14.json \
+            .ops/seo-post-remediation-baseline-2026-08-14.json \
+            .ops/seo-post-remediation-gate-2026-08-14.json \
+            .ops/seo-remediation-backup-2026-08-14.json \
+            .ops/seo-remediation-result-2026-08-14.json \
+            .ops/seo-live-qa-2026-08-14.json \
+            .ops/lighthouse-mobile.json \
+            .ops/lighthouse-desktop.json \
+            .ops/lighthouse-seo-gate-2026-08-14.json; do
+              if [ -f "$f" ]; then git add "$f"; fi
+          done
           if git diff --cached --quiet; then
             exit 0
           fi
@@ -108,9 +168,19 @@ jobs:
         shell: bash
         env:
           REMEDIATION_OUTCOME: ${{ steps.remediation.outcome }}
+          POST_BASELINE_OUTCOME: ${{ steps.postbaseline.outcome }}
           POST_GATE_OUTCOME: ${{ steps.postgate.outcome }}
+          QA_SETUP_OUTCOME: ${{ steps.qasetup.outcome }}
+          QA_DEPS_OUTCOME: ${{ steps.qadeps.outcome }}
+          LIVE_QA_OUTCOME: ${{ steps.liveqa.outcome }}
+          LIGHTHOUSE_OUTCOME: ${{ steps.lighthouse.outcome }}
         run: |
           set -euo pipefail
-          echo "remediation=$REMEDIATION_OUTCOME post_gate=$POST_GATE_OUTCOME"
+          echo "remediation=$REMEDIATION_OUTCOME post_baseline=$POST_BASELINE_OUTCOME post_gate=$POST_GATE_OUTCOME qasetup=$QA_SETUP_OUTCOME qadeps=$QA_DEPS_OUTCOME liveqa=$LIVE_QA_OUTCOME lighthouse=$LIGHTHOUSE_OUTCOME"
           test "$REMEDIATION_OUTCOME" = "success"
+          test "$POST_BASELINE_OUTCOME" = "success"
           test "$POST_GATE_OUTCOME" = "success"
+          test "$QA_SETUP_OUTCOME" = "success"
+          test "$QA_DEPS_OUTCOME" = "success"
+          test "$LIVE_QA_OUTCOME" = "success"
+          test "$LIGHTHOUSE_OUTCOME" = "success"
