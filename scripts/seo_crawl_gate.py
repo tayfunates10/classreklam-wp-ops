@@ -31,8 +31,18 @@ def main():
     source = Path(sys.argv[1] if len(sys.argv) > 1 else '.ops/seo-site-crawl-2026-08-14.json')
     data = json.loads(source.read_text(encoding='utf-8'))
     pages = {p.get('url'): p for p in data.get('pages', []) if isinstance(p, dict)}
-    failures = []
-    warnings = []
+    failures, warnings = [], []
+
+    sitemap_files = data.get('sitemaps') or []
+    if not sitemap_files:
+        failures.append({'check': 'sitemap_discovery', 'detail': 'no sitemap evidence'})
+    for sm in sitemap_files:
+        if sm.get('http') != 200:
+            failures.append({'check': 'sitemap_http', 'url': sm.get('url'), 'detail': f"HTTP {sm.get('http')} location={sm.get('location', '')}"})
+        if sm.get('waf'):
+            failures.append({'check': 'sitemap_waf', 'url': sm.get('url')})
+        if sm.get('parse_error'):
+            failures.append({'check': 'sitemap_parse', 'url': sm.get('url'), 'detail': sm.get('parse_error')})
 
     if data.get('waf_urls'):
         failures.append({'check': 'waf', 'detail': f"WAF obscured {len(data['waf_urls'])} crawled URLs"})
@@ -43,6 +53,19 @@ def main():
     if data.get('duplicate_descriptions'):
         failures.append({'check': 'duplicate_descriptions', 'detail': data['duplicate_descriptions'][:20]})
 
+    sitemap_urls = set(data.get('sitemap_seed_urls') or [])
+    for url in sorted(sitemap_urls):
+        p = pages.get(url)
+        if not p:
+            failures.append({'check': 'sitemap_url_not_crawled', 'url': url})
+            continue
+        if p.get('http') != 200:
+            failures.append({'check': 'sitemap_non200_url', 'url': url, 'detail': f"HTTP {p.get('http')} location={p.get('location', '')}"})
+        if p.get('classification') != 'INDEX':
+            failures.append({'check': 'sitemap_nonindex_url', 'url': url, 'detail': p.get('classification')})
+        if p.get('canonical') != url:
+            failures.append({'check': 'sitemap_nonself_canonical', 'url': url, 'detail': p.get('canonical')})
+
     for url in sorted(CRITICAL):
         p = pages.get(url)
         if not p:
@@ -52,14 +75,10 @@ def main():
             failures.append({'check': 'critical_http', 'url': url, 'detail': f"HTTP {p.get('http')}"})
         if p.get('classification') != 'INDEX':
             failures.append({'check': 'critical_indexability', 'url': url, 'detail': p.get('classification')})
-        if not str(p.get('title') or '').strip():
-            failures.append({'check': 'missing_title', 'url': url})
-        if not str(p.get('description') or '').strip():
-            failures.append({'check': 'missing_description', 'url': url})
-        if len(p.get('h1') or []) != 1:
-            failures.append({'check': 'h1_count', 'url': url, 'detail': p.get('h1')})
-        if p.get('canonical') != url:
-            failures.append({'check': 'self_canonical', 'url': url, 'detail': p.get('canonical')})
+        if not str(p.get('title') or '').strip(): failures.append({'check': 'missing_title', 'url': url})
+        if not str(p.get('description') or '').strip(): failures.append({'check': 'missing_description', 'url': url})
+        if len(p.get('h1') or []) != 1: failures.append({'check': 'h1_count', 'url': url, 'detail': p.get('h1')})
+        if p.get('canonical') != url: failures.append({'check': 'self_canonical', 'url': url, 'detail': p.get('canonical')})
 
     for url in sorted(COMMERCIAL):
         p = pages.get(url)
@@ -69,16 +88,11 @@ def main():
     indexable = [p for p in pages.values() if p.get('classification') == 'INDEX']
     for p in indexable:
         url = p.get('url')
-        if not p.get('title'):
-            failures.append({'check': 'missing_title', 'url': url})
-        if not p.get('description'):
-            warnings.append({'check': 'missing_description_noncritical', 'url': url})
-        if len(p.get('h1') or []) != 1:
-            failures.append({'check': 'indexable_h1_count', 'url': url, 'detail': p.get('h1')})
-        if not p.get('canonical'):
-            failures.append({'check': 'missing_canonical', 'url': url})
-        elif p.get('canonical') != url:
-            failures.append({'check': 'nonself_canonical_indexable', 'url': url, 'detail': p.get('canonical')})
+        if not p.get('title'): failures.append({'check': 'missing_title', 'url': url})
+        if not p.get('description'): warnings.append({'check': 'missing_description_noncritical', 'url': url})
+        if len(p.get('h1') or []) != 1: failures.append({'check': 'indexable_h1_count', 'url': url, 'detail': p.get('h1')})
+        if not p.get('canonical'): failures.append({'check': 'missing_canonical', 'url': url})
+        elif p.get('canonical') != url: failures.append({'check': 'nonself_canonical_indexable', 'url': url, 'detail': p.get('canonical')})
 
     legacy = pages.get('https://classreklamtabela.com.tr/referans-isler/')
     if legacy and legacy.get('classification') == 'INDEX':
@@ -87,6 +101,7 @@ def main():
     report = {
         'status': 'PASS' if not failures else 'FAIL',
         'crawled_count': data.get('crawled_count'),
+        'sitemap_url_count': len(sitemap_urls),
         'indexable_count': len(indexable),
         'failures': failures,
         'warnings': warnings,
@@ -97,5 +112,4 @@ def main():
     raise SystemExit(0 if not failures else 1)
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == '__main__': main()
