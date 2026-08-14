@@ -83,11 +83,9 @@ def main():
         result['status'] = 'already-correct'
         save(result)
         return
-    if before.get('http') != 200 or before.get('waf'):
-        result['status'] = 'blocked-before-write'
-        save(result)
-        raise SystemExit(2)
 
+    # Public WAF challenge is not authoritative for admin capability. Identity must be
+    # proven through the authenticated WordPress REST session before any write.
     code, page = request('GET', '/wp-json/wp/v2/pages/683?context=edit&_fields=id,slug,status,link,title')
     result['admin_page_http'] = code
     if code != 200 or not isinstance(page, dict) or page.get('id') != 683 or page.get('slug') != 'referans-isler' or page.get('status') != 'publish':
@@ -95,6 +93,11 @@ def main():
         result['page'] = page
         save(result)
         raise SystemExit(3)
+
+    if before.get('http') not in (0, 200) and not before.get('waf'):
+        result['status'] = 'unexpected-public-state-before-write'
+        save(result)
+        raise SystemExit(2)
 
     payload = {
         'objectID': 683,
@@ -118,13 +121,16 @@ def main():
         if after.get('http') in (301, 308) and after.get('location') == TARGET:
             break
     result['after'] = after
-    if not after or after.get('http') not in (301, 308) or after.get('location') != TARGET:
-        result['status'] = 'write-not-visible'
+    if after and after.get('http') in (301, 308) and after.get('location') == TARGET:
+        result['status'] = 'success'
         save(result)
-        raise SystemExit(5)
+        return
 
-    result['status'] = 'success'
+    # The write was accepted by the authenticated admin API, but public WAF/cache may
+    # still obscure validation. Leave the run red so the full SEO validation must prove it.
+    result['status'] = 'write-completed-public-indeterminate'
     save(result)
+    raise SystemExit(5)
 
 
 if __name__ == '__main__':
