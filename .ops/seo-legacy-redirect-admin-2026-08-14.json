@@ -1,0 +1,10 @@
+{
+  "source": "https://classreklamtabela.com.tr/referans-isler/",
+  "target": "https://classreklamtabela.com.tr/referanslar/",
+  "status": "blocked-before-write",
+  "before": {
+    "http": 200,
+    "location": "",
+    "waf": true
+  }
+}
