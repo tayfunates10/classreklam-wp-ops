@@ -1,0 +1,119 @@
+{
+  "started_at": "2026-08-14T09:30:40.850148+00:00",
+  "status": "write-failed-rollback-attempted",
+  "planned": [
+    {
+      "content": {
+        "kind": "pages",
+        "id": 6,
+        "h1": "already-correct",
+        "copy": "updated"
+      }
+    },
+    {
+      "content": {
+        "kind": "pages",
+        "id": 10,
+        "service_hub_links": "added"
+      }
+    },
+    {
+      "meta": {
+        "id": 6,
+        "canonical": "https://classreklamtabela.com.tr/"
+      }
+    },
+    {
+      "meta": {
+        "id": 1140,
+        "canonical": "https://classreklamtabela.com.tr/cam-giydirme/"
+      }
+    },
+    {
+      "meta": {
+        "id": 1142,
+        "canonical": "https://classreklamtabela.com.tr/kutu-harf-tabela/"
+      }
+    },
+    {
+      "redirect": {
+        "id": 683,
+        "target": "https://classreklamtabela.com.tr/referanslar/"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "content": {
+        "kind": "pages",
+        "id": 6,
+        "h1": "already-correct",
+        "copy": "updated"
+      }
+    },
+    {
+      "content": {
+        "kind": "pages",
+        "id": 10,
+        "service_hub_links": "added"
+      }
+    },
+    {
+      "meta": {
+        "id": 6,
+        "canonical": "https://classreklamtabela.com.tr/"
+      }
+    },
+    {
+      "meta": {
+        "id": 1140,
+        "canonical": "https://classreklamtabela.com.tr/cam-giydirme/"
+      }
+    },
+    {
+      "meta": {
+        "id": 1142,
+        "canonical": "https://classreklamtabela.com.tr/kutu-harf-tabela/"
+      }
+    }
+  ],
+  "fatal_blockers": [],
+  "deferred": [],
+  "rollback": [
+    {
+      "content": {
+        "kind": "pages",
+        "id": 10,
+        "status": "FAILED",
+        "error": "<urlopen error _ssl.c:983: The handshake operation timed out>"
+      }
+    },
+    {
+      "content": {
+        "kind": "pages",
+        "id": 6,
+        "status": "restored"
+      }
+    },
+    {
+      "meta": {
+        "id": 1142,
+        "status": "rendered-surface-restored"
+      }
+    },
+    {
+      "meta": {
+        "id": 1140,
+        "status": "rendered-surface-restored"
+      }
+    },
+    {
+      "meta": {
+        "id": 6,
+        "status": "rendered-surface-restored"
+      }
+    }
+  ],
+  "write_error": "RuntimeError: Rank Math redirect 683: HTTP 403 {'code': 'rest_cannot_edit', 'message': 'Maalesef, yeniden yönlendirme oluşturma / güncelleme izniniz yok.', 'data': {'status': 403}}",
+  "finished_at": "2026-08-14T09:33:41.358776+00:00"
+}

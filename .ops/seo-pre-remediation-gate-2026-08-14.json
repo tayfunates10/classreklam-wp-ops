@@ -1,0 +1,170 @@
+{
+  "status": "FAIL_CLOSED",
+  "counts": {
+    "PASS": 30,
+    "FAIL": 1,
+    "INDETERMINATE": 1
+  },
+  "checks": [
+    {
+      "check": "canonical_site_url",
+      "status": "PASS",
+      "detail": "url=https://classreklamtabela.com.tr home=not-exposed-by-rest"
+    },
+    {
+      "check": "uncategorized_removed",
+      "status": "PASS",
+      "detail": "categories=5"
+    },
+    {
+      "check": "commercial_pages_published",
+      "status": "PASS",
+      "detail": "required=10"
+    },
+    {
+      "check": "homepage_single_h1",
+      "status": "PASS",
+      "detail": "Edremit Tabela ve Reklam Çözümleri"
+    },
+    {
+      "check": "content_h1:arac-giydirme",
+      "status": "PASS",
+      "detail": "h1=['Edremit Araç Giydirme']"
+    },
+    {
+      "check": "content_h1:cam-giydirme",
+      "status": "PASS",
+      "detail": "h1=['Edremit Cam Giydirme']"
+    },
+    {
+      "check": "content_h1:dijital-baski",
+      "status": "PASS",
+      "detail": "h1=['Edremit Dijital Baskı']"
+    },
+    {
+      "check": "content_h1:edremit-tabela",
+      "status": "PASS",
+      "detail": "h1=['Edremit Tabela']"
+    },
+    {
+      "check": "content_h1:iletisim",
+      "status": "PASS",
+      "detail": "h1=['İletişim']"
+    },
+    {
+      "check": "content_h1:kutu-harf-tabela",
+      "status": "PASS",
+      "detail": "h1=['Edremit Kutu Harf Tabela']"
+    },
+    {
+      "check": "content_h1:totem-tabela",
+      "status": "PASS",
+      "detail": "h1=['Edremit Totem Tabela']"
+    },
+    {
+      "check": "blog_embedded_duplicate_title_h1",
+      "status": "PASS",
+      "detail": "posts=20"
+    },
+    {
+      "check": "blog_repeated_first_paragraph",
+      "status": "PASS",
+      "detail": "posts=20"
+    },
+    {
+      "check": "blog_literal_uncategorized_content",
+      "status": "PASS",
+      "detail": "posts=20"
+    },
+    {
+      "check": "rankmath_head:/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/"
+    },
+    {
+      "check": "rankmath_head:/iletisim/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/iletisim/"
+    },
+    {
+      "check": "rankmath_head:/hizmetlerimiz/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/hizmetlerimiz/"
+    },
+    {
+      "check": "rankmath_head:/hakkimizda/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/hakkimizda/"
+    },
+    {
+      "check": "rankmath_head:/blog/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/blog/"
+    },
+    {
+      "check": "rankmath_head:/referanslar/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/referanslar/"
+    },
+    {
+      "check": "rankmath_head:/edremit-tabela/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/edremit-tabela/"
+    },
+    {
+      "check": "rankmath_head:/totem-tabela/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/totem-tabela/"
+    },
+    {
+      "check": "rankmath_head:/dijital-baski/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/dijital-baski/"
+    },
+    {
+      "check": "rankmath_head:/arac-giydirme/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/arac-giydirme/"
+    },
+    {
+      "check": "rankmath_head:/cam-giydirme/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=0 error=TimeoutError: The read operation timed out"
+    },
+    {
+      "check": "rankmath_head:/kutu-harf-tabela/",
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/kutu-harf-tabela/"
+    },
+    {
+      "check": "https_non_www_public",
+      "status": "PASS",
+      "detail": "HTTP 200"
+    },
+    {
+      "check": "host_redirect:http_non_www",
+      "status": "PASS",
+      "detail": "301 -> https://classreklamtabela.com.tr/"
+    },
+    {
+      "check": "host_redirect:https_www",
+      "status": "PASS",
+      "detail": "301 -> https://classreklamtabela.com.tr/"
+    },
+    {
+      "check": "robots_public",
+      "status": "PASS",
+      "detail": "content_type=text/plain; charset=utf-8"
+    },
+    {
+      "check": "rankmath_sitemap_public",
+      "status": "PASS",
+      "detail": "content_type=text/xml; charset=UTF-8"
+    },
+    {
+      "check": "legacy_references",
+      "status": "FAIL",
+      "detail": "legacy URL result={'http': 200, 'location': '', 'content_type': 'text/html; charset=UTF-8', 'server': 'LiteSpeed', 'cache_control': 'public, max-age=3600', 'waf_challenge': False, 'title': 'Referans İşler - Class Reklam | Edremit Tabela ve Reklam', 'sample': '<!doctype html> <html lang=\"tr\" prefix=\"og: https://ogp.me/ns#\" class=\"no-js\" itemtype=\"https://schema.org/WebPage\" itemscope> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1\"> <!-- Rank Math&#039;a Göre Arama Motoru Optimizasyonu - https://rankmath.com/ --> <title>Referans İşler - Class Reklam | Edremit Tabela ve Reklam</title> <meta name=\"robots\" content=\"follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview'}"
+    }
+  ]
+}
