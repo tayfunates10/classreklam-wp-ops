@@ -6,6 +6,9 @@ on:
       - seo/full-seo-optimization
     paths:
       - '.github/workflows/seo-production-remediation.yml'
+      - 'scripts/seo_safe_remediation_queryrest.py'
+      - 'scripts/full_seo_baseline_queryrest.py'
+      - 'scripts/seo_acceptance_gate.py'
   workflow_dispatch:
 
 permissions:
@@ -13,7 +16,7 @@ permissions:
 
 concurrency:
   group: classreklam-seo-production-remediation
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   remediate:
