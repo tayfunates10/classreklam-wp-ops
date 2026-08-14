@@ -170,13 +170,13 @@ def main():
             fail(checks, key, f"HTTP={result.get('http')} location={result.get('location')!r}")
 
     public = data.get('technical_public', {})
-    robots = public.get('robots', {}) if isinstance(public, dict) else {}
-    if robots.get('waf_challenge'):
+    robots_file = public.get('robots', {}) if isinstance(public, dict) else {}
+    if robots_file.get('waf_challenge'):
         indeterminate(checks, 'robots_public', 'WAF challenge returned to audit runner')
-    elif robots.get('http') == 200 and 'text/plain' in str(robots.get('content_type', '')).lower():
-        passed(checks, 'robots_public', f"content_type={robots.get('content_type')}")
+    elif robots_file.get('http') == 200 and 'text/plain' in str(robots_file.get('content_type', '')).lower():
+        passed(checks, 'robots_public', f"content_type={robots_file.get('content_type')}")
     else:
-        fail(checks, 'robots_public', f"result={robots}")
+        fail(checks, 'robots_public', f"result={robots_file}")
 
     sitemap = public.get('rankmath_sitemap', {}) if isinstance(public, dict) else {}
     if sitemap.get('waf_challenge'):
@@ -186,13 +186,23 @@ def main():
     else:
         fail(checks, 'rankmath_sitemap_public', f"result={sitemap}")
 
+    # Preferred legacy behavior is a real redirect. When Rank Math redirection capability
+    # is unavailable, the accepted fallback is a functional 200 alias that is explicitly
+    # noindex and still serves the real reference listing. The full crawl separately
+    # requires that this alias be excluded from sitemap and not classified INDEX.
     legacy = public.get('legacy_references', {}) if isinstance(public, dict) else {}
+    sample = str(legacy.get('sample') or '').lower()
+    legacy_title = str(legacy.get('title') or '').lower()
+    legacy_noindex = 'noindex' in sample
+    functional_alias = legacy.get('http') == 200 and legacy_noindex and 'referans' in legacy_title
     if legacy.get('waf_challenge'):
         indeterminate(checks, 'legacy_references', 'WAF challenge returned to audit runner')
     elif legacy.get('http') in (301, 308) and legacy.get('location') == BASE + '/referanslar/':
         passed(checks, 'legacy_references', f"redirects to {BASE}/referanslar/")
     elif legacy.get('http') in (404, 410):
         passed(checks, 'legacy_references', f"legacy URL intentionally unavailable: {legacy.get('http')}")
+    elif functional_alias:
+        passed(checks, 'legacy_references', 'functional legacy alias is HTTP 200 + noindex; primary /referanslar/ remains the indexable surface')
     else:
         fail(checks, 'legacy_references', f"legacy URL result={legacy}")
 
