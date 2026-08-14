@@ -45,8 +45,7 @@ def api_url(route, params=None):
     return BASE + '/?' + urllib.parse.urlencode(q, doseq=True, safe='/:')
 
 
-def api(method, route, params=None, payload=None):
-    time.sleep(1.5)
+def api_once(method, route, params=None, payload=None):
     data = None
     headers = {'Authorization': AUTH, 'Accept': 'application/json', 'User-Agent': UA, 'Referer': BASE + '/wp-admin/'}
     if payload is not None:
@@ -64,6 +63,19 @@ def api(method, route, params=None, payload=None):
         try: body = json.loads(raw)
         except Exception: body = {'raw_sample': raw[:1200]}
         return e.code, body
+
+
+def api(method, route, params=None, payload=None):
+    time.sleep(1.5)
+    last = None
+    for attempt in range(4):
+        code, body = api_once(method, route, params=params, payload=payload)
+        last = (code, body)
+        text = json.dumps(body, ensure_ascii=False).lower() if isinstance(body, (dict, list)) else str(body).lower()
+        if code != 403 or ('imunify360' not in text and 'bot-protection' not in text):
+            return code, body
+        time.sleep(10 * (attempt + 1))
+    return last
 
 
 def ensure(code, body, label):
