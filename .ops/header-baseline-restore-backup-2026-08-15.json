@@ -1,0 +1,228 @@
+{
+  "primary_menu": 2,
+  "base_items": [
+    {
+      "id": 22,
+      "title": {
+        "raw": "Anasayfa",
+        "rendered": "Anasayfa"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/",
+      "menus": 2
+    },
+    {
+      "id": 23,
+      "title": {
+        "raw": "Hakkımızda",
+        "rendered": "Hakkımızda"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/hakkimizda/",
+      "menus": 2
+    },
+    {
+      "id": 24,
+      "title": {
+        "raw": "Hizmetlerimiz",
+        "rendered": "Hizmetlerimiz"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+      "menus": 2
+    },
+    {
+      "id": 25,
+      "title": {
+        "raw": "Galeri",
+        "rendered": "Galeri"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/galeri/",
+      "menus": 2
+    },
+    {
+      "id": 26,
+      "title": {
+        "raw": "Blog",
+        "rendered": "Blog"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/blog/",
+      "menus": 2
+    },
+    {
+      "id": 28,
+      "title": {
+        "raw": "İletişim",
+        "rendered": "İletişim"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/iletisim/",
+      "menus": 2
+    }
+  ],
+  "extra_service_items": [
+    {
+      "id": 1197,
+      "title": {
+        "raw": "Edremit Tabela",
+        "rendered": "Edremit Tabela"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/edremit-tabela/",
+      "menus": 2
+    },
+    {
+      "id": 1198,
+      "title": {
+        "raw": "Totem Tabela",
+        "rendered": "Totem Tabela"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/totem-tabela/",
+      "menus": 2
+    },
+    {
+      "id": 1199,
+      "title": {
+        "raw": "Dijital Baskı",
+        "rendered": "Dijital Baskı"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/dijital-baski/",
+      "menus": 2
+    },
+    {
+      "id": 1200,
+      "title": {
+        "raw": "Araç Giydirme",
+        "rendered": "Araç Giydirme"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/arac-giydirme/",
+      "menus": 2
+    },
+    {
+      "id": 1201,
+      "title": {
+        "raw": "Cam Giydirme",
+        "rendered": "Cam Giydirme"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/cam-giydirme/",
+      "menus": 2
+    },
+    {
+      "id": 1202,
+      "title": {
+        "raw": "Kutu Harf Tabela",
+        "rendered": "Kutu Harf Tabela"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
+      "menus": 2
+    }
+  ],
+  "live_before": {
+    "header_service_hits": [
+      {
+        "text": "Edremit Tabela",
+        "path": "/edremit-tabela/"
+      },
+      {
+        "text": "Totem Tabela",
+        "path": "/totem-tabela/"
+      },
+      {
+        "text": "Dijital Baskı",
+        "path": "/dijital-baski/"
+      },
+      {
+        "text": "Araç Giydirme",
+        "path": "/arac-giydirme/"
+      },
+      {
+        "text": "Cam Giydirme",
+        "path": "/cam-giydirme/"
+      },
+      {
+        "text": "Kutu Harf Tabela",
+        "path": "/kutu-harf-tabela/"
+      }
+    ],
+    "header_service_count": 6,
+    "header_links": [
+      {
+        "text": "",
+        "path": "/"
+      },
+      {
+        "text": "Anasayfa",
+        "path": "/"
+      },
+      {
+        "text": "Hakkımızda",
+        "path": "/hakkimizda/"
+      },
+      {
+        "text": "Hizmetlerimiz",
+        "path": "/hizmetlerimiz/"
+      },
+      {
+        "text": "Galeri",
+        "path": "/galeri/"
+      },
+      {
+        "text": "Blog",
+        "path": "/blog/"
+      },
+      {
+        "text": "İletişim",
+        "path": "/iletisim/"
+      },
+      {
+        "text": "Gizlilik Politikası",
+        "path": "/"
+      },
+      {
+        "text": "Edremit Tabela",
+        "path": "/edremit-tabela/"
+      },
+      {
+        "text": "Gizlilik Politikası",
+        "path": "/gizlilik-politikasi-2/"
+      },
+      {
+        "text": "Totem Tabela",
+        "path": "/totem-tabela/"
+      },
+      {
+        "text": "Dijital Baskı",
+        "path": "/dijital-baski/"
+      },
+      {
+        "text": "Gizlilik Politikası",
+        "path": "/gizlilik-politikasi-2/"
+      },
+      {
+        "text": "Araç Giydirme",
+        "path": "/arac-giydirme/"
+      },
+      {
+        "text": "Cam Giydirme",
+        "path": "/cam-giydirme/"
+      },
+      {
+        "text": "Kutu Harf Tabela",
+        "path": "/kutu-harf-tabela/"
+      },
+      {
+        "text": "",
+        "path": "/"
+      }
+    ],
+    "footer_service_hits": [],
+    "footer_service_count": 0
+  }
+}
