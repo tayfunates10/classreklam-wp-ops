@@ -253,9 +253,11 @@ def main():
 
     settings_code, settings = request('GET', '/wp/v2/settings')
     ensure(settings_code, settings, 'settings preflight')
-    if settings.get('url', '').rstrip('/') != BASE or settings.get('home', '').rstrip('/') != BASE:
+    wp_url = str(settings.get('url') or '').rstrip('/')
+    wp_home = str(settings.get('home') or '').rstrip('/')
+    if wp_url != BASE or (wp_home and wp_home != BASE):
         raise RuntimeError(f'canonical site mismatch: url={settings.get("url")} home={settings.get("home")}')
-    results['verified_inputs'].append('canonical WordPress URL/home')
+    results['verified_inputs'].append('canonical WordPress URL; home matched when exposed')
 
     expected_pages = {6: 'ana-sayfa', 10: 'hizmetlerimiz', 18: 'iletisim', 683: 'referans-isler'}
     expected_pages.update({pid: meta[0] for pid, meta in SERVICE_PAGES.items()})
@@ -288,7 +290,6 @@ def main():
         json.dumps(backup, ensure_ascii=False, indent=2), encoding='utf-8'
     )
 
-    # Homepage: preserve markup/classes and only replace known text variants.
     home = pages[6]
     home_raw = home.get('content', {}).get('raw', '')
     updated, changed_h1, h1_status = replace_home_h1(home_raw)
@@ -301,7 +302,6 @@ def main():
         update_content('pages', 6, updated2)
         results['changes'].append({'page': 6, 'h1': h1_status, 'copy': copy_status})
 
-    # Service hub internal links: append only once, no layout rewrites.
     hub = pages[10]
     hub_raw = hub.get('content', {}).get('raw', '')
     hub_new, hub_changed, hub_status = ensure_service_hub_links(hub_raw)
@@ -309,7 +309,6 @@ def main():
         update_content('pages', 10, hub_new)
         results['changes'].append({'page': 10, 'service_hub_links': hub_status})
 
-    # Blog template already renders the post title; remove only an exact duplicate H1 block embedded in content.
     for post in posts:
         post_id = post.get('id')
         title_obj = post.get('title') or {}
@@ -328,7 +327,6 @@ def main():
             update_content('posts', post_id, new_raw)
             results['changes'].append({'post': post_id, 'duplicate_title_h1': status})
 
-    # Intent ownership: homepage = broad local advertising entity; dedicated pages own service intents.
     for pid, (_, title, description, focus, canonical) in CORE_META.items():
         rank_meta(pid, title, description, focus, canonical)
         results['changes'].append({'page': pid, 'rank_math_meta': 'updated'})
@@ -337,7 +335,6 @@ def main():
         rank_meta(pid, title, description, focus, BASE + f'/{slug}/')
         results['changes'].append({'page': pid, 'rank_math_meta': 'updated'})
 
-    # Consolidate the legacy references page only if its known identity still exists.
     if 683 in pages:
         rank_redirect(683, BASE + '/referanslar/')
         results['changes'].append({'page': 683, 'redirect': BASE + '/referanslar/', 'type': 301})
