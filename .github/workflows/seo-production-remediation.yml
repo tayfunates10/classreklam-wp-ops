@@ -73,6 +73,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          if [ "${PRE_GATE_RC:-1}" = "0" ]; then
+            python3 - <<'PY'
+          import json, os
+          os.makedirs('.ops', exist_ok=True)
+          payload = {
+              'status': 'no-op-pre-gate-pass',
+              'planned': [],
+              'changes': [],
+              'fatal_blockers': [],
+              'deferred': [],
+              'rollback': [],
+          }
+          with open('.ops/seo-remediation-result-2026-08-14.json', 'w', encoding='utf-8') as f:
+              json.dump(payload, f, ensure_ascii=False, indent=2)
+          print(json.dumps(payload, ensure_ascii=False, indent=2))
+          PY
+            exit 0
+          fi
           python3 scripts/seo_safe_remediation_queryrest.py
 
       - name: Collect post-change authoritative baseline
