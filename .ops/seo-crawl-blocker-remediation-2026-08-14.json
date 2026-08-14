@@ -1,0 +1,73 @@
+{
+  "status": "failed-rollback-attempted",
+  "changes": [
+    {
+      "page": 1186,
+      "status": "draft"
+    },
+    {
+      "page": 1183,
+      "status": "publish",
+      "slug": "gizlilik-politikasi"
+    },
+    {
+      "menu_item_deleted": 1187,
+      "reason": "duplicate privacy"
+    }
+  ],
+  "verification": {},
+  "rollback": [
+    {
+      "page": 1186,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "page": 1183,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "page": 683,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "page": 14,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "page": 12,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "page": 10,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "page": 8,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "page": 6,
+      "http": 200,
+      "ok": true
+    },
+    {
+      "blog_canonical": "restored",
+      "http": 200,
+      "ok": true
+    },
+    {
+      "menu_item_recreated_for": 1187,
+      "new_id": 1196,
+      "ok": true
+    }
+  ],
+  "cache": [],
+  "error": "RuntimeError: homepage contains no expected /referans-isler/ links to replace"
+}
