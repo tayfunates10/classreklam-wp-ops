@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/full-seo-baseline.yml'
       - 'scripts/full_seo_baseline_queryrest.py'
+      - 'scripts/seo_acceptance_gate.py'
   workflow_dispatch:
 
 permissions:
@@ -33,16 +34,35 @@ jobs:
           python3 scripts/full_seo_baseline_queryrest.py > .ops/full-seo-baseline-2026-08-14.json
           python3 -m json.tool .ops/full-seo-baseline-2026-08-14.json >/dev/null
 
+      - name: Evaluate fail-closed SEO acceptance gate
+        id: seo_gate
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          python3 scripts/seo_acceptance_gate.py .ops/full-seo-baseline-2026-08-14.json > .ops/seo-acceptance-2026-08-14.json
+          exit_code=$?
+          python3 -m json.tool .ops/seo-acceptance-2026-08-14.json >/dev/null
+          exit "$exit_code"
+
       - name: Save branch baseline evidence
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'classreklam-wp-ops-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .ops/full-seo-baseline-2026-08-14.json
+          git add .ops/full-seo-baseline-2026-08-14.json .ops/seo-acceptance-2026-08-14.json
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m 'chore: record 2026-08-14 full SEO baseline'
+          git commit -m 'chore: record 2026-08-14 full SEO baseline and gates'
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Enforce SEO gate
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ steps.seo_gate.outcome }}" = "success"
