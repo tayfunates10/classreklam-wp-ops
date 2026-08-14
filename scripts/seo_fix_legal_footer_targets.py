@@ -121,6 +121,15 @@ def update_meta(page_id, cfg, canonical):
     ensure(code, body, f'Rank Math meta {page_id}')
 
 
+def verified(after, url):
+    canonical = str((after or {}).get('canonical') or '')
+    return bool(
+        after and after.get('http') == 200 and not after.get('waf')
+        and 'noindex' in str(after.get('robots', '')).lower()
+        and canonical in ('', url)
+    )
+
+
 def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     result = {'status': 'running', 'targets': [], 'rollback': []}
@@ -174,10 +183,10 @@ def main():
             for _ in range(5):
                 time.sleep(3)
                 after = public(url)
-                if after.get('http') == 200 and not after.get('waf') and 'noindex' in str(after.get('robots', '')).lower() and after.get('canonical') == url:
+                if verified(after, url):
                     break
             result['targets'].append({'slug': slug, 'id': page_id, 'action': action, 'before': before_public, 'after': after})
-            if not after or after.get('http') != 200 or after.get('waf') or 'noindex' not in str(after.get('robots', '')).lower() or after.get('canonical') != url:
+            if not verified(after, url):
                 raise RuntimeError(f'{slug}: public verification failed: {after}')
 
         result['status'] = 'success'
