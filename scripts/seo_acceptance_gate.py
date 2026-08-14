@@ -38,8 +38,12 @@ def main():
 
     settings = data.get('settings', {})
     vals = settings.get('values', {}) if isinstance(settings, dict) else {}
-    if settings.get('ok') and vals.get('url') == BASE and vals.get('home') == BASE:
-        passed(checks, 'canonical_site_url', f"url/home={BASE}")
+    wp_url = str(vals.get('url') or '').rstrip('/')
+    wp_home = str(vals.get('home') or '').rstrip('/')
+    home_ok = (not wp_home) or wp_home == BASE
+    if settings.get('ok') and wp_url == BASE and home_ok:
+        detail = f"url={BASE}" + (f" home={wp_home}" if wp_home else " home=not-exposed-by-rest")
+        passed(checks, 'canonical_site_url', detail)
     else:
         fail(checks, 'canonical_site_url', f"settings={vals}")
 
