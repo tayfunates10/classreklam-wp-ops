@@ -1,0 +1,33 @@
+{
+  "status": "failed-rollback-attempted",
+  "targets": [
+    {
+      "slug": "gizlilik-politikasi",
+      "id": 1183,
+      "action": "created",
+      "before": {
+        "http": 404,
+        "waf": false,
+        "title": "Page Not Found - Class Reklam | Edremit Tabela ve Reklam",
+        "canonical": "",
+        "robots": "follow, noindex"
+      },
+      "after": {
+        "http": 200,
+        "waf": false,
+        "title": "Gizlilik Politikası | Class Reklam",
+        "canonical": "",
+        "robots": "noindex, follow"
+      }
+    }
+  ],
+  "rollback": [
+    {
+      "id": 1183,
+      "slug": "gizlilik-politikasi",
+      "http": 200,
+      "ok": true
+    }
+  ],
+  "error": "RuntimeError: gizlilik-politikasi: public verification failed: {'http': 200, 'waf': False, 'title': 'Gizlilik Politikası | Class Reklam', 'canonical': '', 'robots': 'noindex, follow'}"
+}
