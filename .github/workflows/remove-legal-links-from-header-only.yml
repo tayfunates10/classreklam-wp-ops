@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: classreklam-header-legal-only
+  group: classreklam-header-restore
   cancel-in-progress: true
 
 jobs:
@@ -49,4 +49,4 @@ jobs:
           git pull --rebase origin $env:GITHUB_REF_NAME
           git push origin "HEAD:$env:GITHUB_REF_NAME"
 
-# Trigger marker: header-only cleanup, no footer/page deletion.
+# Only header legal-page menu items are removed. Pages and footer links are preserved.
