@@ -11,7 +11,7 @@ This branch contains the guarded full SEO audit/remediation chain. Google Search
 
 Current required chain:
 
-`PRE-BASELINE → FULL CRAWL → GUARDED REMEDIATION → POST-BASELINE → TECHNICAL GATE → POST-Crawl GATE → RESPONSIVE QA → LIGHTHOUSE → EVIDENCE`
+`PRE-BASELINE → FULL CRAWL → GUARDED REMEDIATION → POST-BASELINE → TECHNICAL GATE → POST-CRAWL GATE → RESPONSIVE QA → LIGHTHOUSE → EVIDENCE`
 
 Production changes are allowed only after predicate checks and backup generation. Any unexpected WordPress source state blocks writes. Any WAF-obscured validation is treated as indeterminate/fail-closed, not PASS.
 
