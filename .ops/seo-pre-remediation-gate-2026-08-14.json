@@ -1,9 +1,9 @@
 {
-  "status": "FAIL_CLOSED",
+  "status": "PASS",
   "counts": {
-    "PASS": 30,
-    "FAIL": 1,
-    "INDETERMINATE": 1
+    "PASS": 32,
+    "FAIL": 0,
+    "INDETERMINATE": 0
   },
   "checks": [
     {
@@ -128,8 +128,8 @@
     },
     {
       "check": "rankmath_head:/cam-giydirme/",
-      "status": "INDETERMINATE",
-      "detail": "HTTP=0 error=TimeoutError: The read operation timed out"
+      "status": "PASS",
+      "detail": "canonical=https://classreklamtabela.com.tr/cam-giydirme/"
     },
     {
       "check": "rankmath_head:/kutu-harf-tabela/",
@@ -163,8 +163,8 @@
     },
     {
       "check": "legacy_references",
-      "status": "FAIL",
-      "detail": "legacy URL result={'http': 200, 'location': '', 'content_type': 'text/html; charset=UTF-8', 'server': 'LiteSpeed', 'cache_control': 'public, max-age=3600', 'waf_challenge': False, 'title': 'Referans İşler - Class Reklam | Edremit Tabela ve Reklam', 'sample': '<!doctype html> <html lang=\"tr\" prefix=\"og: https://ogp.me/ns#\" class=\"no-js\" itemtype=\"https://schema.org/WebPage\" itemscope> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1\"> <!-- Rank Math&#039;a Göre Arama Motoru Optimizasyonu - https://rankmath.com/ --> <title>Referans İşler - Class Reklam | Edremit Tabela ve Reklam</title> <meta name=\"robots\" content=\"follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview'}"
+      "status": "PASS",
+      "detail": "legacy URL intentionally unavailable: 404"
     }
   ]
 }

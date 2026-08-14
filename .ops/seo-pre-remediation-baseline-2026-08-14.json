@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-14T09:23:16.782120+00:00",
+  "checked_at": "2026-08-14T11:29:32.210619+00:00",
   "site_url": "https://classreklamtabela.com.tr",
   "mode": "read-only",
   "settings": {
@@ -60,6 +60,42 @@
     "http": 200,
     "ok": true,
     "items": [
+      {
+        "id": 1190,
+        "slug": "kvkk",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/kvkk/",
+        "parent": 0,
+        "modified": "2026-08-14T11:21:07",
+        "title": {
+          "raw": "KVKK Bilgilendirme",
+          "rendered": "KVKK Bilgilendirme"
+        }
+      },
+      {
+        "id": 1188,
+        "slug": "kullanim-sartlari",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/kullanim-sartlari/",
+        "parent": 0,
+        "modified": "2026-08-14T11:20:51",
+        "title": {
+          "raw": "Kullanım Şartları",
+          "rendered": "Kullanım Şartları"
+        }
+      },
+      {
+        "id": 1186,
+        "slug": "gizlilik-politikasi-2",
+        "status": "publish",
+        "link": "https://classreklamtabela.com.tr/gizlilik-politikasi-2/",
+        "parent": 0,
+        "modified": "2026-08-14T11:20:31",
+        "title": {
+          "raw": "Gizlilik Politikası",
+          "rendered": "Gizlilik Politikası"
+        }
+      },
       {
         "id": 1142,
         "slug": "kutu-harf-tabela",
@@ -145,18 +181,6 @@
         }
       },
       {
-        "id": 683,
-        "slug": "referans-isler",
-        "status": "publish",
-        "link": "https://classreklamtabela.com.tr/referans-isler/",
-        "parent": 0,
-        "modified": "2026-06-14T11:41:22",
-        "title": {
-          "raw": "Referans İşler",
-          "rendered": "Referans İşler"
-        }
-      },
-      {
         "id": 18,
         "slug": "iletisim",
         "status": "publish",
@@ -198,7 +222,7 @@
         "status": "publish",
         "link": "https://classreklamtabela.com.tr/hizmetlerimiz/",
         "parent": 0,
-        "modified": "2026-06-12T09:33:12",
+        "modified": "2026-08-14T09:32:15",
         "title": {
           "raw": "Hizmetlerimiz",
           "rendered": "Hizmetlerimiz"
@@ -222,7 +246,7 @@
         "status": "publish",
         "link": "https://classreklamtabela.com.tr/",
         "parent": 0,
-        "modified": "2026-08-10T13:47:01",
+        "modified": "2026-08-14T09:33:26",
         "title": {
           "raw": "Anasayfa",
           "rendered": "Anasayfa"
@@ -560,7 +584,7 @@
   "homepage_source": {
     "http": 200,
     "id": 6,
-    "modified": "2026-08-10T13:47:01",
+    "modified": "2026-08-14T09:33:26",
     "h1": [
       "Edremit Tabela ve Reklam Çözümleri"
     ],
@@ -696,8 +720,8 @@
       "title_matching_h1_count": 0,
       "first_paragraph_occurrences": 1,
       "literal_uncategorized_in_content": false,
-      "content_chars": 150516,
-      "modified": "2026-06-12T09:33:12"
+      "content_chars": 151065,
+      "modified": "2026-08-14T09:32:15"
     },
     {
       "id": 8,
@@ -983,9 +1007,9 @@
       "title": "Edremit Tabela ve Reklam | Class Reklam",
       "description": "Edremit’te tabela, totem, kutu harf, dijital baskı, araç ve cam giydirme çözümleri. Class Reklam’dan keşif ve teklif alın.",
       "canonical": "https://classreklamtabela.com.tr/",
-      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 413791,
+      "head_chars": 415237,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -999,7 +1023,7 @@
       "canonical": "https://classreklamtabela.com.tr/iletisim/",
       "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 239438,
+      "head_chars": 240884,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1013,7 +1037,7 @@
       "canonical": "https://classreklamtabela.com.tr/hizmetlerimiz/",
       "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 377247,
+      "head_chars": 379187,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1027,7 +1051,7 @@
       "canonical": "https://classreklamtabela.com.tr/hakkimizda/",
       "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 259904,
+      "head_chars": 261350,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1041,7 +1065,7 @@
       "canonical": "https://classreklamtabela.com.tr/blog/",
       "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 293268,
+      "head_chars": 294714,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1055,7 +1079,7 @@
       "canonical": "https://classreklamtabela.com.tr/referanslar/",
       "robots": "index, follow",
       "has_jsonld": true,
-      "head_chars": 254269,
+      "head_chars": 255715,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1069,7 +1093,7 @@
       "canonical": "https://classreklamtabela.com.tr/edremit-tabela/",
       "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 235295,
+      "head_chars": 236741,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1083,7 +1107,7 @@
       "canonical": "https://classreklamtabela.com.tr/totem-tabela/",
       "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 234730,
+      "head_chars": 236176,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1097,7 +1121,7 @@
       "canonical": "https://classreklamtabela.com.tr/dijital-baski/",
       "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 234682,
+      "head_chars": 236128,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1111,22 +1135,22 @@
       "canonical": "https://classreklamtabela.com.tr/arac-giydirme/",
       "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 234612,
+      "head_chars": 236058,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
     },
     "/cam-giydirme/": {
-      "http": 0,
-      "ok": false,
+      "http": 200,
+      "ok": true,
       "waf_challenge": false,
-      "title": "",
-      "description": "",
-      "canonical": "",
-      "robots": "",
-      "has_jsonld": false,
-      "head_chars": 0,
-      "error": "TimeoutError: The read operation timed out",
+      "title": "Edremit Cam Giydirme | One Way Vision ve Folyo | Class Reklam",
+      "description": "Edremit cam giydirme ve vitrin folyo uygulamaları. One way vision, buzlu folyo, kesim folyo ve reklam amaçlı cam kaplama çözümleri.",
+      "canonical": "https://classreklamtabela.com.tr/cam-giydirme/",
+      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "has_jsonld": true,
+      "head_chars": 236016,
+      "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
     },
@@ -1139,7 +1163,7 @@
       "canonical": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
       "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
       "has_jsonld": true,
-      "head_chars": 234607,
+      "head_chars": 236053,
       "error": "",
       "source": "public_rendered_fallback",
       "rankmath_rest_http": 404
@@ -1226,14 +1250,13 @@
       "sample": "<!doctype html> <html lang=\"tr\" prefix=\"og: https://ogp.me/ns#\" class=\"no-js\" itemtype=\"https://schema.org/Blog\" itemscope> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1\"> <!-- Rank Math&#039;a Göre Arama Motoru Optimizasyonu - https://rankmath.com/ --> <title>Referans İşler - Class Reklam | Edremit Tabela ve Reklam</title> <meta name=\"description\" content=\"Referans İşler Archive - Class Reklam | Edremit Tabela ve Reklam\"/>"
     },
     "legacy_references": {
-      "http": 200,
+      "http": 404,
       "location": "",
       "content_type": "text/html; charset=UTF-8",
       "server": "LiteSpeed",
-      "cache_control": "public, max-age=3600",
+      "cache_control": "no-cache, must-revalidate, max-age=0, no-store, private",
       "waf_challenge": false,
-      "title": "Referans İşler - Class Reklam | Edremit Tabela ve Reklam",
-      "sample": "<!doctype html> <html lang=\"tr\" prefix=\"og: https://ogp.me/ns#\" class=\"no-js\" itemtype=\"https://schema.org/WebPage\" itemscope> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1\"> <!-- Rank Math&#039;a Göre Arama Motoru Optimizasyonu - https://rankmath.com/ --> <title>Referans İşler - Class Reklam | Edremit Tabela ve Reklam</title> <meta name=\"robots\" content=\"follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview"
+      "sample": "<!doctype html> <html lang=\"tr\" prefix=\"og: https://ogp.me/ns#\" class=\"no-js\" itemtype=\"https://schema.org/WebPage\" itemscope> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1\"> <!-- Rank Math&#039;a Göre Arama Motoru Optimizasyonu - https://rankmath.com/ --> <title>Page Not Found - Class Reklam | Edremit Tabela ve Reklam</title> <meta name=\"robots\" content=\"follow, noindex\"/> <meta property=\"og:locale\" content=\"tr_TR\" /> <meta"
     }
   }
 }
