@@ -3,6 +3,7 @@ import json
 import os
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 BASE = os.environ['WP_URL'].rstrip('/')
@@ -14,15 +15,16 @@ TARGET = BASE + '/referanslar/'
 OUT = '.ops/seo-legacy-redirect-admin-2026-08-14.json'
 
 
-def request(method, path, payload=None):
+def request(method, path, payload=None, nonce=None):
     data = None
     headers = {
         'Accept': 'application/json',
         'User-Agent': UA,
         'Referer': BASE + '/wp-admin/',
         'Cookie': COOKIE,
-        'X-WP-Nonce': NONCE,
     }
+    if nonce:
+        headers['X-WP-Nonce'] = nonce
     if payload is not None:
         data = json.dumps(payload, ensure_ascii=False).encode('utf-8')
         headers['Content-Type'] = 'application/json; charset=utf-8'
@@ -38,6 +40,26 @@ def request(method, path, payload=None):
         try: body = json.loads(raw)
         except Exception: body = {'raw_sample': raw[:1000]}
         return e.code, body
+
+
+def refresh_nonce():
+    url = BASE + '/wp-admin/admin-ajax.php?' + urllib.parse.urlencode({'action': 'rest-nonce'})
+    req = urllib.request.Request(url, headers={
+        'Accept': 'text/plain,*/*',
+        'User-Agent': UA,
+        'Referer': BASE + '/wp-admin/',
+        'Cookie': COOKIE,
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=45) as r:
+            value = r.read().decode('utf-8', errors='replace').strip()
+            if r.status == 200 and value and value not in ('-1', '0') and len(value) <= 64:
+                return r.status, value
+            return r.status, ''
+    except urllib.error.HTTPError as e:
+        return e.code, ''
+    except Exception:
+        return 0, ''
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -74,6 +96,10 @@ def save(result):
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
+def valid_page(page):
+    return isinstance(page, dict) and page.get('id') == 683 and page.get('slug') == 'referans-isler' and page.get('status') == 'publish'
+
+
 def main():
     result = {'source': SOURCE, 'target': TARGET, 'status': 'running'}
 
@@ -84,11 +110,20 @@ def main():
         save(result)
         return
 
-    # Public WAF challenge is not authoritative for admin capability. Identity must be
-    # proven through the authenticated WordPress REST session before any write.
-    code, page = request('GET', '/wp-json/wp/v2/pages/683?context=edit&_fields=id,slug,status,link,title')
-    result['admin_page_http'] = code
-    if code != 200 or not isinstance(page, dict) or page.get('id') != 683 or page.get('slug') != 'referans-isler' or page.get('status') != 'publish':
+    nonce = NONCE
+    code, page = request('GET', '/wp-json/wp/v2/pages/683?context=edit&_fields=id,slug,status,link,title', nonce=nonce)
+    result['initial_admin_page_http'] = code
+
+    if code == 403 and isinstance(page, dict) and page.get('code') == 'rest_cookie_invalid_nonce':
+        nonce_http, fresh_nonce = refresh_nonce()
+        result['nonce_refresh_http'] = nonce_http
+        result['nonce_refreshed'] = bool(fresh_nonce)
+        if fresh_nonce:
+            nonce = fresh_nonce
+            code, page = request('GET', '/wp-json/wp/v2/pages/683?context=edit&_fields=id,slug,status,link,title', nonce=nonce)
+            result['refreshed_admin_page_http'] = code
+
+    if code != 200 or not valid_page(page):
         result['status'] = 'identity-or-admin-auth-failed'
         result['page'] = page
         save(result)
@@ -106,7 +141,7 @@ def main():
         'redirectionUrl': TARGET,
         'redirectionType': '301',
     }
-    code, body = request('POST', '/wp-json/rankmath/v1/updateRedirection', payload)
+    code, body = request('POST', '/wp-json/rankmath/v1/updateRedirection', payload, nonce=nonce)
     result['redirect_api_http'] = code
     result['redirect_api_body'] = body
     if code not in (200, 201):
@@ -126,8 +161,6 @@ def main():
         save(result)
         return
 
-    # The write was accepted by the authenticated admin API, but public WAF/cache may
-    # still obscure validation. Leave the run red so the full SEO validation must prove it.
     result['status'] = 'write-completed-public-indeterminate'
     save(result)
     raise SystemExit(5)
