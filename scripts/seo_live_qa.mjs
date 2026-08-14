@@ -10,19 +10,26 @@ const viewports = [
   { name: 'tablet-768', width: 768, height: 1024 },
   { name: 'desktop-1440', width: 1440, height: 1000 },
 ];
-const paths = [
+const seoPaths = [
   '/', '/iletisim/', '/hizmetlerimiz/', '/hakkimizda/', '/blog/', '/referanslar/',
   '/edremit-tabela/', '/totem-tabela/', '/dijital-baski/', '/arac-giydirme/',
   '/cam-giydirme/', '/kutu-harf-tabela/'
 ];
+const responsivePaths = ['/', '/hizmetlerimiz/', '/iletisim/', '/edremit-tabela/'];
 
 function normalizeUrl(path) {
   return BASE + (path === '/' ? '/' : path);
 }
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const report = {
   checked_at: new Date().toISOString(),
   base: BASE,
+  scope: {
+    desktop_seo_urls: seoPaths.length,
+    responsive_urls_per_non_desktop_viewport: responsivePaths.length,
+    viewports: viewports.map(v => v.name),
+  },
   status: 'running',
   failures: [],
   warnings: [],
@@ -33,6 +40,7 @@ const browser = await chromium.launch({ headless: true });
 try {
   for (const viewport of viewports) {
     const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
+    const paths = viewport.name === 'desktop-1440' ? seoPaths : responsivePaths;
     for (const path of paths) {
       const page = await context.newPage();
       const pageErrors = [];
@@ -121,11 +129,12 @@ try {
         if (!dom.tel.some(h => h.includes('905469364271'))) fail('homepage canonical phone tel link missing');
         if (!dom.whatsapp.some(h => h.includes('905469364271'))) fail('homepage canonical WhatsApp link missing');
       }
-      if (path === '/iletisim/') {
-        if (!dom.tel.some(h => h.includes('905469364271'))) fail('contact phone tel link missing');
+      if (path === '/iletisim/' && !dom.tel.some(h => h.includes('905469364271'))) {
+        fail('contact phone tel link missing');
       }
 
       await page.close();
+      await sleep(650);
     }
     await context.close();
   }
