@@ -1,0 +1,55 @@
+name: Restore Footer Local SEO Links Only
+
+on:
+  push:
+    branches:
+      - seo/full-seo-optimization
+    paths:
+      - '.github/workflows/restore-footer-local-seo-links-only.yml'
+      - 'scripts/restore_footer_local_seo_links_only.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: classreklam-footer-local-seo-links
+  cancel-in-progress: true
+
+jobs:
+  restore:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Restore footer local SEO links and verify header remains clean
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          PYTHONUTF8: '1'
+          PYTHONIOENCODING: 'utf-8'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python scripts/restore_footer_local_seo_links_only.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Save evidence
+        if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if (Test-Path '.ops/footer-local-seo-links-restore-2026-08-15.json') {
+            git add '.ops/footer-local-seo-links-restore-2026-08-15.json'
+          }
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) { exit 0 }
+          git commit -m 'chore: record footer local SEO link restore evidence'
+          git pull --rebase origin $env:GITHUB_REF_NAME
+          git push origin "HEAD:$env:GITHUB_REF_NAME"
