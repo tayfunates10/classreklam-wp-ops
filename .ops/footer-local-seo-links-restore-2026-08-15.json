@@ -1,0 +1,85 @@
+{
+  "status": "success",
+  "changes": [
+    {
+      "widget": "block-61",
+      "status": "updated",
+      "links": [
+        [
+          "Edremit Tabela",
+          "/edremit-tabela/"
+        ],
+        [
+          "Totem Tabela",
+          "/totem-tabela/"
+        ],
+        [
+          "Dijital Baskı",
+          "/dijital-baski/"
+        ],
+        [
+          "Araç Giydirme",
+          "/arac-giydirme/"
+        ],
+        [
+          "Cam Giydirme",
+          "/cam-giydirme/"
+        ],
+        [
+          "Kutu Harf Tabela",
+          "/kutu-harf-tabela/"
+        ]
+      ]
+    }
+  ],
+  "verification": {
+    "authoritative_footer_paths": [
+      "/arac-giydirme/",
+      "/cam-giydirme/",
+      "/dijital-baski/",
+      "/edremit-tabela/",
+      "/kutu-harf-tabela/",
+      "/totem-tabela/"
+    ],
+    "live": {
+      "header_hits": [],
+      "header_count": 0,
+      "header_paths": [],
+      "footer_hits": [
+        {
+          "text": "Edremit Tabela",
+          "path": "/edremit-tabela/"
+        },
+        {
+          "text": "Totem Tabela",
+          "path": "/totem-tabela/"
+        },
+        {
+          "text": "Dijital Baskı",
+          "path": "/dijital-baski/"
+        },
+        {
+          "text": "Araç Giydirme",
+          "path": "/arac-giydirme/"
+        },
+        {
+          "text": "Cam Giydirme",
+          "path": "/cam-giydirme/"
+        },
+        {
+          "text": "Kutu Harf Tabela",
+          "path": "/kutu-harf-tabela/"
+        }
+      ],
+      "footer_count": 6,
+      "footer_paths": [
+        "/arac-giydirme/",
+        "/cam-giydirme/",
+        "/dijital-baski/",
+        "/edremit-tabela/",
+        "/kutu-harf-tabela/",
+        "/totem-tabela/"
+      ]
+    }
+  }
+}
