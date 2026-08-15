@@ -1,0 +1,130 @@
+{
+  "status": "FAIL_CLOSED",
+  "counts": {
+    "PASS": 0,
+    "FAIL": 7,
+    "INDETERMINATE": 17
+  },
+  "checks": [
+    {
+      "check": "canonical_site_url",
+      "status": "FAIL",
+      "detail": "settings={}"
+    },
+    {
+      "check": "uncategorized_removed",
+      "status": "INDETERMINATE",
+      "detail": "category audit unavailable: {}"
+    },
+    {
+      "check": "commercial_pages_published",
+      "status": "INDETERMINATE",
+      "detail": "page audit unavailable: {}"
+    },
+    {
+      "check": "homepage_single_h1",
+      "status": "INDETERMINATE",
+      "detail": "homepage source unavailable: {}"
+    },
+    {
+      "check": "critical_page_source_audit",
+      "status": "INDETERMINATE",
+      "detail": "source audit unavailable: None"
+    },
+    {
+      "check": "blog_source_audit",
+      "status": "INDETERMINATE",
+      "detail": "source audit unavailable: None"
+    },
+    {
+      "check": "rankmath_head:/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/iletisim/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/hizmetlerimiz/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/hakkimizda/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/blog/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/referanslar/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/edremit-tabela/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/totem-tabela/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/dijital-baski/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/arac-giydirme/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/cam-giydirme/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "rankmath_head:/kutu-harf-tabela/",
+      "status": "INDETERMINATE",
+      "detail": "HTTP=None error="
+    },
+    {
+      "check": "https_non_www_public",
+      "status": "FAIL",
+      "detail": "result={}"
+    },
+    {
+      "check": "host_redirect:http_non_www",
+      "status": "FAIL",
+      "detail": "HTTP=None location=None"
+    },
+    {
+      "check": "host_redirect:https_www",
+      "status": "FAIL",
+      "detail": "HTTP=None location=None"
+    },
+    {
+      "check": "robots_public",
+      "status": "FAIL",
+      "detail": "result={}"
+    },
+    {
+      "check": "rankmath_sitemap_public",
+      "status": "FAIL",
+      "detail": "result={}"
+    },
+    {
+      "check": "legacy_references",
+      "status": "FAIL",
+      "detail": "legacy URL result={}"
+    }
+  ]
+}

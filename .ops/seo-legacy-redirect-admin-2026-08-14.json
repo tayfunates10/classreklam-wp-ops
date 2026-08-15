@@ -1,0 +1,18 @@
+{
+  "source": "https://classreklamtabela.com.tr/referans-isler/",
+  "target": "https://classreklamtabela.com.tr/referanslar/",
+  "status": "identity-or-admin-auth-failed",
+  "before": {
+    "http": 200,
+    "location": "",
+    "waf": false
+  },
+  "initial_admin_page_http": 401,
+  "page": {
+    "code": "rest_forbidden_context",
+    "message": "Ne yazık ki, bu yazıyı düzenleme izniniz yok.",
+    "data": {
+      "status": 401
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": "https://classreklamtabela.com.tr/referans-isler/",
+  "target": "https://classreklamtabela.com.tr/referanslar/",
+  "status": "success",
+  "before_source": {
+    "http": 200,
+    "location": "",
+    "waf": false
+  },
+  "before_target": {
+    "http": 200,
+    "location": "",
+    "waf": false
+  },
+  "page_read_http": 200,
+  "draft_write_http": 200,
+  "after_source": {
+    "http": 404,
+    "location": "",
+    "waf": false
+  },
+  "after_target": {
+    "http": 200,
+    "location": "",
+    "waf": false
+  }
+}

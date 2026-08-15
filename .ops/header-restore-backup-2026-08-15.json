@@ -1,0 +1,254 @@
+{
+  "primary_menu": 2,
+  "menu_items": [
+    {
+      "id": 22,
+      "title": {
+        "raw": "Anasayfa",
+        "rendered": "Anasayfa"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 6,
+      "parent": 0,
+      "menu_order": 1,
+      "menus": 2
+    },
+    {
+      "id": 23,
+      "title": {
+        "raw": "Hakkımızda",
+        "rendered": "Hakkımızda"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/hakkimizda/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 8,
+      "parent": 0,
+      "menu_order": 2,
+      "menus": 2
+    },
+    {
+      "id": 24,
+      "title": {
+        "raw": "Hizmetlerimiz",
+        "rendered": "Hizmetlerimiz"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 10,
+      "parent": 0,
+      "menu_order": 3,
+      "menus": 2
+    },
+    {
+      "id": 25,
+      "title": {
+        "raw": "Galeri",
+        "rendered": "Galeri"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/galeri/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 12,
+      "parent": 0,
+      "menu_order": 4,
+      "menus": 2
+    },
+    {
+      "id": 26,
+      "title": {
+        "raw": "Blog",
+        "rendered": "Blog"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/blog/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 14,
+      "parent": 0,
+      "menu_order": 5,
+      "menus": 2
+    },
+    {
+      "id": 28,
+      "title": {
+        "raw": "İletişim",
+        "rendered": "İletişim"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/iletisim/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 18,
+      "parent": 0,
+      "menu_order": 6,
+      "menus": 2
+    },
+    {
+      "id": 1184,
+      "title": {
+        "raw": "Gizlilik Politikası",
+        "rendered": "Gizlilik Politikası"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/?page_id=1183",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 1183,
+      "parent": 0,
+      "menu_order": 7,
+      "menus": 2
+    },
+    {
+      "id": 1196,
+      "title": {
+        "raw": "Gizlilik Politikası",
+        "rendered": "Gizlilik Politikası"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/gizlilik-politikasi-2/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 1186,
+      "parent": 0,
+      "menu_order": 8,
+      "menus": 2
+    },
+    {
+      "id": 1189,
+      "title": {
+        "raw": "Kullanım Şartları",
+        "rendered": "Kullanım Şartları"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/kullanim-sartlari/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 1188,
+      "parent": 0,
+      "menu_order": 9,
+      "menus": 2
+    },
+    {
+      "id": 1191,
+      "title": {
+        "raw": "KVKK Bilgilendirme",
+        "rendered": "KVKK Bilgilendirme"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/kvkk/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 1190,
+      "parent": 0,
+      "menu_order": 10,
+      "menus": 2
+    },
+    {
+      "id": 1193,
+      "title": {
+        "raw": "Gizlilik Politikası",
+        "rendered": "Gizlilik Politikası"
+      },
+      "status": "publish",
+      "url": "https://classreklamtabela.com.tr/gizlilik-politikasi-2/",
+      "type": "post_type",
+      "object": "page",
+      "object_id": 1186,
+      "parent": 0,
+      "menu_order": 10,
+      "menus": 2
+    }
+  ],
+  "block_61": {
+    "id": "block-61",
+    "id_base": "block",
+    "sidebar": "footer3",
+    "rendered": "<section id=\"block-61\" class=\"widget widget_block\"><ul class=\"footer-link-list\">\n<li><a href=\"/edremit-tabela/\">Edremit Tabela</a></li>\n<li><a href=\"/totem-tabela/\">Totem Tabela</a></li>\n<li><a href=\"/dijital-baski/\">Dijital Baskı</a></li>\n<li><a href=\"/arac-giydirme/\">Araç Giydirme</a></li>\n<li><a href=\"/cam-giydirme/\">Cam Giydirme</a></li>\n<li><a href=\"/kutu-harf-tabela/\">Kutu Harf Tabela</a></li>\n</ul></section>",
+    "rendered_form": "<p>\n\t\t\t<label for=\"widget-block-61-content\">\n\t\t\t\tBlok HTML:\t\t\t</label>\n\t\t\t<textarea id=\"widget-block-61-content\" name=\"widget-block[61][content]\" rows=\"6\" cols=\"50\" class=\"widefat code\">&lt;ul class=&quot;footer-link-list&quot;&gt;\n&lt;li&gt;&lt;a href=&quot;/edremit-tabela/&quot;&gt;Edremit Tabela&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;/totem-tabela/&quot;&gt;Totem Tabela&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;/dijital-baski/&quot;&gt;Dijital Baskı&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;/arac-giydirme/&quot;&gt;Araç Giydirme&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;/cam-giydirme/&quot;&gt;Cam Giydirme&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;/kutu-harf-tabela/&quot;&gt;Kutu Harf Tabela&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;</textarea>\n\t\t</p>",
+    "instance": {
+      "encoded": "YToxOntzOjc6ImNvbnRlbnQiO3M6MzU5OiI8dWwgY2xhc3M9ImZvb3Rlci1saW5rLWxpc3QiPgo8bGk+PGEgaHJlZj0iL2VkcmVtaXQtdGFiZWxhLyI+RWRyZW1pdCBUYWJlbGE8L2E+PC9saT4KPGxpPjxhIGhyZWY9Ii90b3RlbS10YWJlbGEvIj5Ub3RlbSBUYWJlbGE8L2E+PC9saT4KPGxpPjxhIGhyZWY9Ii9kaWppdGFsLWJhc2tpLyI+RGlqaXRhbCBCYXNrxLE8L2E+PC9saT4KPGxpPjxhIGhyZWY9Ii9hcmFjLWdpeWRpcm1lLyI+QXJhw6cgR2l5ZGlybWU8L2E+PC9saT4KPGxpPjxhIGhyZWY9Ii9jYW0tZ2l5ZGlybWUvIj5DYW0gR2l5ZGlybWU8L2E+PC9saT4KPGxpPjxhIGhyZWY9Ii9rdXR1LWhhcmYtdGFiZWxhLyI+S3V0dSBIYXJmIFRhYmVsYTwvYT48L2xpPgo8L3VsPiI7fQ==",
+      "hash": "c338fa525c7d3eb02ebb1712b6e96764",
+      "raw": {
+        "content": "<ul class=\"footer-link-list\">\n<li><a href=\"/edremit-tabela/\">Edremit Tabela</a></li>\n<li><a href=\"/totem-tabela/\">Totem Tabela</a></li>\n<li><a href=\"/dijital-baski/\">Dijital Baskı</a></li>\n<li><a href=\"/arac-giydirme/\">Araç Giydirme</a></li>\n<li><a href=\"/cam-giydirme/\">Cam Giydirme</a></li>\n<li><a href=\"/kutu-harf-tabela/\">Kutu Harf Tabela</a></li>\n</ul>"
+      }
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https://classreklamtabela.com.tr/wp-json/wp/v2/widgets/block-61",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://classreklamtabela.com.tr/wp-json/wp/v2/widgets"
+        }
+      ],
+      "about": [
+        {
+          "embeddable": true,
+          "href": "https://classreklamtabela.com.tr/wp-json/wp/v2/widget-types/block"
+        }
+      ],
+      "wp:sidebar": [
+        {
+          "href": "https://classreklamtabela.com.tr/wp-json/wp/v2/sidebars/footer3/"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  "live_before": {
+    "header_hits": [],
+    "header_count": 0,
+    "footer_hits": [
+      {
+        "text": "Edremit Tabela",
+        "path": "/edremit-tabela/"
+      },
+      {
+        "text": "Totem Tabela",
+        "path": "/totem-tabela/"
+      },
+      {
+        "text": "Dijital Baskı",
+        "path": "/dijital-baski/"
+      },
+      {
+        "text": "Araç Giydirme",
+        "path": "/arac-giydirme/"
+      },
+      {
+        "text": "Cam Giydirme",
+        "path": "/cam-giydirme/"
+      },
+      {
+        "text": "Kutu Harf Tabela",
+        "path": "/kutu-harf-tabela/"
+      }
+    ],
+    "footer_count": 6
+  }
+}

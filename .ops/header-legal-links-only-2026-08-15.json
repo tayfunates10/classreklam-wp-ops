@@ -1,0 +1,83 @@
+{
+  "status": "verification-failed",
+  "legal_paths": [
+    "/gizlilik-politikasi/",
+    "/kullanim-sartlari/",
+    "/kvkk/"
+  ],
+  "legal_menu_items_before": [
+    {
+      "id": 1189,
+      "title": "Kullanım Şartları",
+      "url": "https://classreklamtabela.com.tr/kullanim-sartlari/",
+      "path": "/kullanim-sartlari/",
+      "menus": 2,
+      "status": "publish"
+    },
+    {
+      "id": 1191,
+      "title": "KVKK Bilgilendirme",
+      "url": "https://classreklamtabela.com.tr/kvkk/",
+      "path": "/kvkk/",
+      "menus": 2,
+      "status": "publish"
+    }
+  ],
+  "deleted": [
+    {
+      "id": 1189,
+      "title": "Kullanım Şartları",
+      "path": "/kullanim-sartlari/",
+      "http": 200,
+      "deleted": true
+    },
+    {
+      "id": 1191,
+      "title": "KVKK Bilgilendirme",
+      "path": "/kvkk/",
+      "http": 200,
+      "deleted": true
+    }
+  ],
+  "remaining_legal_menu_items": [],
+  "nonlegal_menu_ids_unchanged": true,
+  "legal_pages": [
+    {
+      "slug": "gizlilik-politikasi",
+      "http": 200,
+      "count": 0
+    },
+    {
+      "slug": "kullanim-sartlari",
+      "http": 200,
+      "count": 1,
+      "id": 1188,
+      "status": "publish"
+    },
+    {
+      "slug": "kvkk",
+      "http": 200,
+      "count": 1,
+      "id": 1190,
+      "status": "publish"
+    }
+  ],
+  "live_header_legal_links": [],
+  "live_footer_legal_links": [
+    {
+      "text": "Gizlilik Politikası",
+      "href": "/gizlilik-politikasi",
+      "path": "/gizlilik-politikasi/"
+    },
+    {
+      "text": "Kullanım Şartları",
+      "href": "/kullanim-sartlari",
+      "path": "/kullanim-sartlari/"
+    },
+    {
+      "text": "KVKK",
+      "href": "/kvkk",
+      "path": "/kvkk/"
+    }
+  ]
+}

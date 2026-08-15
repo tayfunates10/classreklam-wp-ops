@@ -1,0 +1,53 @@
+name: Guarded Remaining SEO Crawl Blocker Remediation
+
+on:
+  push:
+    branches:
+      - seo/full-seo-optimization
+    paths:
+      - '.github/workflows/seo-fix-remaining-crawl-blockers.yml'
+      - 'scripts/seo_fix_remaining_crawl_blockers.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: classreklam-seo-remaining-crawl-blockers
+  cancel-in-progress: true
+
+jobs:
+  remediate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Apply transactional crawl blocker remediation
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/seo_fix_remaining_crawl_blockers.py
+
+      - name: Save crawl blocker backup and evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for f in \
+            .ops/seo-crawl-blocker-backup-2026-08-14.json \
+            .ops/seo-crawl-blocker-remediation-2026-08-14.json; do
+              if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: record remaining SEO crawl blocker remediation evidence'
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

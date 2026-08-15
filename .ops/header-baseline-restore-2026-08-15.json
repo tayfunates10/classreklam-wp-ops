@@ -1,0 +1,97 @@
+{
+  "status": "success",
+  "deleted": [
+    {
+      "id": 1197,
+      "path": "/edremit-tabela/",
+      "http": 200,
+      "deleted": true
+    },
+    {
+      "id": 1198,
+      "path": "/totem-tabela/",
+      "http": 200,
+      "deleted": true
+    },
+    {
+      "id": 1199,
+      "path": "/dijital-baski/",
+      "http": 200,
+      "deleted": true
+    },
+    {
+      "id": 1200,
+      "path": "/arac-giydirme/",
+      "http": 200,
+      "deleted": true
+    },
+    {
+      "id": 1201,
+      "path": "/cam-giydirme/",
+      "http": 200,
+      "deleted": true
+    },
+    {
+      "id": 1202,
+      "path": "/kutu-harf-tabela/",
+      "http": 200,
+      "deleted": true
+    }
+  ],
+  "verification": {
+    "base_menu_count": 6,
+    "remaining_service_menu_items": 0,
+    "live": {
+      "header_service_hits": [],
+      "header_service_count": 0,
+      "header_links": [
+        {
+          "text": "",
+          "path": "/"
+        },
+        {
+          "text": "Anasayfa",
+          "path": "/"
+        },
+        {
+          "text": "Hakkımızda",
+          "path": "/hakkimizda/"
+        },
+        {
+          "text": "Hizmetlerimiz",
+          "path": "/hizmetlerimiz/"
+        },
+        {
+          "text": "Galeri",
+          "path": "/galeri/"
+        },
+        {
+          "text": "Blog",
+          "path": "/blog/"
+        },
+        {
+          "text": "İletişim",
+          "path": "/iletisim/"
+        },
+        {
+          "text": "Gizlilik Politikası",
+          "path": "/"
+        },
+        {
+          "text": "Gizlilik Politikası",
+          "path": "/gizlilik-politikasi-2/"
+        },
+        {
+          "text": "Gizlilik Politikası",
+          "path": "/gizlilik-politikasi-2/"
+        },
+        {
+          "text": "",
+          "path": "/"
+        }
+      ],
+      "footer_service_hits": [],
+      "footer_service_count": 0
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "status": "FAIL",
+  "crawled_count": 69,
+  "sitemap_url_count": 49,
+  "indexable_count": 50,
+  "failures": [
+    {
+      "check": "broken_internal_links",
+      "detail": [
+        {
+          "source": "https://classreklamtabela.com.tr/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/",
+          "target": "https://classreklamtabela.com.tr/referans-isler/",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/arac-giydirme-ile-firma-bilinirligi-nasil-artar/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/arac-giydirme/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/arac-kaplama-ile-mobil-reklamin-gucu/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/blog/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/branda-baski-hangi-alanlarda-kullanilir/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/cam-giydirme/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/dijital-baski-nerelerde-kullanilir/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/dijital-baski/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/dis-mekan-reklam-baskilarinda-kalite-neden-onemli/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/edremit-tabela/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/edremitte-tabela-yaptirmak-isteyenlere-oneriler/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/folyo-kesim-ve-uygulama-nedir/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/galeri/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/hakkimizda/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/iletisim/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/isikli-tabela-isletmenize-ne-kazandirir/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/kompozit-cephe-kaplama-ile-kurumsal-gorunum/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/kutu-harf-tabela-neden-tercih-edilir/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/kutu-harf-tabela/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/led-tabela-ve-neon-tabela-arasindaki-farklar/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/magaza-tabelasi-markaniz-icin-neden-onemli/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        },
+        {
+          "source": "https://classreklamtabela.com.tr/one-way-vision-cam-kaplama-avantajlari/",
+          "target": "https://classreklamtabela.com.tr/?page_id=1183",
+          "http": 404
+        }
+      ]
+    },
+    {
+      "check": "sitemap_non200_url",
+      "url": "https://classreklamtabela.com.tr/referans-isler/",
+      "detail": "HTTP 404 location="
+    },
+    {
+      "check": "sitemap_nonindex_url",
+      "url": "https://classreklamtabela.com.tr/referans-isler/",
+      "detail": "REMOVE"
+    },
+    {
+      "check": "sitemap_nonself_canonical",
+      "url": "https://classreklamtabela.com.tr/referans-isler/",
+      "detail": ""
+    },
+    {
+      "check": "h1_count",
+      "url": "https://classreklamtabela.com.tr/hakkimizda/",
+      "detail": []
+    },
+    {
+      "check": "h1_count",
+      "url": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+      "detail": []
+    },
+    {
+      "check": "indexable_h1_count",
+      "url": "https://classreklamtabela.com.tr/galeri/",
+      "detail": []
+    },
+    {
+      "check": "indexable_h1_count",
+      "url": "https://classreklamtabela.com.tr/hakkimizda/",
+      "detail": []
+    },
+    {
+      "check": "indexable_h1_count",
+      "url": "https://classreklamtabela.com.tr/hizmetlerimiz/",
+      "detail": []
+    },
+    {
+      "check": "nonself_canonical_indexable",
+      "url": "https://classreklamtabela.com.tr/blog/page/2/",
+      "detail": "https://classreklamtabela.com.tr/blog/"
+    }
+  ],
+  "warnings": [
+    {
+      "check": "pagination_duplicate_titles",
+      "detail": [
+        [
+          "https://classreklamtabela.com.tr/blog/",
+          "https://classreklamtabela.com.tr/blog/page/2/"
+        ]
+      ]
+    },
+    {
+      "check": "pagination_duplicate_descriptions",
+      "detail": [
+        [
+          "https://classreklamtabela.com.tr/blog/",
+          "https://classreklamtabela.com.tr/blog/page/2/"
+        ]
+      ]
+    },
+    {
+      "check": "missing_description_noncritical",
+      "url": "https://classreklamtabela.com.tr/yasal-bilgiler/"
+    }
+  ]
+}

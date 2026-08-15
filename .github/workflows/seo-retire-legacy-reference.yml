@@ -1,0 +1,55 @@
+name: Guarded Legacy Reference Retirement
+
+on:
+  push:
+    branches:
+      - seo/full-seo-optimization
+    paths:
+      - '.github/workflows/seo-retire-legacy-reference.yml'
+      - 'scripts/seo_retire_legacy_reference_page.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: classreklam-retire-legacy-reference
+  cancel-in-progress: true
+
+jobs:
+  retire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Retire duplicate legacy reference page reversibly
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/seo_retire_legacy_reference_page.py
+
+      - name: Save retirement evidence and backup
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for f in \
+            .ops/seo-retire-legacy-reference-2026-08-14.json \
+            .ops/seo-retire-legacy-reference-backup-2026-08-14.json; do
+              if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'chore: record legacy reference retirement evidence'
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

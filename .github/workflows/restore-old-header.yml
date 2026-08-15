@@ -1,0 +1,54 @@
+name: Restore Old Header
+
+on:
+  push:
+    branches:
+      - seo/full-seo-optimization
+    paths:
+      - '.github/workflows/restore-old-header.yml'
+      - 'scripts/restore_header_baseline_remove_extras.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: classreklam-header-baseline-final
+  cancel-in-progress: true
+
+jobs:
+  restore:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Restore SEO-start header baseline and remove extra service links
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          PYTHONUTF8: '1'
+          PYTHONIOENCODING: 'utf-8'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python scripts/restore_header_baseline_remove_extras.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Save restore evidence
+        if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if (Test-Path '.ops/header-baseline-restore-2026-08-15.json') { git add '.ops/header-baseline-restore-2026-08-15.json' }
+          if (Test-Path '.ops/header-baseline-restore-backup-2026-08-15.json') { git add '.ops/header-baseline-restore-backup-2026-08-15.json' }
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) { exit 0 }
+          git commit -m 'chore: record baseline header restore evidence'
+          git pull --rebase origin $env:GITHUB_REF_NAME
+          git push origin "HEAD:$env:GITHUB_REF_NAME"

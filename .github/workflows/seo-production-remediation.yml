@@ -1,0 +1,232 @@
+name: Guarded SEO Production Remediation
+
+on:
+  push:
+    branches:
+      - seo/full-seo-optimization
+    paths:
+      - '.github/workflows/seo-production-remediation.yml'
+      - 'scripts/seo_safe_remediation_queryrest.py'
+      - 'scripts/full_seo_baseline_queryrest.py'
+      - 'scripts/seo_acceptance_gate.py'
+      - 'scripts/seo_site_crawl.py'
+      - 'scripts/seo_crawl_gate.py'
+      - 'scripts/seo_live_qa.mjs'
+      - 'scripts/lighthouse_seo_gate.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: classreklam-seo-production-remediation
+  cancel-in-progress: true
+
+jobs:
+  remediate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Collect pre-change authoritative baseline
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          python3 scripts/full_seo_baseline_queryrest.py > .ops/seo-pre-remediation-baseline-2026-08-14.json
+          python3 -m json.tool .ops/seo-pre-remediation-baseline-2026-08-14.json >/dev/null
+
+      - name: Crawl pre-change public site
+        id: precrawl
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/seo_site_crawl.py --output .ops/seo-site-crawl-before-2026-08-14.json
+          python3 -m json.tool .ops/seo-site-crawl-before-2026-08-14.json >/dev/null
+
+      - name: Record pre-change gate without treating expected SEO defects as success
+        shell: bash
+        run: |
+          set +e
+          python3 scripts/seo_acceptance_gate.py .ops/seo-pre-remediation-baseline-2026-08-14.json > .ops/seo-pre-remediation-gate-2026-08-14.json
+          rc=$?
+          echo "PRE_GATE_RC=$rc" >> "$GITHUB_ENV"
+          python3 -m json.tool .ops/seo-pre-remediation-gate-2026-08-14.json >/dev/null
+          exit 0
+
+      - name: Apply predicate-guarded WordPress SEO remediation
+        id: remediation
+        continue-on-error: true
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          SEO_EVIDENCE_DIR: .ops
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${PRE_GATE_RC:-1}" = "0" ]; then
+            python3 - <<'PY'
+          import json, os
+          os.makedirs('.ops', exist_ok=True)
+          payload = {
+              'status': 'no-op-pre-gate-pass',
+              'planned': [],
+              'changes': [],
+              'fatal_blockers': [],
+              'deferred': [],
+              'rollback': [],
+          }
+          with open('.ops/seo-remediation-result-2026-08-14.json', 'w', encoding='utf-8') as f:
+              json.dump(payload, f, ensure_ascii=False, indent=2)
+          print(json.dumps(payload, ensure_ascii=False, indent=2))
+          PY
+            exit 0
+          fi
+          python3 scripts/seo_safe_remediation_queryrest.py
+
+      - name: Collect post-change authoritative baseline
+        if: always()
+        id: postbaseline
+        continue-on-error: true
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/full_seo_baseline_queryrest.py > .ops/seo-post-remediation-baseline-2026-08-14.json
+          python3 -m json.tool .ops/seo-post-remediation-baseline-2026-08-14.json >/dev/null
+
+      - name: Run strict post-change authoritative gate
+        if: always()
+        id: postgate
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 scripts/seo_acceptance_gate.py .ops/seo-post-remediation-baseline-2026-08-14.json | tee .ops/seo-post-remediation-gate-2026-08-14.json
+
+      - name: Crawl post-change public site
+        if: steps.remediation.outcome == 'success' && steps.postgate.outcome == 'success'
+        id: postcrawl
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/seo_site_crawl.py --output .ops/seo-site-crawl-2026-08-14.json
+          python3 scripts/seo_crawl_gate.py .ops/seo-site-crawl-2026-08-14.json
+
+      - name: Prepare Node browser QA
+        if: steps.remediation.outcome == 'success' && steps.postgate.outcome == 'success' && steps.postcrawl.outcome == 'success'
+        id: qasetup
+        continue-on-error: true
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install browser QA dependencies
+        if: steps.qasetup.outcome == 'success'
+        id: qadeps
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save playwright lighthouse
+          npx playwright install chromium
+
+      - name: Run 360/390/412/tablet/desktop live regression suite
+        if: steps.qadeps.outcome == 'success'
+        id: liveqa
+        continue-on-error: true
+        shell: bash
+        env:
+          SEO_LIVE_QA_OUT: .ops/seo-live-qa-2026-08-14.json
+        run: |
+          set -euo pipefail
+          node scripts/seo_live_qa.mjs
+
+      - name: Run mobile and desktop Lighthouse
+        if: steps.qadeps.outcome == 'success'
+        id: lighthouse
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ops
+          npx lighthouse https://classreklamtabela.com.tr/ \
+            --quiet \
+            --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --output=json --output-path=.ops/lighthouse-mobile.json
+          npx lighthouse https://classreklamtabela.com.tr/ \
+            --quiet --preset=desktop \
+            --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --output=json --output-path=.ops/lighthouse-desktop.json
+          node scripts/lighthouse_seo_gate.mjs .ops/lighthouse-mobile.json .ops/lighthouse-desktop.json
+
+      - name: Save remediation and validation evidence to SEO branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'classreklam-wp-ops-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for f in \
+            .ops/seo-pre-remediation-baseline-2026-08-14.json \
+            .ops/seo-site-crawl-before-2026-08-14.json \
+            .ops/seo-pre-remediation-gate-2026-08-14.json \
+            .ops/seo-post-remediation-baseline-2026-08-14.json \
+            .ops/seo-post-remediation-gate-2026-08-14.json \
+            .ops/seo-remediation-backup-2026-08-14.json \
+            .ops/seo-remediation-result-2026-08-14.json \
+            .ops/seo-site-crawl-2026-08-14.json \
+            .ops/seo-crawl-gate-2026-08-14.json \
+            .ops/seo-live-qa-2026-08-14.json \
+            .ops/lighthouse-mobile.json \
+            .ops/lighthouse-desktop.json \
+            .ops/lighthouse-seo-gate-2026-08-14.json; do
+              if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'chore: record guarded SEO remediation evidence'
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Enforce final fail-closed result
+        if: always()
+        shell: bash
+        env:
+          PRE_CRAWL_OUTCOME: ${{ steps.precrawl.outcome }}
+          REMEDIATION_OUTCOME: ${{ steps.remediation.outcome }}
+          POST_BASELINE_OUTCOME: ${{ steps.postbaseline.outcome }}
+          POST_GATE_OUTCOME: ${{ steps.postgate.outcome }}
+          POST_CRAWL_OUTCOME: ${{ steps.postcrawl.outcome }}
+          QA_SETUP_OUTCOME: ${{ steps.qasetup.outcome }}
+          QA_DEPS_OUTCOME: ${{ steps.qadeps.outcome }}
+          LIVE_QA_OUTCOME: ${{ steps.liveqa.outcome }}
+          LIGHTHOUSE_OUTCOME: ${{ steps.lighthouse.outcome }}
+        run: |
+          set -euo pipefail
+          echo "precrawl=$PRE_CRAWL_OUTCOME remediation=$REMEDIATION_OUTCOME post_baseline=$POST_BASELINE_OUTCOME post_gate=$POST_GATE_OUTCOME postcrawl=$POST_CRAWL_OUTCOME qasetup=$QA_SETUP_OUTCOME qadeps=$QA_DEPS_OUTCOME liveqa=$LIVE_QA_OUTCOME lighthouse=$LIGHTHOUSE_OUTCOME"
+          test "$PRE_CRAWL_OUTCOME" = "success"
+          test "$REMEDIATION_OUTCOME" = "success"
+          test "$POST_BASELINE_OUTCOME" = "success"
+          test "$POST_GATE_OUTCOME" = "success"
+          test "$POST_CRAWL_OUTCOME" = "success"
+          test "$QA_SETUP_OUTCOME" = "success"
+          test "$QA_DEPS_OUTCOME" = "success"
+          test "$LIVE_QA_OUTCOME" = "success"
+          test "$LIGHTHOUSE_OUTCOME" = "success"
